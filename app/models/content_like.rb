@@ -1,0 +1,2 @@
+class ContentLike < ApplicationRecord
+end

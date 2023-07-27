@@ -1,0 +1,2 @@
+class ContentView < ApplicationRecord
+end
