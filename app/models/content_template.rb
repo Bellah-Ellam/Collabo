@@ -1,0 +1,2 @@
+class ContentTemplate < ApplicationRecord
+end
