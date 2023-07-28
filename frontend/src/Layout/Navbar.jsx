@@ -12,7 +12,8 @@ export default function Navbar()
         <nav className="navbar navbar-expand-lg bg-success mt-3">
         <div className="container">
 
-        <a className="navbar-brand fw-bolder text-white " href="/"><h2>CMS</h2></a>
+        <a className="navbar-brand fw-bolder text-white " href="./frontend/public/logo.png">SocialPilot</a>
+        <img src='frontend/public/logo.png' alt='Socialpilot'/>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span> </button>
         
         <div>                            
@@ -26,8 +27,8 @@ export default function Navbar()
                 <Link to="/Home" className="nav-link active text-white" aria-current="page" >Home</Link>
             </li>
 
-            {currentUser && currentUser.email?(
-              <>
+            {/* {currentUser && currentUser.email?(
+              <> */}
 
             <li className="nav-item">
                 <Link to="/ApproveProperty" className="nav-link active text-white">Approve</Link>
@@ -49,11 +50,11 @@ export default function Navbar()
                 </ul>
             </li>
 
-            </>)
+            {/* </>) */}
 
-            :
+            {/* :
 
-            <>
+            <> */}
 
             <li className="nav-item">
             <Link to="/Login" className="nav-link active text-white" >Login</Link>
@@ -63,9 +64,9 @@ export default function Navbar()
             <Link to="/register" className='nav-link active text-white'>Register</Link>
             </li>
 
-            </>
+            {/* </>
 
-            }
+            } */}
 
         </ul>
         </div>

@@ -5,7 +5,7 @@ import Card from './Card';
 export default function Home() {
 
 
-  // Fetch the list of approved properties
+  // Fetch the list of approved content
 
 
   return (

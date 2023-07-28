@@ -9,6 +9,9 @@ export default function Profile() {
       {
         currentUser && currentUser?
         <>
+        <>
+        <a href='current user profile pic'/>
+        </>
           <h4>Email: {currentUser && currentUser.email}</h4>
           <h4>Created-at: {currentUser && currentUser.created_at}</h4>
           <h4>Updated-at: {currentUser && currentUser.updated_at}</h4>
