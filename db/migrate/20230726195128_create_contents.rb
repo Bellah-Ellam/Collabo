@@ -5,7 +5,7 @@ class CreateContents < ActiveRecord::Migration[7.0]
       t.string :body
       t.string :content_type
       t.string :status
-      t.references :user, null: false, foreign_key: TRUE
+      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end
