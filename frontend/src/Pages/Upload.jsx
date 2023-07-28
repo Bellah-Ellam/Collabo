@@ -6,9 +6,11 @@ const Upload = () => {
     description: '',
     contentType: '',
     status: '',
+    image: null,
+    video: null,
   });
 
-  const { title, description, contentType, status } = formData;
+  const { title, description, contentType, status,image, video } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,7 +18,21 @@ const Upload = () => {
       ...formData,
       [name]: value,
     });
+
+  };const handleImageChange = (e) => {
+    setFormData({
+      ...formData,
+      image: e.target.files[0],
+    });
   };
+
+  const handleVideoChange = (e) => {
+    setFormData({
+      ...formData,
+      video: e.target.files[0],
+    });
+  };
+
 
   const handlePostNow = () => {
     // Handle the form submission logic immediately (POST to the backend).
@@ -83,6 +99,26 @@ const Upload = () => {
           value={status}
           onChange={handleChange}
           required
+        />
+        <br />
+
+        <label htmlFor="image">Image:</label>
+        <input
+          type="file"
+          id="image"
+          name="image"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        <br />
+
+        <label htmlFor="video">Video:</label>
+        <input
+          type="file"
+          id="video"
+          name="video"
+          accept="video/*"
+          onChange={handleVideoChange}
         />
         <br />
 
