@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext';
 
+
 export default function Navbar() 
 {
     const {currentUser, logout} = useContext(AuthContext)  
@@ -31,15 +32,15 @@ export default function Navbar()
               <> */}
 
             <li className="nav-item">
-                <Link to="/ApproveProperty" className="nav-link active text-white">Approve</Link>
+                <Link to="/Approve" className="nav-link active text-white">Approve</Link>
             </li>
 
             <li className="nav-item">
-                <Link to="/Booking" className="nav-link active text-white">Uploads</Link>
+                <Link to="/Upload" className="nav-link active text-white">Upload</Link>
             </li>
     
             <li className="nav-item">
-                <Link to="/AddProperty" className="nav-link active text-white" >Notification</Link>
+                <Link to="/Notification" className="nav-link active text-white" >Notification</Link>
             </li>
 
             <li className="nav-item dropdown">
