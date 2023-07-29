@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
   def create
-    user = User.find_by(email: params[:email])
-    if user&.authenticate(params[:password])
-      session[:user_id] = user.id
+    user = User.find_by(email: params[:user][:email])
+    if user&.valid_password?(params[:user][:password])
+      sign_in user
       render json: user, status: :ok
     else
       render json: { errors: ["Invalid email or password"] }, status: :unauthorized
@@ -10,8 +10,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if session[:user_id].present?
-      session.delete(:user_id)
+    if user_signed_in?
+      sign_out current_user
       head :no_content
     else
       render json: { errors: ["Unauthorized"] }, status: :unauthorized
