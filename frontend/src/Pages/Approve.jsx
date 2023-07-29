@@ -1,6 +1,6 @@
 import React from "react";
 // import Upload from "./Upload";
-import React from 'react'
+
 
 function Approve() {
   return (
