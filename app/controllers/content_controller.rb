@@ -1,59 +1,59 @@
+# app/controllers/api/v1/content_controller.rb
 class Api::V1::ContentController < ApplicationController
-    load_and_authorize_resource
-    before_action :authenticate_user!
-    before_action :set_user
-    before_action :set_conent, only: %i[show update destroy]
+  before_action :authenticate_user!
+  load_and_authorize_resource
+  before_action :set_user
+  before_action :set_content, only: [:show, :update, :destroy]
 
-     # GET /content
-     def index
-        @content = Content.all
-    
-        render json: @content
-      end
-    
-      # GET /content/1
-      def show
-        render json: @Content
-      end
-    
-      # POST /content
-      def create
-        @Content = Content.new(Content_params)
-    
-        if @Content.save
-          render json: @Content, status: :created, location: api_v1_Content_url(@Content)
-        else
-          render json: @Content.errors, status: :unprocessable_entity
-        end
-      end
-    
-      # PATCH/PUT /content/1
-      def update
-        if @Content.update(Content_params)
-          render json: @Content
-        else
-          render json: @Content.errors, status: :unprocessable_entity
-        end
-      end
-    
-      # DELETE /content/1
-      def destroy
-        @Content.destroy
-      end
-    
-      private
-    
-      # Use callbacks to share common setup or constraints between actions.
-      def set_Content
-        @Content = Content.find(params[:id])
-      end
-    
-      def set_user
-        @user = current_user
-      end
-    
-      # Only allow a list of trusted parameters through.
-      def Content_params
-        params.require(:Content).permit(:title, :Content_type, :body, :status, )
-      end
+  # GET /api/v1/content
+  def index
+    @content = Content.all
+    render json: @content
+  end
+
+  # GET /api/v1/content/1
+  def show
+    render json: @content
+  end
+
+  # POST /api/v1/content
+  def create
+    @content = Content.new(content_params)
+
+    if @content.save
+      render json: @content, status: :created, location: api_v1_content_url(@content)
+    else
+      render json: @content.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /api/v1/content/1
+  def update
+    if @content.update(content_params)
+      render json: @content
+    else
+      render json: @content.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /api/v1/content/1
+  def destroy
+    @content.destroy
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_content
+    @content = Content.find(params[:id])
+  end
+
+  def set_user
+    @user = current_user
+  end
+
+  # Only allow a list of trusted parameters through.
+  def content_params
+    params.require(:content).permit(:title, :content_type, :body, :status)
+  end
 end
