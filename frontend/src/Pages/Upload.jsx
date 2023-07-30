@@ -1,4 +1,6 @@
+
 import React, { useState } from 'react';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const Upload = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +12,7 @@ const Upload = () => {
     video: null,
   });
 
-  const { title, description, contentType, status,image, video } = formData;
+  const { title, description, contentType, status, image, video } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,8 +20,9 @@ const Upload = () => {
       ...formData,
       [name]: value,
     });
+  };
 
-  };const handleImageChange = (e) => {
+  const handleImageChange = (e) => {
     setFormData({
       ...formData,
       image: e.target.files[0],
@@ -32,7 +35,6 @@ const Upload = () => {
       video: e.target.files[0],
     });
   };
-
 
   const handlePostNow = () => {
     // Handle the form submission logic immediately (POST to the backend).
@@ -55,80 +57,86 @@ const Upload = () => {
   };
 
   return (
-    <div>
-      <h1>Upload <i className="mdi mdi-content-copy:"></i></h1>
-      <form>
-        <label htmlFor="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={title}
-          onChange={handleChange}
-          required
-        />
-        <br />
-
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          rows="4"
-          value={description}
-          onChange={handleChange}
-          required
-        />
-        <br />
-
-        <label htmlFor="contentType">Content Type:</label>
-        <input
-          type="text"
-          id="contentType"
-          name="contentType"
-          value={contentType}
-          onChange={handleChange}
-          required
-        />
-        <br />
-
-        <label htmlFor="status">Status:</label>
-        <input
-          type="text"
-          id="status"
-          name="status"
-          value={status}
-          onChange={handleChange}
-          required
-        />
-        <br />
-
-        <label htmlFor="image">Image:</label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-        <br />
-
-        <label htmlFor="video">Video:</label>
-        <input
-          type="file"
-          id="video"
-          name="video"
-          accept="video/*"
-          onChange={handleVideoChange}
-        />
-        <br />
-
-        <button type="button" onClick={handlePostNow}>Post</button>
-        <button type="button" onClick={handlePostLater}>Post Later</button>
-      </form>
-    </div>
+    <Container fluid className="bg-light min-vh-100 d-flex align-items-center justify-content-center">
+      <Col lg={8} md={10} sm={12}>
+        <h1 className="text-center mb-4">Upload <i className="mdi mdi-content-copy"></i></h1>
+        <Form>
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Title:</Form.Label>
+              <Form.Control
+                type="text"
+                name="title"
+                value={title}
+                onChange={handleChange}
+                required
+              />
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Description:</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="description"
+                rows={4}
+                value={description}
+                onChange={handleChange}
+                required
+              />
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col sm={6}>
+              <Form.Label>Content Type:</Form.Label>
+              <Form.Control
+                type="text"
+                name="contentType"
+                value={contentType}
+                onChange={handleChange}
+                required
+              />
+            </Col>
+            <Col sm={6}>
+              <Form.Label>Status:</Form.Label>
+              <Form.Control
+                type="text"
+                name="status"
+                value={status}
+                onChange={handleChange}
+                required
+              />
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Image:</Form.Label>
+              <Form.Control
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </Col>
+            <Col>
+              <Form.Label>Video:</Form.Label>
+              <Form.Control
+                type="file"
+                name="video"
+                accept="video/*"
+                onChange={handleVideoChange}
+              />
+            </Col>
+          </Row>
+          <div className="text-center">
+            <Button variant="success" onClick={handlePostNow} className="me-2">Post</Button>
+            <Button variant="secondary" onClick={handlePostLater}>Post Later</Button>
+          </div>
+        </Form>
+      </Col>
+    </Container>
   );
 };
 
 export default Upload;
-
 
