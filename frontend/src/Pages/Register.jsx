@@ -27,8 +27,8 @@ export default function Register() {
 
   return (
     <div className="d-flex justify-content-center">
-      <form onSubmit={handleSubmit} className="w-45 bg-white p-5 shadow-sm">
-        <h1 className="font-semibold text-2xl my-6">Register</h1>
+      <form onSubmit={handleSubmit} className="w-45 bg-white p-5 shadow">
+        <h2 className="font-semibold text-2xl my-6">Register</h2>
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
@@ -153,15 +153,15 @@ export default function Register() {
 
         <button
           type="submit"
-          className="btn btn-primary btn-lg btn-block text-white"
-          style={{ backgroundColor: 'green' }}
+          className="btn btn-block text-white"
+          style={{ backgroundColor: 'black',  borderColor: 'black' }}
         >
           Sign up
         </button>
 
         <div className="my-5">
           Already Registered?{' '}
-          <Link className="ml-4" to="/login">
+          <Link className="ml-4" style={{color: "#FFAE42"}} to="/login">
             Login
           </Link>
         </div>

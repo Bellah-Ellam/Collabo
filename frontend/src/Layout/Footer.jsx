@@ -45,7 +45,7 @@ function Footer() {
 
     <footer className="footer bg-dark text-white text-center py-3">
     <div className="container">
-      <p>&copy; 2023 Content Manager. All rights reserved.</p>
+      <p>&copy; 2023 Collabo Content Manager. All rights reserved.</p>
     </div>
   </footer>
   );

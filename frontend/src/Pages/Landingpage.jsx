@@ -105,6 +105,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import "../index.css"
 
 function LandingPage() {
   return (
@@ -112,12 +113,14 @@ function LandingPage() {
 
 
       {/* Hero Section */}
-      <section className="hero-section mt-2 text-dark text-center py-5">
-        <div className="container">
-          <h1 className="display-4">Effortlessly Manage Your Content</h1>
-          <p className="lead">Simplify your content management process with our state-of-the-art Content Management System (CMS). Create, edit, and publish your website's content effortlessly with our intuitive interface. Our CMS platform empowers you to take full control of your website's content, allowing you to showcase your ideas and creativity without any technical hurdles.
-//           Whether you're a blogger, a business owner, or a creative professional, our CMS gives you the flexibility and freedom to manage your content in a seamless and efficient manner. Stay ahead in the digital landscape with our powerful CMS and focus on what truly matters - creating engaging and captivating content for your audience.</p>
-        </div>
+      <section className="hero-section mt-2 text-dark text-center py-5" >
+   
+          <div className="container justify-content-center">
+            <h1 className="display-6">Effortlessly Manage Your Content</h1>
+            <h3 id="title" >with<span>    Collabo</span></h3>
+            <p className="lead">Whether you're a blogger, a business owner, or a creative professional, our CMS gives you the flexibility and freedom to manage your content in a seamless and efficient manner.</p>
+          </div>
+        
       </section>
 
       {/* Features Section */}
@@ -127,21 +130,21 @@ function LandingPage() {
             <div className="col-md-4 mb-4">
               <div className="feature-card text-center p-4">
                 <i className="bi bi-pencil-square display-4 mb-3"></i>
-                <h3>Create Content</h3>
+                <h3 id="services">Create Content</h3>
                 <p>Write, edit, and publish your content with an intuitive and user-friendly interface.</p>
               </div>
             </div>
             <div className="col-md-4 mb-4">
               <div className="feature-card text-center p-4">
                 <i className="bi bi-bar-chart display-4 mb-3"></i>
-                <h3>Analytics</h3>
+                <h3 id="services">Analytics</h3>
                 <p>Track and analyze the performance of your content with detailed analytics.</p>
               </div>
             </div>
             <div className="col-md-4 mb-4">
               <div className="feature-card text-center p-4">
                 <i className="bi bi-cloud-upload display-4 mb-3"></i>
-                <h3>Cloud Storage</h3>
+                <h3 id="services">Cloud Storage</h3>
                 <p>Securely store and access your content from anywhere with cloud storage.</p>
               </div>
             </div>

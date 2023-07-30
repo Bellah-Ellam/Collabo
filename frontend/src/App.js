@@ -7,6 +7,7 @@ import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import Upload from './Pages/Upload';
 import Approve from './Pages/Approve';
+import SingleContent from "./Pages/SingleContent";
 import AuthProvider from "./Context/AuthContext";
 
 
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/Upload" element={<Upload />}/>
                     <Route path="/Register" element={<Register />}/>
                     <Route path="/Profile" element={<Profile />}/>
+                    <Route path="/SingleContent" element={<SingleContent />}/>
                     </Route>
                 </Routes>
             </AuthProvider>
