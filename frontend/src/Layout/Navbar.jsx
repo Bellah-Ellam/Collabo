@@ -13,13 +13,20 @@ export default function Navbar()
         <nav className="navbar navbar-expand-lg bg-success mt-3">
         <div className="container">
 
-        <a className="navbar-brand fw-bolder text-white " href="./frontend/public/logo.png">SocialPilot</a>
-        <img src='frontend/public/logo.png' alt='Socialpilot'/>
+{/* Logo */}
+            <Link to="/" className="navbar-brand fw-bolder text-white">
+            <img
+              src={process.env.PUBLIC_URL + '/logo.png'}
+              alt="Socialpilot"
+              style={{ width: '150px', height: '50px', objectFit: 'contain' }}
+            />
+            </Link>
+          <div className="navbar-brand fw-bolder text-white">SocialPilot</div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span> </button>
         
-        <div>                            
+        {/* <div>                            
             <input type="text" placeholder="Search.."/>
-        </div>
+        </div> */}
 
         <div className="collapse navbar-collapse ms-auto" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -46,7 +53,7 @@ export default function Navbar()
             <li className="nav-item dropdown">
                  <Link to="/Profile" className="nav-link active dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</Link>          
                 <ul className="dropdown-menu bg-success">
-                    <li><Link to="/Profile" className="dropdown-item text-white" href="#">{currentUser && currentUser.email}</Link></li>
+                    <li><Link to="/Profile" className="dropdown-item text-white" href="#">Profile Image</Link></li>
                     <li><a className="dropdown-item text-white" href='#' onClick={() => logout()}>logout</a></li>
                 </ul>
             </li>
