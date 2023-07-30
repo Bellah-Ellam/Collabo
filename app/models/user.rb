@@ -1,13 +1,9 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
-     # Include default devise modules. Others available are:
-    # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-    # devise :database_authenticatable, :registerable,
-    # :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
+   
 
     validates :name, :date_of_birth, presence: true
     validate :validate_age
@@ -15,7 +11,27 @@ class User < ApplicationRecord
     def admin?
         role == 'admin'
       end
+
+      def invalidate_jwt(jti, expiration_time)
+        if expiration_time.present? && expiration_time.is_a?(Numeric)
+          # Calculate the time remaining until the token expiration
+          time_remaining = expiration_time - Time.now.to_i
     
+          if time_remaining.positive?
+            # Add the token to the denylist with the remaining time until expiration
+            JwtDenylist.create!(jti: jti, exp: expiration_time)
+          else
+            # The token has already expired, no need to add it to the denylist
+          end
+        else
+          # The token does not have a valid expiration time, do not add it to the denylist
+        end
+      end
+    
+      def jwt_token_invalid?(jti)
+        JwtDenylist.exists?(jti: jti)
+      end
+
       private
     
       def validate_age

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :content, only: [:index, :show, :create, :update, :destroy]
       post '/login', to: 'auth#login'
-      get '/current_user', to: 'auth#show_current_user'
+      get '/current_user', to: 'auth#show'
       post '/signup', to: 'registrations#create'
       delete '/logout', to: 'auth#logout'
     end
