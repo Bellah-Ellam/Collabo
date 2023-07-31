@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
+<<<<<<< HEAD
+ActiveRecord::Schema[7.0].define(version: 2023_07_27_211905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "categories", force: :cascade do |t|
     t.string "category_name"
-    t.bigint "content_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_categories_on_content_id"
@@ -24,8 +25,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
 
   create_table "comments", force: :cascade do |t|
     t.string "body"
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+    t.integer "user_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_comments_on_content_id"
@@ -33,8 +34,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
   end
 
   create_table "content_categories", force: :cascade do |t|
-    t.bigint "content_id", null: false
-    t.bigint "category_id", null: false
+    t.integer "content_id", null: false
+    t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_content_categories_on_category_id"
@@ -42,8 +43,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
   end
 
   create_table "content_likes", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+    t.integer "user_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_content_likes_on_content_id"
@@ -51,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
   end
 
   create_table "content_tags", force: :cascade do |t|
-    t.bigint "content_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_content_tags_on_content_id"
@@ -60,15 +61,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
   create_table "content_templates", force: :cascade do |t|
     t.string "name"
     t.string "content"
-    t.bigint "content_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_content_templates_on_content_id"
   end
 
   create_table "content_views", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+    t.integer "user_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_content_views_on_content_id"
@@ -80,7 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
     t.string "body"
     t.string "content_type"
     t.string "status"
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "likes_count", default: 0
@@ -98,7 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
   create_table "media_files", force: :cascade do |t|
     t.string "type"
     t.string "url"
-    t.bigint "content_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_media_files_on_content_id"
@@ -107,7 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
   create_table "notifications", force: :cascade do |t|
     t.string "message"
     t.string "type"
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_notifications_on_user_id"
@@ -115,8 +116,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
 
   create_table "reports", force: :cascade do |t|
     t.string "body"
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+    t.integer "user_id", null: false
+    t.integer "content_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_id"], name: "index_reports_on_content_id"
@@ -129,40 +130,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
     t.datetime "updated_at", null: false
   end
 
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_095732) do
+>>>>>>> origin/sharon
   create_table "users", force: :cascade do |t|
-    t.string "user_name"
-    t.string "photo"
-    t.date "date_of_birth"
-    t.string "role"
-    t.string "password"
+    t.string "email"
+    t.string "username"
+    t.string "profile_photo"
+    t.string "password_digest"
+    t.boolean "is_admin", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string "name"
-    t.text "bio"
-    t.string "profile_picture"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+=======
+>>>>>>> origin/sharon
   end
 
-  add_foreign_key "categories", "contents"
-  add_foreign_key "comments", "contents"
-  add_foreign_key "comments", "users"
-  add_foreign_key "content_categories", "categories"
-  add_foreign_key "content_categories", "contents"
-  add_foreign_key "content_likes", "contents"
-  add_foreign_key "content_likes", "users"
-  add_foreign_key "content_tags", "contents"
-  add_foreign_key "content_templates", "contents"
-  add_foreign_key "content_views", "contents"
-  add_foreign_key "content_views", "users"
-  add_foreign_key "contents", "users"
-  add_foreign_key "media_files", "contents"
-  add_foreign_key "notifications", "users"
-  add_foreign_key "reports", "contents"
-  add_foreign_key "reports", "users"
 end

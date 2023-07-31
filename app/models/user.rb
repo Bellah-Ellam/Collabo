@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+<<<<<<< HEAD
   has_many :contents, dependent: :destroy
   has_many :content_likes, dependent: :destroy
   has_many :content_views, dependent: :destroy
@@ -46,4 +47,13 @@ class User < ApplicationRecord
         errors.add(:date_of_birth, 'You should be over 18 years old.')
       end
   
+=======
+    # has_many :bookings, dependent: :destroy
+    # has_many :properties, through: :bookings
+    has_secure_password
+
+    validates :email, presence: true, uniqueness: true
+    validates :password, presence: true
+
+>>>>>>> origin/sharon
 end
