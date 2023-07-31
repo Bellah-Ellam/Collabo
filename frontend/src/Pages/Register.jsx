@@ -9,9 +9,9 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [photo, setPhoto] = useState(null);
   const [doB, setDoB] = useState(null);
-  const [role, setRole] = useState(null);
-  const [password, setPassword] = useState('');
-  const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [name, setName] = useState(null);
+  const [password, setPassword] = useState(null);
+   const [password_confirmation, setPasswordConfirmation] = useState('');
 
 
   const handleFileChange = (e) => {
@@ -22,7 +22,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(username + '  ' + password);
-    register(email, username, photo, doB, role, password, password_confirmation);
+    register(email, username, photo, doB, password, password_confirmation);
   };
 
   return (
@@ -32,13 +32,13 @@ export default function Register() {
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
-            Your Name
+             Name
           </label>
           <input
             type="name"
             id="name"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="form-control"
             placeholder="Name"
             required
@@ -60,22 +60,21 @@ export default function Register() {
           />
         </div>
 
-
-
-        {/* <div className="mb-3">
+        <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
-            Your Photo
+            email adress
           </label>
           <input
-            type="photo"
-            id="photo"
+            type="email adress"
+            id="email adress"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="form-control"
-            placeholder="photo"
+            placeholder="email adress"
             required
           />
-        </div> */}
+        </div>
+
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
@@ -101,26 +100,12 @@ export default function Register() {
             value={doB}
             onChange={(e) => setDoB(e.target.value)}
             className="form-control"
-            placeholder="DoB"
+            placeholder="YYYY-MM-D"
             required
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label font-weight-bold">
-            Your Role
-          </label>
-          <input
-            type="role"
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="form-control"
-            placeholder="Role"
-            required
-          />
-        </div>
-
+        
         <div className="mb-3">
           <label htmlFor="password" className="form-label font-weight-bold">
             Your Password
@@ -138,7 +123,7 @@ export default function Register() {
 
         <div className="mb-3">
           <label htmlFor="password_confirmation" className="form-label font-weight-bold">
-            Password Confirmation
+            Confirm password
           </label>
           <input
             type="password"
