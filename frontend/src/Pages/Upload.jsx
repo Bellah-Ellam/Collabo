@@ -59,8 +59,8 @@ const Upload = () => {
   return (
     <Container fluid className="bg-light min-vh-100 d-flex align-items-center justify-content-center">
       <Col lg={8} md={10} sm={12}>
-        <h1 className="text-center mb-4">Upload <i className="mdi mdi-content-copy"></i></h1>
-        <Form>
+        <h2 className="text-center mb-4">Upload <i className="mdi mdi-content-copy"></i></h2>
+        <Form className="">
           <Row className="mb-3">
             <Col>
               <Form.Label>Title:</Form.Label>
@@ -129,8 +129,8 @@ const Upload = () => {
             </Col>
           </Row>
           <div className="text-center">
-            <Button variant="success" onClick={handlePostNow} className="me-2">Post</Button>
-            <Button variant="secondary" onClick={handlePostLater}>Post Later</Button>
+            <Button onClick={handlePostNow} className="me-2">Post</Button>
+            <Button variant="secondary" onClick={handlePostLater} className='post-later'>Post Later</Button>
           </div>
         </Form>
       </Col>

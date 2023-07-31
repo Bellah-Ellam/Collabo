@@ -10,10 +10,10 @@ export default function Navbar()
 
     return (
         <div>
-        <nav className="navbar navbar-expand-lg bg-success mt-3">
+        <nav className="navbar navbar-expand-lg mt-1" style={{backgroundColor: "#FFAE42"}}>
         <div className="container">
 
-{/* Logo */}
+        {/* Logo */}
             <Link to="/" className="navbar-brand fw-bolder text-white">
             <img
               src={process.env.PUBLIC_URL + '/logo.png'}
@@ -21,7 +21,7 @@ export default function Navbar()
               style={{ width: '150px', height: '50px', objectFit: 'contain' }}
             />
             </Link>
-          <div className="navbar-brand fw-bolder text-white">SocialPilot</div>
+          <div className="navbar-brand fw-bolder text-white">Collabo</div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span> </button>
         
         {/* <div>                            
@@ -52,9 +52,9 @@ export default function Navbar()
 
             <li className="nav-item dropdown">
                  <Link to="/Profile" className="nav-link active dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</Link>          
-                <ul className="dropdown-menu bg-success">
-                    <li><Link to="/Profile" className="dropdown-item text-white" href="#">Profile Image</Link></li>
-                    <li><a className="dropdown-item text-white" href='#' onClick={() => logout()}>logout</a></li>
+                <ul className="dropdown-menu text-black">
+                    <li><Link to="/Profile" className="dropdown-item" href="#">Your Profile</Link></li>
+                    <li><a className="dropdown-item" href='#' onClick={() => logout()}>Logout</a></li>
                 </ul>
             </li>
 

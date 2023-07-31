@@ -1,33 +1,6 @@
-// import React from 'react';
-// import { useEffect, useState } from 'react';
-// import Card from './Card';
-
-// export default function Home() {
-
-
-//   // Fetch the list of approved content
-
-
-//   return (
-
-//     <div className="card mt-3 mb-4 d-flex flex-column align-items">
-//       <img src="/" alt="" className="card-img-top img-fluid" style={{ objectFit: "cover", maxHeight: "200px" }} />
-//       <div className="card-body d-flex flex-column">
-//         <h4 className="card-title">Dennis</h4>
-//         <p className="card-text">Dennis</p>
-//         <p className="card-text">Posted by: Dennis</p>
-//         <p className="card-text">Bookings: Dennis</p>
-//         <div className="mt-auto d-flex justify-content-between">
-//           <button className="btn btn-primary btn-sm" >Book</button>
-//           <button className="btn btn-danger btn-sm" >Delete</button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const cardData = [
@@ -73,7 +46,7 @@ const Home = () => {
               <Card.Body>
                 <Card.Title>{card.title}</Card.Title>
                 <Card.Text>{card.description}</Card.Text>
-                <Button variant="secondary">Learn More</Button>
+                <Link style={{color: "#FFAE42"}} to="/SingleContent"> Read More</Link>
               </Card.Body>
             </Card>
           </div>

@@ -5,7 +5,7 @@ const ApprovePage = () => {
   const contentToApprove = [
     {
       title: 'New Article',
-      image: 'path-to-image-4.jpg',
+      image: 'https://images.pexels.com/photos/6044927/pexels-photo-6044927.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       description: 'This is a new article awaiting approval for the home page.'
     },
     {
@@ -44,8 +44,8 @@ const ApprovePage = () => {
               <Card.Body>
                 <Card.Title>{content.title}</Card.Title>
                 <Card.Text>{content.description}</Card.Text>
-                <Button variant="success">Approve</Button>
-                <Button variant="secondary" className="ms-2">Reject</Button>
+                <Button className="me-2 btn-sm">Approve</Button>
+                <Button variant="secondary " className="post-later btn-sm">Reject</Button>
               </Card.Body>
             </Card>
           </div>

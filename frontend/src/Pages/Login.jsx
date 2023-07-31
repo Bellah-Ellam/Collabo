@@ -17,7 +17,7 @@ function Login() {
   return (
     <div className='d-flex align-items-center justify-content-center min-vh-70'>
       <div className='bg-gray-900 rounded-lg p-5 shadow'>
-        <h1 className='my-3'>Login</h1>
+        <h2 className='my-3'>Login</h2>
         
         <form onSubmit={handleSubmit}>
           <input
@@ -34,19 +34,20 @@ function Login() {
             placeholder='Enter Password'
           />
           <br />
-          <div className='d-flex justify-content-center'>
+
           <button
             type="submit"
-            className="btn btn-primary btn-lg btn-block text-white"
-            style={{ backgroundColor: 'green' }}
+            className="btn btn-block text-white"
+            style={{ backgroundColor: 'black', borderColor: 'black' }}
           >
             Login
           </button>
-          </div>
+
+   
 
             <div className="my-5">
             Not yet Registered?{' '}
-            <Link className="ml-4" to="/register">
+            <Link className="ml-4" style={{color: "#FFAE42"}} to="/register">
               Register
             </Link>
             </div>

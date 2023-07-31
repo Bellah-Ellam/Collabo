@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_07_27_211905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,15 +130,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_211905) do
     t.datetime "updated_at", null: false
   end
 
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_095732) do
+>>>>>>> origin/sharon
   create_table "users", force: :cascade do |t|
+    t.string "email"
     t.string "username"
-    t.string "name"
-    t.string "photo"
-    t.date "doB"
-    t.string "role"
+    t.string "profile_photo"
     t.string "password_digest"
+    t.boolean "is_admin", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -146,22 +150,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_211905) do
     t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+=======
+>>>>>>> origin/sharon
   end
 
-  add_foreign_key "categories", "contents"
-  add_foreign_key "comments", "contents"
-  add_foreign_key "comments", "users"
-  add_foreign_key "content_categories", "categories"
-  add_foreign_key "content_categories", "contents"
-  add_foreign_key "content_likes", "contents"
-  add_foreign_key "content_likes", "users"
-  add_foreign_key "content_tags", "contents"
-  add_foreign_key "content_templates", "contents"
-  add_foreign_key "content_views", "contents"
-  add_foreign_key "content_views", "users"
-  add_foreign_key "contents", "users"
-  add_foreign_key "media_files", "contents"
-  add_foreign_key "notifications", "users"
-  add_foreign_key "reports", "contents"
-  add_foreign_key "reports", "users"
 end

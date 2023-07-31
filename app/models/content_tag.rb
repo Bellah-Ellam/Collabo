@@ -1,2 +1,0 @@
-class ContentTag < ApplicationRecord
-end

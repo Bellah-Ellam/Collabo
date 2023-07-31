@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 export default function Register() {
   const { register } = useContext(AuthContext);
 
+  const [email, setEmail] = useState('');  
   const [username, setUsername] = useState('');
-  const [name, setName] = useState('');  
   const [photo, setPhoto] = useState(null);
   const [doB, setDoB] = useState(null);
   const [role, setRole] = useState(null);
@@ -22,13 +22,28 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(username + '  ' + password);
-    register(username, name, photo, doB, role, password, password_confirmation);
+    register(email, username, photo, doB, role, password, password_confirmation);
   };
 
   return (
     <div className="d-flex justify-content-center">
-      <form onSubmit={handleSubmit} className="w-45 bg-white p-5 shadow-sm">
-        <h1 className="font-semibold text-2xl my-6">Register</h1>
+      <form onSubmit={handleSubmit} className="w-45 bg-white p-5 shadow">
+        <h2 className="font-semibold text-2xl my-6">Register</h2>
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label font-weight-bold">
+            Your Name
+          </label>
+          <input
+            type="name"
+            id="name"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="form-control"
+            placeholder="Name"
+            required
+          />
+        </div>
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
@@ -45,20 +60,7 @@ export default function Register() {
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label font-weight-bold">
-            Your Name
-          </label>
-          <input
-            type="name"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="form-control"
-            placeholder="Name"
-            required
-          />
-        </div>
+
 
         {/* <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
@@ -151,15 +153,15 @@ export default function Register() {
 
         <button
           type="submit"
-          className="btn btn-primary btn-lg btn-block text-white"
-          style={{ backgroundColor: 'green' }}
+          className="btn btn-block text-white"
+          style={{ backgroundColor: 'black',  borderColor: 'black' }}
         >
           Sign up
         </button>
 
         <div className="my-5">
           Already Registered?{' '}
-          <Link className="ml-4" to="/login">
+          <Link className="ml-4" style={{color: "#FFAE42"}} to="/login">
             Login
           </Link>
         </div>
