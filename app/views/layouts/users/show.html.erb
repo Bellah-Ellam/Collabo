@@ -1,0 +1,11 @@
+<h1><%= @user.user_name %>'s Profile</h1>
+
+<% if @user.profile_picture.present? %>
+  <%= image_tag @user.profile_picture, alt: "Profile Picture", class: "profile-picture" %>
+<% else %>
+  <!-- Default profile picture or no picture -->
+  <%= image_tag "default_profile_picture.jpg", alt: "Default Profile Picture", class: "profile-picture" %>
+<% end %>
+
+<p>Date of Birth: <%= @user.date_of_birth %></p>
+<p>Bio: <%= @user.bio %></p>
