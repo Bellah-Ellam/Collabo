@@ -36,6 +36,8 @@ class Api::V1::AuthController < ApplicationController
       end
     end
 
+    
+
     def show
      
       if current_user

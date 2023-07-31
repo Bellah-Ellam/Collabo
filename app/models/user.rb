@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  has_many :contents, dependent: :destroy
+  has_many :content_likes, dependent: :destroy
+  has_many :content_views, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
@@ -7,6 +11,8 @@ class User < ApplicationRecord
 
     validates :name, :date_of_birth, presence: true
     validate :validate_age
+    validates :bio, length: { maximum: 500 }
+    validates :profile_picture, format: { with: /\Ahttps?:\/\//, allow_blank: true }
 
     def admin?
         role == 'admin'

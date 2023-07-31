@@ -1,0 +1,22 @@
+
+<h1><%= @content.title %></h1>
+<p><%= @content.body %></p>
+
+<!-- Like button -->
+<%= button_to 'Like', like_content_path(@content), method: :post %>
+<span>Likes: <%= @content.likes_count %></span>
+
+<!-- View button -->
+<%= button_to 'View', view_content_path(@content), method: :post %>
+<span>Views: <%= @content.views_count %></span>
+
+<!-- Comment form -->
+<%= form_with(model: @content, url: comment_content_path(@content), method: :post) do |form| %>
+  <%= form.text_area :body %>
+  <%= form.submit 'Add Comment' %>
+<% end %>
+
+<h2>Comments</h2>
+<% @content.comments.each do |comment| %>
+  <p><%= comment.body %></p>
+<% end %>
