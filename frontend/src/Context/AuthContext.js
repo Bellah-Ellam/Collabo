@@ -126,7 +126,7 @@ export default function AuthProvider({children})
         logout,
         currentUser
     }
-
+// New
   return (
     <>
      <AuthContext.Provider value={contextData}>
