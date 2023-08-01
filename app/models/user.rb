@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-<<<<<<< HEAD
   has_many :contents, dependent: :destroy
   has_many :content_likes, dependent: :destroy
   has_many :content_views, dependent: :destroy
@@ -10,7 +9,7 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
    
 
-    validates :name, :date_of_birth, presence: true
+    validates :name, :doB, presence: true
     validate :validate_age
     validates :bio, length: { maximum: 500 }
     validates :profile_picture, format: { with: /\Ahttps?:\/\//, allow_blank: true }
@@ -42,18 +41,9 @@ class User < ApplicationRecord
       private
     
       def validate_age
-        return unless date_of_birth.present? && date_of_birth > 18.years.ago.to_date
+        return unless doB.present? && doB > 18.years.ago.to_date
     
-        errors.add(:date_of_birth, 'You should be over 18 years old.')
+        errors.add(:doB, 'You should be over 18 years old.')
       end
   
-=======
-    # has_many :bookings, dependent: :destroy
-    # has_many :properties, through: :bookings
-    has_secure_password
-
-    validates :email, presence: true, uniqueness: true
-    validates :password, presence: true
-
->>>>>>> origin/sharon
 end

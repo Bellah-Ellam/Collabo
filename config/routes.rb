@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
   namespace :api do
     namespace :v1 do
       resources :content, only: [:index, :show, :create, :update, :destroy]
@@ -14,7 +13,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :tags
   resources :notifications, only: [:index]
-  resources :users, only: [:show, :edit, :update]
+  resources :users, only: [:index, :show, :edit, :update]
   resources :content, only: [:index, :show, :create, :update, :destroy]
   resources :contents do
     member do
@@ -23,22 +22,6 @@ Rails.application.routes.draw do
       post 'comment', to: 'contents#create_comment'
     end
   end
-=======
-  resources :comments, only:[:index, :create, :destroy]
-  resources :content, only:[:index, :show, :create, :destroy]
-  # resources :users, only:[:show]
-
- # get '/content_comments', to: 'content#content_comments'
-
-  post "/signup", to: "users#create"
-  get "/current_user", to: "users#current_user"
-
-  post "/login", to: "sessions#create"
-  delete "/logout", to: "sessions#destroy"
-
-  # route to test your configuration
-  get '/hello', to: 'application#hello_world'
->>>>>>> origin/sharon
 
     # Devise routes for user authentication
    devise_for :users, controllers: {

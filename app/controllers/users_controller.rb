@@ -1,38 +1,38 @@
-
 class UsersController < ApplicationController
-
-    skip_before_action :authorize, only: :create
-
-    # Signup
-    def create
-      user = User.create!(user_params)
-      session[:user_id] = user.id
-      render json: {success: "Successful Signup"}, status: :created
+    # before_action :authenticate_user!
+  
+    # GET /users
+    def index
+      users = User.all
+      render json: users, status: :ok
     end
   
-    # Get user by id 
+
+    # GET /users/:id
     def show
-      render json: @current_user
+      @user = User.find(params[:id])
     end
-
-    # Get current user
-    def current_user
-      user = User.find_by(id: session[:user_id])
-    
-      if user
-        render json: user
-
+  
+    # GET /users/:id/edit
+    def edit
+      @user = current_user
+    end
+  
+    # PATCH /users/:id
+    def update
+      @user = current_user
+  
+      if @user.update(user_params)
+        redirect_to @user, notice: 'Profile updated successfully.'
       else
-        render json: {error: "No user is logged in"}
+        render :edit
       end
-
     end
   
     private
   
     def user_params
-      params.permit(:email, :username, :profile_photo, :password, :password_confirmation)
+      params.require(:user).permit(:user_name, :photo, :date_of_birth, :bio, :profile_picture)
     end
-    
   end
->>>>>>> origin/sharon
+  

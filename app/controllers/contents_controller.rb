@@ -1,7 +1,9 @@
 # app/controllers/contents_controller.rb
 
-class ContentsController < ApplicationController
-    before_action :authenticate_user!, except: [:index, :show]
+class Api::V1::ContentController < ApplicationController
+    # before_action :authenticate_user!, except: [:index, :show]
+    before_action :authenticate_user!
+    load_and_authorize_resource
   
     # GET /contents
     def index

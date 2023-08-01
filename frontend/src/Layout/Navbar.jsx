@@ -6,27 +6,24 @@ import { AuthContext } from '../Context/AuthContext';
 export default function Navbar() 
 {
     const {currentUser, logout} = useContext(AuthContext)  
-    console.log("user from navbar,");
+    console.log("I like", currentUser );
 
     return (
         <div>
-        <nav className="navbar navbar-expand-lg mt-1" style={{backgroundColor: "#FFAE42"}}>
+        <nav className="navbar navbar-expand-lg mt-1 bg-dark" style ={{color: 'black'}}>
         <div className="container">
 
         {/* Logo */}
             <Link to="/" className="navbar-brand fw-bolder text-white">
             <img
               src={process.env.PUBLIC_URL + '/logo.png'}
-              alt="Socialpilot"
+              alt="Collabo"
               style={{ width: '150px', height: '50px', objectFit: 'contain' }}
             />
             </Link>
-          <div className="navbar-brand fw-bolder text-white">Collabo</div>
+          <div className="navbar-brand fw-bolder">Collabo</div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span> </button>
         
-        {/* <div>                            
-            <input type="text" placeholder="Search.."/>
-        </div> */}
 
         <div className="collapse navbar-collapse ms-auto" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -35,8 +32,9 @@ export default function Navbar()
                 <Link to="/Home" className="nav-link active text-white" aria-current="page" >Home</Link>
             </li>
 
-            {/* {currentUser && currentUser.email?(
-              <> */}
+            {currentUser && currentUser.email?
+
+            <> 
 
             <li className="nav-item">
                 <Link to="/Approve" className="nav-link active text-white">Approve</Link>
@@ -58,11 +56,11 @@ export default function Navbar()
                 </ul>
             </li>
 
-            {/* </>) */}
+            </>
 
-            {/* :
+            :
 
-            <> */}
+            <>
 
             <li className="nav-item">
             <Link to="/Login" className="nav-link active text-white" >Login</Link>
@@ -72,9 +70,9 @@ export default function Navbar()
             <Link to="/register" className='nav-link active text-white'>Register</Link>
             </li>
 
-            {/* </>
+            </>
 
-            } */}
+            }
 
         </ul>
         </div>

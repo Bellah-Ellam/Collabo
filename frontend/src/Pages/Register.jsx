@@ -5,24 +5,25 @@ import { Link } from 'react-router-dom';
 export default function Register() {
   const { register } = useContext(AuthContext);
 
-  const [email, setEmail] = useState('');  
+  const [name, setName] = useState(null);
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');  
   const [photo, setPhoto] = useState(null);
   const [doB, setDoB] = useState(null);
-  const [name, setName] = useState(null);
+  const [bio, setBio] = useState(null);
   const [password, setPassword] = useState(null);
-   const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [password_confirmation, setPasswordConfirmation] = useState('');
 
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setPhoto(file);
-  };
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setPhoto(file);
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(username + '  ' + password);
-    register(email, username, photo, doB, password, password_confirmation);
+    register(name, username, email, photo, doB, password, password_confirmation);
   };
 
   return (
@@ -62,7 +63,7 @@ export default function Register() {
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label font-weight-bold">
-            email adress
+            Email
           </label>
           <input
             type="email adress"
@@ -81,11 +82,12 @@ export default function Register() {
             Your Photo
           </label>
           <input
-            type="file" /* Use "file" input type for images */
+            type="photo"
             id="photo"
-            onChange={handleFileChange}
+            value={photo}
+            onChange={(e) => setPhoto(e.target.value)}
             className="form-control"
-            accept="image/*" /* Specify accepted file types (images in this case) */
+            placeholder="Photo"
             required
           />
        </div>
@@ -101,6 +103,21 @@ export default function Register() {
             onChange={(e) => setDoB(e.target.value)}
             className="form-control"
             placeholder="YYYY-MM-D"
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label font-weight-bold">
+            Bio
+          </label>
+          <input
+            type="bio"
+            id="bio"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            className="form-control"
+            placeholder="Bio"
             required
           />
         </div>

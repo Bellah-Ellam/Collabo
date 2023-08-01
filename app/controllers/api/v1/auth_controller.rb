@@ -5,7 +5,7 @@ class Api::V1::AuthController < ApplicationController
     
         if @user&.valid_password?(params[:password])
           token = JWT.encode({ user_id: @user.id }, 'your_jwt_secret_key', 'HS256')
-          render json: { token: token,user: @user }
+          render json: { token: token, success: "Successfully Logged in" }, status: :ok
         else
           render json: { error: 'Invalid email or password' }, status: :unauthorized
         end
@@ -13,29 +13,54 @@ class Api::V1::AuthController < ApplicationController
 
   
 
+    # def current_user
+    #   # Extract the JWT token from the Authorization header
+    #   token = request.headers['Authorization']&.split&.last
+  
+    #   # Check if the token exists
+    #   unless token
+    #     return nil
+    #   end
+  
+    #   begin
+    #     # Decode the token using the secret key
+    #     secret_key = 'your_jwt_secret_key'  # Replace with your actual JWT secret key
+    #     decoded_token = JWT.decode(token, secret_key, true, algorithm: 'HS256')
+  
+    #     # Extract the user_id from the payload and find the corresponding user
+    #     user_id = decoded_token[0]['user_id']
+    #     @current_user ||= User.find_by(id: user_id)
+    #   rescue JWT::DecodeError => e
+    #     # Handle the case when the token is invalid or expired
+    #     return nil
+    #   end
+    # end
+
+
+    # Difference
     def current_user
       # Extract the JWT token from the Authorization header
       token = request.headers['Authorization']&.split&.last
-  
+    
       # Check if the token exists
-      unless token
-        return nil
-      end
-  
+      return nil unless token
+    
       begin
-        # Decode the token using the secret key
-        secret_key = 'your_jwt_secret_key'  # Replace with your actual JWT secret key
+        # Replace 'your_jwt_secret_key' with your actual JWT secret key
+        secret_key = 'your_jwt_secret_key'
+    
+        # Verify the token and decode its payload
         decoded_token = JWT.decode(token, secret_key, true, algorithm: 'HS256')
-  
+    
         # Extract the user_id from the payload and find the corresponding user
-        user_id = decoded_token[0]['user_id']
+        user_id = decoded_token.first['user_id']
         @current_user ||= User.find_by(id: user_id)
-      rescue JWT::DecodeError => e
+      rescue JWT::DecodeError, JWT::ExpiredSignature
         # Handle the case when the token is invalid or expired
         return nil
       end
     end
-
+    
     
 
     def show

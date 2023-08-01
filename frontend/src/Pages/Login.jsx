@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 function Login() {
   const { login } = useContext(AuthContext);
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('I love this');
-    login(username, password);
+    login(email, password);
   };
 
   return (
@@ -22,9 +22,9 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <input
             type='text'
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className='form-control rounded mt-2 px-3 py-1'
-            placeholder='Enter Username'
+            placeholder='Enter Email'
           />
           <br />
           <input
