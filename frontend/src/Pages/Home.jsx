@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card,Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -40,14 +40,22 @@ const Home = () => {
     <div className="container py-5">
       <div className="row">
         {cardData.map((card, index) => (
-          <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div key={index} className="col-lg-4 col-md-6 mb-4">
             <Card>
               <Card.Img variant="top" src={card.image} />
               <Card.Body>
                 <Card.Title>{card.title}</Card.Title>
                 <Card.Text>{card.description}</Card.Text>
-                <Link style={{color: "#FFAE42"}} to="/SingleContent"> Read More</Link>
+                {/* Add like and comment buttons */}
+                <div className="d-flex justify-content-between">
+                  <Button variant="primary" className="me-2">Like</Button>
+                  <Button variant="secondary" className="me-2">Comment</Button>
+                </div>
               </Card.Body>
+              {/* Add post timestamp */}
+              <Card.Footer>
+                <small className="text-muted">Posted 3 mins ago</small>
+              </Card.Footer>
             </Card>
           </div>
         ))}
