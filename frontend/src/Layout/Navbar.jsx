@@ -14,15 +14,15 @@ export default function Navbar()
         <div className="container">
 
         {/* Logo */}
-            <Link to="/" className="navbar-brand fw-bolder text-white">
+            <Link to="/" className="navbar-brand">
             <img
               src={process.env.PUBLIC_URL + '/logo.png'}
               alt="Socialpilot"
-              style={{ width: '150px', height: '50px', objectFit: 'contain' }}
+              style={{ width: '250px', height: '100px', objectFit: 'contain' }}
             />
             </Link>
-          <div className="navbar-brand fw-bolder text-white">Collabo</div>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span> </button>
+            <div className="navbar-brand fw-bolder text-white">SocialPilot</div>
+        {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span> </button> */}
         
         {/* <div>                            
             <input type="text" placeholder="Search.."/>
@@ -32,7 +32,7 @@ export default function Navbar()
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 
             <li className="nav-item">
-                <Link to="/Home" className="nav-link active text-white" aria-current="page" >Home</Link>
+                <Link to="/Home" className="nav-link active text-white" aria-current="page" >Feed</Link>
             </li>
 
             {/* {currentUser && currentUser.email?(
@@ -45,11 +45,14 @@ export default function Navbar()
             <li className="nav-item">
                 <Link to="/Upload" className="nav-link active text-white">Upload</Link>
             </li>
-    
+            <div className="notifications-icon">
             <li className="nav-item">
-                <Link to="/Notification" className="nav-link active text-white" >Notification</Link>
+                <Link to="/Notification" className="nav-link active text-white" >
+                    <img src="./notification.png" alt="Notifications" />
+                    {/* <span className="badge bg-danger">2</span> */}
+                </Link>
             </li>
-
+            </div>
             <li className="nav-item dropdown">
                  <Link to="/Profile" className="nav-link active dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</Link>          
                 <ul className="dropdown-menu text-black">
