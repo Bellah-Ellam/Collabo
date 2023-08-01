@@ -1,0 +1,12 @@
+<!-- app/views/layouts/application.html.erb -->
+
+<% if user_signed_in? %>
+  <p>Hello, <%= current_user.user_name %>!</p>
+  <p><%= link_to "My Profile", current_user %></p>
+  <p><%= link_to "Edit Profile", edit_user_path(current_user) %></p>
+   <p><%= link_to "Notifications", notifications_path %><span class="unread-notifications"><%= current_user.unread_notifications %></span></p>
+  <p><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></p>
+<% else %>
+  <p><%= link_to "Sign In", new_user_session_path %></p>
+  <p><%= link_to "Sign Up", new_user_registration_path %></p>
+<% end %>

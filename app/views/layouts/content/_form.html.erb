@@ -1,0 +1,9 @@
+<div class="field">
+  <%= form.label :category_ids, "Categories" %>
+  <%= form.collection_select :category_ids, Category.all, :id, :category_name, {}, multiple: true %>
+</div>
+
+<div class="field">
+  <%= form.label :tag_ids, "Tags" %>
+  <%= form.collection_select :tag_ids, Tag.all, :id, :name, {}, multiple: true %>
+</div>

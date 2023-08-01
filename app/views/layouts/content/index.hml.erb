@@ -1,0 +1,11 @@
+<h1>Contents</h1>
+
+<ul>
+  <% @contents.each do |content| %>
+    <li>
+      <%= link_to content.title, content %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to 'New Content', new_content_path %>
