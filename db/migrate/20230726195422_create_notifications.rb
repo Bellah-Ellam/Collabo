@@ -4,7 +4,7 @@ class CreateNotifications < ActiveRecord::Migration[7.0]
       t.string :message
       t.string :type
 
-      t.references :user, null: false, foreign_key: TRUE
+      t.references :user, null: false, foreign_key: true
       t.timestamps
     end
   end

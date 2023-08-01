@@ -62,7 +62,7 @@ export default function Login() {
           <button
             type="submit"
             className="btn btn-block text-white"
-            style={{ backgroundColor: 'black', borderColor: 'black' }}
+            style={{ borderColor: 'black' }}
           >
             Login
           </button>
