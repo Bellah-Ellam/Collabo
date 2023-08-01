@@ -1,21 +1,24 @@
 puts "Seeding..."
 
-# Create admin user
 User.create!(
   name: "Admin",
   email: "admin@mail.com",
   password: "password",
-   admin: true,
+  admin: true,
   date_of_birth: "2000-10-11"
 )
 
-# Create users
+# Create regular users
 9.times do |i|
   User.create!(
+    user_name: Faker::Internet.unique.user_name,
     name: Faker::Name.unique.name,
     email: Faker::Internet.unique.email,
-    password: "password",
-    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31')
+    password_digest: BCrypt::Password.create("password"), # You need to hash the password
+    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
+    bio: Faker::Lorem.sentence,
+    editor: false, # Regular users are not editors
+    admin: false
   )
 end
 
