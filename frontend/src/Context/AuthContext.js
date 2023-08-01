@@ -14,7 +14,7 @@ export default function AuthProvider({children})
 
     // login
     const login = (username, password) =>{
-        fetch("/login",{
+        fetch("/api/v1/login",{
             method: "POST",
             headers:{"Content-Type": "application/json"},
             credentials: 'include',
@@ -61,7 +61,7 @@ export default function AuthProvider({children})
     // Register
     const register = (username, name, email, photo, doB,  password, password_confirmation) =>{
         // Post this data to the backend
-        fetch("/signup",{
+        fetch("/api/v1/signup",{
             method: "POST",
             headers:{"Content-Type": "application/json"},
             body: JSON.stringify({username, name, photo, doB,email , password, password_confirmation})
@@ -88,7 +88,7 @@ export default function AuthProvider({children})
 
     // Logout
     const logout = () =>{
-        fetch("/logout",{
+        fetch("/api/v1/logout",{
             method: "DELETE",
 
         })
@@ -109,7 +109,7 @@ export default function AuthProvider({children})
    
     // check current user
     useEffect(()=>{
-        fetch("/current_user",{
+        fetch("/api/v1/current_user",{
             method: "GET",
         })
         .then(res=>res.json())

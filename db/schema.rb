@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_195656) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -116,14 +116,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_082234) do
     t.string "user_name"
     t.string "name"
     t.date "date_of_birth"
+    t.string "bio"
     t.boolean "editor", default: true
     t.boolean "admin", default: false
     t.string "password_digest"
     t.string "email", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "bio"
-    t.string "profile_picture"
   end
 
   add_foreign_key "categories", "contents"

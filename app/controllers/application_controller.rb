@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
-         before_action :authenticate_user!
-        def authenticate_user
+        #  before_action :authenticate_user!
+        def authenticate_user!
           header = request.headers['Authorization']
           token = header.split.last if header
           begin

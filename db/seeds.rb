@@ -5,9 +5,7 @@ User.create!(
   name: "Admin",
   email: "admin@mail.com",
   password: "password",
-  password_confirmation: "password",
-  admin: true,
-  profile_picture: "https://avatars.githubusercontent.com/u/76783698?v=4",
+   admin: true,
   date_of_birth: "2000-10-11"
 )
 
@@ -17,8 +15,6 @@ User.create!(
     name: Faker::Name.unique.name,
     email: Faker::Internet.unique.email,
     password: "password",
-    password_confirmation: "password",
-    profile_picture: Faker::Avatar.image,
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31')
   )
 end
