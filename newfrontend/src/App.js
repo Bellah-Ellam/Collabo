@@ -7,22 +7,22 @@ import Register from "./pages/register/Register";
 // import Feed from "./components/feed/Feed";
 // import Rightbar from "./components/rightbar/Rightbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthProvider from "./Context/AuthContext";
 
 function App() {
   return (
         <BrowserRouter>
   
             
-                <Routes>
-                
-                    <Route index element={<Home />}/>
-                    {/* <Route path="/Home" element={<Home />}/> */}
-                    <Route path="/login" element={<Login />}/>
-                    <Route path="/register" element={<Register />}/>
-                    <Route path="/profile" element={<Profile />}/>
-                
-                </Routes>
-
+      <AuthProvider>
+        <Routes>
+          <Route index element={<Home />} />
+          {/* <Route path="/Home" element={<Home />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </AuthProvider>
 
         </BrowserRouter>
   )
