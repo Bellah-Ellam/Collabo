@@ -59,12 +59,12 @@ export default function AuthProvider({children})
     }
 
     // Register
-    const register = (username, name, photo, doB, role, password, password_confirmation) =>{
+    const register = (username, name, email, photo, doB,  password, password_confirmation) =>{
         // Post this data to the backend
         fetch("/signup",{
             method: "POST",
             headers:{"Content-Type": "application/json"},
-            body: JSON.stringify({username, name, photo, doB, role, password, password_confirmation})
+            body: JSON.stringify({username, name, photo, doB,email , password, password_confirmation})
         })
         .then(res=>res.json())
         .then((response) => {
@@ -126,7 +126,7 @@ export default function AuthProvider({children})
         logout,
         currentUser
     }
-
+// New
   return (
     <>
      <AuthContext.Provider value={contextData}>
