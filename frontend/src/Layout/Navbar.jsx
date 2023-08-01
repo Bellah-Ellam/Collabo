@@ -45,14 +45,7 @@ export default function Navbar()
             <li className="nav-item">
                 <Link to="/Upload" className="nav-link active text-white">Upload</Link>
             </li>
-            <div className="notifications-icon">
-            <li className="nav-item">
-                <Link to="/Notification" className="nav-link active text-white" >
-                    <img src="./notification.png" alt="Notifications" />
-                    {/* <span className="badge bg-danger">2</span> */}
-                </Link>
-            </li>
-            </div>
+            
             <li className="nav-item dropdown">
                  <Link to="/Profile" className="nav-link active dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</Link>          
                 <ul className="dropdown-menu text-black">
@@ -66,7 +59,15 @@ export default function Navbar()
             {/* :
 
             <> */}
-
+            <div className="notifications-icon">
+            <li className="nav-item">
+                <Link to="/Notification" className="nav-link active text-white" >
+                    <img src="./notification.png" alt="Notifications"
+                     style={{ height: '24px', width: '24px', cursor: 'pointer' }} />
+                    {/* <span className="badge bg-danger">2</span> */}
+                </Link>
+            </li>
+            </div>
             <li className="nav-item">
             <Link to="/Login" className="nav-link active text-white" >Login</Link>
             </li>
