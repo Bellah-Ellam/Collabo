@@ -4,6 +4,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :user_name
       t.string :name
       t.date :date_of_birth
+      t.string :bio
       t.boolean :editor, default: true
       t.boolean :admin, default: false
       t.string :password_digest
