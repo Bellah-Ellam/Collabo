@@ -1,12 +1,13 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext';
+import Notifications from '../Pages/Notifications';
 
 
 export default function Navbar() 
 {
     const {currentUser, logout} = useContext(AuthContext)  
-    console.log("user from navbar,");
+    console.log("user from navbar,")
 
     return (
         <div>
@@ -59,15 +60,18 @@ export default function Navbar()
             {/* :
 
             <> */}
+       
             <div className="notifications-icon">
             <li className="nav-item">
                 <Link to="/Notification" className="nav-link active text-white" >
+                    <Notifications/>
                     <img src="./notification.png" alt="Notifications"
                      style={{ height: '24px', width: '24px', cursor: 'pointer' }} />
-                    {/* <span className="badge bg-danger">2</span> */}
+                    <span className="badge bg-danger">2</span>
                 </Link>
             </li>
             </div>
+
             <li className="nav-item">
             <Link to="/Login" className="nav-link active text-white" >Login</Link>
             </li>
