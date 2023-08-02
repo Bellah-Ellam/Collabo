@@ -1,16 +1,128 @@
 import "./post.css";
 import { MoreVert } from "@material-ui/icons";
-import { Users } from "../../dummyData";
-import { useState } from "react";
+import {format} from "timeago.js";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
-  const [like,setLike] = useState(post.like)
-  const [isLiked,setIsLiked] = useState(false)
+  const { currentUser } = useContext(AuthContext);
+  const [like, setLike] = useState(post.like);
+  const [isLiked, setIsLiked] = useState(false);
+  const [user, setUser] = useState({});
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
 
-  const likeHandler =()=>{
-    setLike(isLiked ? like-1 : like+1)
-    setIsLiked(!isLiked)
-  }
+  useEffect(() => {
+    setIsLiked(post.likes.includes(currentUser?.id || null));
+  }, [currentUser?.id, post.likes]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`/api/v1/users/${post?.userId}`);
+        const userData = await response.json();
+        setUser(userData || {});
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUser();
+  }, [post?.userId]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`/api/v1/posts/${post?._id}/comments`);
+        const commentsData = await response.json();
+        setComments(commentsData || []);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+    fetchComments();
+  }, [post?._id]);
+
+  const likeHandler = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${post?._id}/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${currentUser.token}` // If using JWT token for authentication
+        },
+        body: JSON.stringify({ userId: currentUser?.id }),
+      });
+      if (response.ok) {
+        // Like was successful, handle accordingly
+        const updatedLikeCount = isLiked ? like - 1 : like + 1;
+        setLike(updatedLikeCount);
+        setIsLiked(!isLiked);
+      } else {
+        // Handle error in liking content
+        console.error("Error liking content:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error liking content:", error);
+    }
+  };
+//comment post
+  const createCommentHandler = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${post?._id}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${currentUser.token}` // If using JWT token for authentication
+        },
+        body: JSON.stringify({ body: commentText }),
+      });
+      if (response.ok) {
+        // Comment was successful, handle accordingly
+        setCommentText("");
+        const newComment = await response.json();
+        setComments([...comments, newComment]);
+      } else {
+        // Handle error in creating the comment
+        console.error("Error creating comment:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error creating comment:", error);
+    }
+  };
+
+  //comment delete
+  const deleteCommentHandler = async (commentId) => {
+    try {
+      const response = await fetch(`/api/v1/posts/${commentId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${currentUser.token}`
+        },
+      });
+      if (response.ok) {
+        // Comment deletion was successful, remove the comment from the state
+        setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+      } else {
+        // Handle error in deleting the comment
+        console.error("Error deleting comment:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  //handle the hover and leave comment
+  const [isHoveredComment, setIsHoveredComment] = useState(null);
+
+  const handleCommentHover = (commentId) => {
+    setIsHoveredComment(commentId);
+  };
+
+  const handleCommentLeave = () => {
+    setIsHoveredComment(null);
+  };
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -18,30 +130,67 @@ export default function Post({ post }) {
           <div className="postTopLeft">
             <img
               className="postProfileImg"
-              src={Users.filter((u) => u.id === post?.userId)[0].profilePicture}
-              alt=""
+              src={user.profilePicture}
+              alt={user.username}
             />
-            <span className="postUsername">
-              {Users.filter((u) => u.id === post?.userId)[0].username}
-            </span>
-            <span className="postDate">{post.date}</span>
+            <span className="postUsername">{user.username}</span>
+            <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
             <MoreVert />
           </div>
         </div>
         <div className="postCenter">
-          <span className="postText">{post?.desc}</span>
+          <span className="postText">{post.desc}</span>
           <img className="postImg" src={post.photo} alt="" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img className="likeIcon" src="assets/like.png" onClick={likeHandler} alt="" />
-            <img className="likeIcon" src="assets/heart.png" onClick={likeHandler} alt="" />
+            <img
+              className="likeIcon"
+              src="assets/like.png"
+              onClick={likeHandler}
+              alt="Like"
+            />
+            <img
+              className="likeIcon"
+              src="assets/heart.png"
+              onClick={likeHandler}
+              alt="Heart"
+            />
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">{post.comment} comments</span>
+            <span className="postCommentText">{comments.length} comments</span>
+            <div className="postCommentForm">
+              <textarea
+                className="postCommentInput"
+                placeholder="Write a comment..."
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+              />
+              <button className="postCommentButton" onClick={createCommentHandler}>
+                Comment
+              </button>
+            </div>
+
+            {comments.map((comment) => (
+               <div key={comment.id} className="postComment" onMouseEnter={() => handleCommentHover(comment.id)} onMouseLeave={handleCommentLeave}>
+                <img
+                className="postCommentProfileImg"
+                src={comment.user.profilePicture}
+                alt={comment.user.username}
+              />
+              <span className="postCommentUsername">{comment.user.username}</span>
+              <span className="postCommentDate">{format(comment.createdAt)}</span>
+              <div className="postCommentText">{comment.body}</div>
+              </div>
+            ))}
+            {isHoveredComment === comments.id && currentUser?.id === comments.user.id && (
+                <div className="postCommentDelete" onClick={() => deleteCommentHandler(comments.id)}>
+                  Delete
+                </div>
+              )}
           </div>
         </div>
       </div>
