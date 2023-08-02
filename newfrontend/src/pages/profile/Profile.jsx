@@ -2,20 +2,29 @@ import "./profile.css";
 import Topbar from "../../components/topbar/Topbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
-import Rightbar from "../../components/rightbar/Rightbar";
+// import Rightbar from "../../components/rightbar/Rightbar";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router";
 
 export default function Profile() {
-
   const [user, setUser] = useState({});
   const username = useParams().username;
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/api/v1/users?username=${username}`);
-      setUser(res.data);
+      try {
+        const response = await fetch(`/api/v1/users?username=${username}`);
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        } else {
+          // Handle error when response is not ok (e.g., 404)
+          console.error("Error fetching user:", response.status, response.statusText);
+        }
+      } catch (error) {
+        // Handle network or fetch error
+        console.error("Error fetching user:", error);
+      }
     };
     fetchUser();
   }, [username]);
@@ -30,15 +39,12 @@ export default function Profile() {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src={
-                  user.coverPicture }
+                src={user.coverPicture}
                 alt=""
               />
               <img
                 className="profileUserImg"
-                src={
-                  user.profilePicture
-                }
+                src={user.profilePicture}
                 alt=""
               />
             </div>
@@ -49,7 +55,7 @@ export default function Profile() {
           </div>
           <div className="profileRightBottom">
             <Feed username={username} />
-            <Rightbar user={user} />
+            {/* <Rightbar user={user} /> */}
           </div>
         </div>
       </div>
