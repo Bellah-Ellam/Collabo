@@ -31,8 +31,7 @@ export default function Profile() {
               <img
                 className="profileCoverImg"
                 src={
-                  user.coverPicture
-                }
+                  user.coverPicture }
                 alt=""
               />
               <img

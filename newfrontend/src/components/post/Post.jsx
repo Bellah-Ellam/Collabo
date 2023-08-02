@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
-  const [like, setLike] = useState(post.likes.length);
+  const [like, setLike] = useState({});
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
   const { user: currentUser } = useContext(AuthContext);
@@ -18,7 +18,7 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`);
+      const res = await axios.get(`/api/v1/users?userId=${post.userId}`);
       setUser(res.data);
     };
     fetchUser();
