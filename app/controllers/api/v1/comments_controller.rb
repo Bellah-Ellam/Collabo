@@ -1,64 +1,69 @@
 class Api::V1::CommentsController < ApplicationController
   include NotificationConcern
-      before_action :authenticate_api_v1_user!
-    before_action :set_user
-    before_action :set_comment, only: %i[show update destroy]
-  
-    # GET /comments
-    def index
-      @comments = Comment.where(user: @user)
-      render json: @comments
-    end
-  
-    # GET /comments/1
-    def show
-      render json: @comment
-    end
-  
-    # POST /comments
-    def create
-      @comment = Comment.new(comment_params)
-      @comment.user = @user
-  
+  before_action :set_user
+  before_action :set_comment, only: %i[show update destroy]
+
+  # GET /comments
+  def index
+    @comments = Comment.where(user: @user)
+    render json: @comments
+  end
+
+  # GET /comments/1
+  def show
+    render json: @comment
+  end
+
+  # POST /comments
+  def create
+    @comment = Comment.new(comment_params)
+    @comment.user = @user
+
+    if @user.authenticate(params[:password])
       if @comment.save
         render json: @comment, status: :created, location: api_v1_comment_url(@comment)
       else
         render json: @comment.errors, status: :unprocessable_entity
       end
-    end
-  
-    # PATCH/PUT /comments/1
-    def update
-      if @comment.update(comment_params)
-        render json: @comment
-      else
-        render json: @comment.errors, status: :unprocessable_entity
-      end
-    end
-  
-    # DELETE /comments/1
-    def destroy
-      @comment.destroy
-    end
-  
-    private
-  
-    # Use callbacks to share common setup or constraints between actions.
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
-  
-    def create_notification(recipient, action, content)
-      Notification.create(recipient: recipient, action: action, content: content)
-    end
-
-    def set_user
-      @user = current_user
-    end
-  
-    # Only allow a list of trusted parameters through.
-    def comment_params
-      params.require(:comment).permit(:comment_date, :body, :user_id, :content_id)
+    else
+      render json: { error: 'Invalid credentials' }, status: :unauthorized
     end
   end
-  
+
+  # PATCH/PUT /comments/1
+  def update
+    if @comment.update(comment_params)
+      render json: @comment
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /comments/1
+  def destroy
+    @comment.destroy
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  def create_notification(recipient, action, content)
+    Notification.create(recipient: recipient, action: action, content: content)
+  end
+
+  def set_user
+    token = request.headers['Authorization']&.split(' ')&.last
+    @user = User.find_by(id: JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')[0]['user_id'])
+  rescue JWT::DecodeError
+    @user = nil
+  end
+
+  # Only allow a list of trusted parameters through.
+  def comment_params
+    params.require(:comment).permit(:comment_date, :body, :user_id, :content_id)
+  end
+end

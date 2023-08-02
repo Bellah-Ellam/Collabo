@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+
   has_secure_password
   has_many :contents, dependent: :destroy
   has_many :content_likes, dependent: :destroy
@@ -6,10 +7,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   enum role: { regular: 0, moderator: 1, admin: 2 }
-  # devise :database_authenticatable, :registerable,
-  #        :recoverable, :rememberable, :validatable,
-  #        :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
-   
+  
 
     validates :name, :date_of_birth, presence: true
     validate :validate_age
