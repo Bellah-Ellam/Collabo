@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-    namespace :api do
+  resources :posts
+  namespace :api do
     namespace :v1 do
       # Authentication routes
       post '/login', to: 'auth#login'
@@ -13,6 +14,15 @@ Rails.application.routes.draw do
         post :view, on: :member
         post :create_comment, on: :member
       end
+
+      # Posts routes
+      resources :posts, only: [:index,:create, :update, :destroy, :show] do
+        member do
+          put :like
+        end
+      end
+      get '/posts/timeline/:user_id', to: 'posts#timeline'
+      get '/posts/profile/:username', to: 'posts#profile'
 
       # Index route for contents
       get '/contents', to: 'contents#index'
@@ -30,16 +40,22 @@ Rails.application.routes.draw do
       resources :notifications, only: [:index]
 
       # Users routes
-      resources :users, only: [:index, :show, :edit, :update]
+      resources :users, only: [:index, :show, :edit, :update, :destroy] do
+        member do
+          put :follow
+          put :unfollow
+        end
+        get :friends, on: :member
+      end
 
       # Comments routes
       resources :comments, only: [:index, :show, :create, :update, :destroy]
 
-      # Devise routes for user authentication
-      devise_for :users, controllers: {
-        sessions: 'users/sessions',
-        registrations: 'users/registrations',
-      }
+      # # Devise routes for user authentication
+      # devise_for :users, controllers: {
+      #   sessions: 'users/sessions',
+      #   registrations: 'users/registrations',
+      # }
 
       # Route for the PrivateController
       get '/private/test', to: 'private#test'

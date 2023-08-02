@@ -1,26 +1,43 @@
+require 'faker'
 puts "Seeding..."
 
+# Create the admin user
 User.create!(
-  name: "Admin",
-  email: "admin@mail.com",
-  password: "password",
+  username: "reagan",
+  email: "reagan@gmail.com",
+  password: "reagan12_password",
   admin: true,
-  date_of_birth: "2000-10-11"
-)
+  date_of_birth: "2000-10-11",
+   profilePicture: "", 
+  coverPicture: "" 
+  )
 
 # Create regular users
 9.times do |i|
   User.create!(
-    user_name: Faker::Internet.unique.user_name,
-    name: Faker::Name.unique.name,
+    username: Faker::Internet.unique.user_name,
     email: Faker::Internet.unique.email,
-    password_digest: BCrypt::Password.create("password"), # You need to hash the password
+    password: "password",
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
-    bio: Faker::Lorem.sentence,
-    editor: false, # Regular users are not editors
-    admin: false
+    editor: false, 
+    admin: false,
+    profilePicture: "",
+    coverPicture: ""
   )
 end
+
+# Create some posts
+users = User.all
+9.times do |i|
+  post = users.sample.posts.create!(
+    desc: Faker::Lorem.paragraph,
+    img: Faker::LoremFlickr.image(size: "300x200", search_terms: ['nature', 'city', 'food']),
+    likes: [],
+    liked_by: [],
+    likes_count: 0
+  )
+end
+
 
 # Create some contents
 users = User.all
