@@ -2,9 +2,10 @@ import "./topbar.css";
 import { Search, Person, Chat, Notifications } from "@material-ui/icons";
 import { useState,useEffect, useContext} from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import { Link } from "react-router-dom";
 
 
-export default function Topbar() {
+export default function Topbar(user) {
   const { token } = useContext(AuthContext);
   const [notificationsCount, setNotificationsCount] = useState(0);
 
@@ -54,22 +55,23 @@ export default function Topbar() {
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          <span className="topbarLink">Home</span>
+          <Link to="/" className="topbarLink">Home </Link>
+          {!token && (
+            <>
+              <Link to="/login" className="topbarLink">Login </Link>
+              <Link to="/register" className="topbarLink">Register </Link>
+              <Link to="/profile" className="topbarLink">Profile</Link>
+            </>
+          )}
         </div>
         <div className="topbarIcons">
-          <div className="topbarIconItem">
-            <Person />
-            <span className="topbarIconBadge">1</span>
-          </div>
-          <div className="topbarIconItem">
-            <Chat />
-            <span className="topbarIconBadge">2</span>
-          </div>
           <div className="topbarIconItem">
             <Notifications />  {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
           </div>
         </div>
-        <img src="/assets/person/1.jpeg" alt="" className="topbarImg"/>
+        <Link to={`/profile/${user.username}`} className="topbarImgLink">
+          <img src="/assets/person/1.jpeg" alt="" className="topbarImg" />
+        </Link>
       </div>
     </div>
   );
