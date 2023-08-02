@@ -1,23 +1,43 @@
+require 'faker'
 puts "Seeding..."
 
-# Create admin user
+# Create the admin user
 User.create!(
-  name: "Admin",
-  email: "admin@mail.com",
-  password: "password",
-   admin: true,
-  date_of_birth: "2000-10-11"
-)
+  username: "reagan",
+  email: "reagan@gmail.com",
+  password: "reagan12_password",
+  admin: true,
+  date_of_birth: "2000-10-11",
+   profilePicture: "", 
+  coverPicture: "" 
+  )
 
-# Create users
+# Create regular users
 9.times do |i|
   User.create!(
-    name: Faker::Name.unique.name,
+    username: Faker::Internet.unique.user_name,
     email: Faker::Internet.unique.email,
     password: "password",
-    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31')
+    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
+    editor: false, 
+    admin: false,
+    profilePicture: "",
+    coverPicture: ""
   )
 end
+
+# Create some posts
+users = User.all
+9.times do |i|
+  post = users.sample.posts.create!(
+    desc: Faker::Lorem.paragraph,
+    img: Faker::LoremFlickr.image(size: "300x200", search_terms: ['nature', 'city', 'food']),
+    likes: [],
+    liked_by: [],
+    likes_count: 0
+  )
+end
+
 
 # Create some contents
 users = User.all

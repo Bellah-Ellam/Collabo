@@ -1,18 +1,22 @@
 class CreateUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :users do |t|
-      t.string :user_name
-      t.string :name
+      t.string :username, null: false, limit: 20, unique: true
+      t.string :email, null: false, limit: 50, unique: true
+      t.string :password_digest, null: false
+      t.string :profilePicture, default: ""
+      t.string :coverPicture, default: ""
       t.date :date_of_birth
-      t.string :bio
+      t.integer :relationship 
+      t.string :desc, limit: 50
+      t.string :city, limit: 50
+      t.string :from, limit: 50
+      t.integer :followers, array: true, default: []
+      t.integer :followings, array: true, default: []
       t.boolean :editor, default: true
       t.boolean :admin, default: false
-      t.string :password_digest
-      t.string :email,              null: false, default: ""
      
-
-
-
+     
       t.timestamps
     end
   end
