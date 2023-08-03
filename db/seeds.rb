@@ -13,18 +13,18 @@ User.create!(
 )
 
 # Create regular users
-9.times do |i|
+
   User.create!(
     username: Faker::Internet.unique.user_name,
     email: Faker::Internet.unique.email,
     password: "password",
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
-    editor: false,
+    editor: false, 
     admin: false,
-    profilePicture: "",
-    coverPicture: ""
+    profilePicture: "https://images.pexels.com/photos/15100117/pexels-photo-15100117/free-photo-of-a-person-holding-a-cup-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+    coverPicture: "https://images.pexels.com/photos/6660041/pexels-photo-6660041.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
   )
-end
+
 
 # Create some posts
 users = User.all
@@ -32,7 +32,7 @@ users = User.all
   post = users.sample.posts.create!(
     title: Faker::Lorem.sentence,
     desc: Faker::Lorem.paragraph,
-    img: Faker::LoremFlickr.image(size: "300x200", search_terms: ['nature', 'city', 'food']),
+    img: "https://images.pexels.com/photos/2086655/pexels-photo-2086655.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     likes: [],
     liked_by: [],
     likes_count: 0,

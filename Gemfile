@@ -7,6 +7,8 @@ gem 'devise-jwt'
 gem 'jwt'
 #gem 'jwt_denylist'
 
+
+
 gem 'faker'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.6"
