@@ -3,33 +3,35 @@ class Api::V1::AuthController < ApplicationController
    before_action :authenticate_user!, only: [:show_current_user]
 
 
-  def login
+   def login
     user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
       payload = { user_id: user.id }
-      token = JWT.encode(payload, Rails.application.secrets.secret_key_base, 'HS256')
-      render json: { token: token ,user: user}
+      token = TokenService.generate_token(payload)
+      render json: { token: token, user: user }
     else
       render json: { error: 'Invalid credentials' }, status: :unauthorized
     end
   end
+  
 
   def current_user
     header = request.headers['Authorization']
     token = header.split.last if header
-    begin
-      decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')
-      user_id = decoded_token.first['user_id']
-      @current_user = User.find(user_id) # 
-      render json: {user: @current_user}
-    rescue JWT::DecodeError
-      render json: { error: 'Invalid token' }, status: :unauthorized
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: 'User not found' }, status: :unauthorized
-    end
-  end   
 
+    decoded_token = TokenService.verify_token(token)
+    
+    if decoded_token
+      user_id = decoded_token['user_id']
+      @current_user = User.find(user_id)
+      render json: { user: @current_user }
+    else
+      render json: { error: 'Invalid or expired token' }, status: :unauthorized
+    end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'User not found' }, status: :unauthorized
+  end
  
 
   def forgot_password
@@ -43,25 +45,25 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def logout
-    # Extract the JWT token from the Authorization header
     header = request.headers['Authorization']
     token = header.split.last if header
   
-    # If the token exists, you can choose to invalidate or revoke the token here.
-    # For the purpose of this example, let's assume you want to invalidate the token by adding it to a denylist.
+    decoded_token = TokenService.verify_token(token)
   
-    begin
-      # Decode the JWT token to get the unique identifier (jti) of the token
-      decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')
-      jti = decoded_token.first['jti']
+    if decoded_token
+      jti = decoded_token['jti']
+      exp = (Time.now + 24.hours).to_i # Convert the expiration time to a numeric value
   
-      render json: { message: 'Logout success' }
-    rescue JWT::DecodeError
-      render json: { error: 'Invalid token' }, status: :unauthorized
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: 'User not found' }, status: :unauthorized
+      new_token = JWT.encode({ jti: jti, exp: exp }, Rails.application.secrets.secret_key_base, 'HS256')
+      JwtDenylist.create(jti: jti, token: token, exp: Time.at(exp)) # Store the expiration time as a Time object in the database
+      render json: { token: new_token, message: 'Logout success' }
+    else
+      render json: { error: 'Invalid or expired token' }, status: :unauthorized
     end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'User not found' }, status: :unauthorized
   end
+  
   
 
   def denylist_jwt

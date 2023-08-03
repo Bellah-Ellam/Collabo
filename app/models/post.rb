@@ -1,5 +1,8 @@
 class Post < ApplicationRecord
-  belongs_to :user
-  attribute :liked_by, array: true, default: [] 
+  has_many :comments
+  has_many :post_tags, dependent: :destroy
+  has_many :tags, through: :post_tags
+  attribute :liked_by, :integer, array: true, default: []
   attribute :likes_count, :integer, default: 0
-end
+  end
+  
