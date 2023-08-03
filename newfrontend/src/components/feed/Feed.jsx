@@ -23,13 +23,21 @@ export default function Feed() {
   }, []);
 
   return (
+
     <div className="feed">
-      <div className="feedWrapper">
-        <Share />
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
+      {currentUser && currentUser.email ? (
+        <div className="feedWrapper">
+          <Share />
+          {posts.map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
+        </div>
+      ) : (
+        <div>
+          <p>Please log in to view the feed.</p>
+          {/* You can also add a link to the login page here if you want */}
+        </div>
+      )}
     </div>
   );
 }
