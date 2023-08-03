@@ -9,22 +9,22 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [dob, setDob] = useState(""); // Date of Birth state
-  const [profilePicture, setProfilePicture] = useState(null); // Profile Picture state
+  const [password_confirmation, setPasswordConfirmation] = useState("");
+  const [date_of_birth, setDateofBirth] = useState(""); // Date of Birth state
+  const [profile_picture, setProfilePicture] = useState(null); // Profile Picture state
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Call the register function from the AuthContext
-    register(username, email, password, passwordConfirmation, dob, profilePicture);
+    register(username, email, password, password_confirmation, profile_picture, date_of_birth);
   };
 
-  const handleProfilePictureChange = (e) => {
-    // Set the profilePicture state to the selected file
-    setProfilePicture(e.target.files[0]);
-  };
+  // const handleProfilePictureChange = (e) => {
+  //   // Set the profilePicture state to the selected file
+  //   setProfilePicture(e.target.files[0]);
+  // };
 
   return (
     <div className="login">
@@ -61,19 +61,20 @@ export default function Register() {
                 type="password"
                 placeholder="Password Again"
                 className="loginInput"
-                value={passwordConfirmation}
+                value={password_confirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
               />
               <input
                 type="date"
                 className="loginInput"
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
+                value={date_of_birth}
+                onChange={(e) => setDateofBirth(e.target.value)}
               />
               <input
-                type="file"
+                type="text"
                 className="loginInput"
-                onChange={handleProfilePictureChange}
+                placeholder="Image text"
+                onChange={(e) => setProfilePicture(e.target.value)}
               />
               <button type="submit" className="loginButton">
                 Sign Up

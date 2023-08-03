@@ -137,7 +137,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_123058) do
     t.string "from", limit: 50
     t.integer "followers", default: [], array: true
     t.integer "followings", default: [], array: true
-    t.boolean "editor", default: true
+    t.boolean "editor"
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

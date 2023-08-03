@@ -54,28 +54,61 @@ export default function AuthProvider({ children }) {
       });
   };
 
+  // // Register
+  // const register = (username, email,password, password_confirmation) => {
+  //   // Post this data to the backend
+  //   fetch("/api/v1/signup", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((response) => {
+  //       console.log(response);
+  //       if (response.error) {
+  //         Swal.fire("Error", response.error, "error");
+  //       } else if (response.success) {
+  //         navigate("/login");
+  //         Swal.fire("Success", response.success, "success");
+  //         setChange(!change);
+  //       } else {
+  //         console.log("Problem");
+  //         Swal.fire("Error", "Something went wrong", "error");
+  //       }
+  //     });
+  // };
+
   // Register
-  const register = (username, email,password, password_confirmation) => {
-    // Post this data to the backend
-    fetch("/api/v1/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        console.log(response);
-        if (response.error) {
-          Swal.fire("Error", response.error, "error");
-        } else if (response.success) {
-          navigate("/login");
-          Swal.fire("Success", response.success, "success");
-          setChange(!change);
-        } else {
-          console.log("Problem");
-          Swal.fire("Error", "Something went wrong", "error");
-        }
-      });
-  };
+const register = (username, email, password, password_confirmation, profile_picture, date_of_birth) => {
+  // Post this data to the backend
+  fetch("/api/v1/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      username,
+      email,
+      password,
+      password_confirmation,
+      profile_picture,
+      date_of_birth
+    }),
+  })
+    .then((res) => res.json())
+    .then((response) => {
+      console.log(response);
+      if (response.error) {
+        Swal.fire("Error", response.error, "error");
+      } else if (response.success) {
+        navigate("/login");
+        Swal.fire("Success", response.success, "success");
+        setChange(!change);
+      } else {
+        console.log("Problem");
+        Swal.fire("Error", "Something went wrong", "error");
+      }
+    });
+};
+
 
   // Logout
   const logout = () => {

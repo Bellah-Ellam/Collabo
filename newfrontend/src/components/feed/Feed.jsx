@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function Feed() {
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
