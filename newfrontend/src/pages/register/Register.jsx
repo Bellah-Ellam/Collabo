@@ -73,7 +73,7 @@ export default function Register() {
               <input
                 type="text"
                 className="signupInput"
-                placeholder="Image text"
+                placeholder="profilePicture"
                 onChange={(e) => setProfilePicture(e.target.value)}
               />
               <button type="submit" className="loginButton">
