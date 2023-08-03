@@ -12,7 +12,7 @@ export default function Register() {
   const [password_confirmation, setPasswordConfirmation] = useState("");
   const [date_of_birth, setDateofBirth] = useState(""); // Date of Birth state
   const [profile_picture, setProfilePicture] = useState(null); // Profile Picture state
-
+// Bella comment
 
   const handleSubmit = (e) => {
     e.preventDefault();
