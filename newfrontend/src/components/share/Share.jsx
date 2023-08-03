@@ -32,7 +32,7 @@ export default function Share() {
       if (response.ok) {
         // Share was successful
         console.log("Content shared successfully!");
-        // Add any additional logic or UI updates as needed
+
       } else {
         // Handle error in sharing content
         const errorData = await response.json();

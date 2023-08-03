@@ -6,28 +6,28 @@ import { AuthContext } from "../../Context/AuthContext";
 
 export default function Feed() {
   const { user } = useContext(AuthContext);
-  const [contents, setContents] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const fetchContent = async () => {
+    const fetchPosts = async () => {
       try {
-        const response = await fetch('api/v1/contents'); 
+        const response = await fetch('api/v1/posts'); 
         const data = await response.json();
-        setContents(data);
+        setPosts(data);
       } catch (error) {
         console.error("Error fetching content:", error);
       }
     };
 
-    fetchContent();
+    fetchPosts();
   }, []);
 
   return (
     <div className="feed">
       <div className="feedWrapper">
         <Share />
-        {contents.map((content) => (
-          <Post key={content.id} post={content} />
+        {posts.map((post) => (
+          <Post key={post.id} post={post} />
         ))}
       </div>
     </div>

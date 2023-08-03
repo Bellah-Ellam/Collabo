@@ -13,9 +13,11 @@ export default function Post({ post }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    setIsLiked(post.likes.includes(currentUser?.id || null));
+    // Check if post.likes is an array before using includes
+    const isPostLiked = Array.isArray(post.likes) && post.likes.includes(currentUser?.id);
+    setIsLiked(isPostLiked);
   }, [currentUser?.id, post.likes]);
-
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -32,7 +34,7 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts/${post?._id}/comments`);
+        const response = await fetch(`/api/v1/posts${post?._id}/comments`);
         const commentsData = await response.json();
         setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
@@ -44,7 +46,7 @@ export default function Post({ post }) {
 
   const likeHandler = async () => {
     try {
-      const response = await fetch(`/api/v1/posts/${post?._id}/like`, {
+      const response = await fetch(`/api/v1/posts${post?._id}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +71,7 @@ export default function Post({ post }) {
   // Comment post
   const createCommentHandler = async () => {
     try {
-      const response = await fetch(`/api/v1/posts/${post?._id}/comments`, {
+      const response = await fetch(`/api/v1/posts${post?._id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +96,7 @@ export default function Post({ post }) {
   // Comment delete
   const deleteCommentHandler = async (commentId) => {
     try {
-      const response = await fetch(`/api/v1/posts/${commentId}`, {
+      const response = await fetch(`/api/v1/posts${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
