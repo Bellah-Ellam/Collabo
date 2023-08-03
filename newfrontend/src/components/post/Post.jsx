@@ -1,25 +1,24 @@
-import "./post.css";
+import React, { useContext, useEffect, useState } from "react";
 import { MoreVert } from "@material-ui/icons";
-import {format} from "timeago.js";
-import { useContext, useEffect, useState } from "react";
+import { format } from "timeago.js";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
   const { currentUser } = useContext(AuthContext);
-  const [like, setLike] = useState(post.like);
+  const [like, setLike] = useState(post.likes_count);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    setIsLiked(post.likes.includes(currentUser?.id || null));
-  }, [currentUser?.id, post.likes]);
+    setIsLiked(post.liked_by.includes(currentUser?.id || null));
+  }, [currentUser?.id, post.liked_by]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/v1/users/${post?.userId}`);
+        const response = await fetch(`/api/v1/users/${post?.user_id}`);
         const userData = await response.json();
         setUser(userData || {});
       } catch (error) {
@@ -27,14 +26,14 @@ export default function Post({ post }) {
       }
     };
     fetchUser();
-  }, [post?.userId]);
+  }, [post?.user_id]);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
         const response = await fetch(`/api/v1/posts/${post?._id}/comments`);
         const commentsData = await response.json();
-        setComments(commentsData || []);
+        setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
@@ -45,12 +44,12 @@ export default function Post({ post }) {
   const likeHandler = async () => {
     try {
       const response = await fetch(`/api/v1/posts/${post?._id}/like`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${currentUser.token}` // If using JWT token for authentication
+          Authorization: `Bearer ${currentUser.token}` // If using JWT token for authentication
         },
-        body: JSON.stringify({ userId: currentUser?.id }),
+        body: JSON.stringify({}),
       });
       if (response.ok) {
         // Like was successful, handle accordingly
@@ -65,16 +64,17 @@ export default function Post({ post }) {
       console.error("Error liking content:", error);
     }
   };
-//comment post
+
+  // Comment post
   const createCommentHandler = async () => {
     try {
-      const response = await fetch(`/api/v1/posts/${post?._id}/comments`, {
+      const response = await fetch(`/api/v1/posts/${post?._id}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${currentUser.token}` // If using JWT token for authentication
+          Authorization: `Bearer ${currentUser.token}` // If using JWT token for authentication
         },
-        body: JSON.stringify({ body: commentText }),
+        body: JSON.stringify({ text: commentText }),
       });
       if (response.ok) {
         // Comment was successful, handle accordingly
@@ -90,14 +90,14 @@ export default function Post({ post }) {
     }
   };
 
-  //comment delete
+  // Comment delete
   const deleteCommentHandler = async (commentId) => {
     try {
-      const response = await fetch(`/api/v1/posts/${commentId}`, {
+      const response = await fetch(`/api/v1/posts/${post?._id}/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${currentUser.token}`
+          Authorization: `Bearer ${currentUser.token}`
         },
       });
       if (response.ok) {
@@ -112,7 +112,7 @@ export default function Post({ post }) {
     }
   };
 
-  //handle the hover and leave comment
+  // Handle the hover and leave comment
   const [isHoveredComment, setIsHoveredComment] = useState(null);
 
   const handleCommentHover = (commentId) => {
@@ -134,7 +134,7 @@ export default function Post({ post }) {
               alt={user.username}
             />
             <span className="postUsername">{user.username}</span>
-            <span className="postDate">{format(post.createdAt)}</span>
+            <span className="postDate">{format(post.created_at)}</span>
           </div>
           <div className="postTopRight">
             <MoreVert />
@@ -142,7 +142,7 @@ export default function Post({ post }) {
         </div>
         <div className="postCenter">
           <span className="postText">{post.desc}</span>
-          <img className="postImg" src={post.photo} alt="" />
+          <img className="postImg" src={post.img} alt="" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
@@ -175,22 +175,27 @@ export default function Post({ post }) {
             </div>
 
             {comments.map((comment) => (
-               <div key={comment.id} className="postComment" onMouseEnter={() => handleCommentHover(comment.id)} onMouseLeave={handleCommentLeave}>
+              <div
+                key={comment.id}
+                className="postComment"
+                onMouseEnter={() => handleCommentHover(comment.id)}
+                onMouseLeave={handleCommentLeave}
+              >
                 <img
-                className="postCommentProfileImg"
-                src={comment.user.profilePicture}
-                alt={comment.user.username}
-              />
-              <span className="postCommentUsername">{comment.user.username}</span>
-              <span className="postCommentDate">{format(comment.createdAt)}</span>
-              <div className="postCommentText">{comment.body}</div>
+                  className="postCommentProfileImg"
+                  src={comment.user.profilePicture}
+                  alt={comment.user.username}
+                />
+                <span className="postCommentUsername">{comment.user.username}</span>
+                <span className="postCommentDate">{format(comment.created_at)}</span>
+                <div className="postCommentText">{comment.text}</div>
+                {isHoveredComment === comment.id && currentUser?.id === comment.user.id && (
+                  <div className="postCommentDelete" onClick={() => deleteCommentHandler(comment.id)}>
+                    Delete
+                  </div>
+                )}
               </div>
             ))}
-            {isHoveredComment === comments.id && currentUser?.id === comments.user.id && (
-                <div className="postCommentDelete" onClick={() => deleteCommentHandler(comments.id)}>
-                  Delete
-                </div>
-              )}
           </div>
         </div>
       </div>

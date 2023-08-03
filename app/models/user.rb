@@ -1,12 +1,10 @@
 class User < ApplicationRecord
   attr_accessor :profile_picture
   has_secure_password
-  has_many :contents, dependent: :destroy
-  has_many :content_likes, dependent: :destroy
-  has_many :content_views, dependent: :destroy
-  has_many :comments, dependent: :destroy
   has_many :posts
-
+  has_many :notifications
+  has_many :comments, dependent: :destroy
+ 
   before_save :serialize_followers_and_followings
 
   def followers

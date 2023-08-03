@@ -10,75 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_02_123058) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_03_120404) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "categories", force: :cascade do |t|
-    t.string "category_name"
-    t.bigint "content_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_categories_on_content_id"
-  end
-
   create_table "comments", force: :cascade do |t|
     t.string "body"
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_comments_on_content_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
-  create_table "content_categories", force: :cascade do |t|
-    t.bigint "content_id", null: false
-    t.bigint "category_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_content_categories_on_category_id"
-    t.index ["content_id"], name: "index_content_categories_on_content_id"
-  end
-
-  create_table "content_likes", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_content_likes_on_content_id"
-    t.index ["user_id"], name: "index_content_likes_on_user_id"
-  end
-
-  create_table "content_tags", force: :cascade do |t|
-    t.bigint "content_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_content_tags_on_content_id"
-  end
-
-  create_table "content_views", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_content_views_on_content_id"
-    t.index ["user_id"], name: "index_content_views_on_user_id"
-  end
-
-  create_table "contents", force: :cascade do |t|
-    t.string "title"
-    t.string "body"
-    t.string "content_type"
-    t.string "status"
-    t.bigint "user_id", null: false
-    t.integer "content_likes_count", default: 0
-    t.integer "content_comments_count", default: 0
-    t.integer "content_views_count", default: 0
+    t.integer "liked_by", default: [], array: true
+    t.integer "likes_count", default: 0
+    t.integer "commented_by", default: [], array: true
     t.integer "comments_count", default: 0
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_contents_on_user_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -88,11 +35,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_123058) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.string "message"
-    t.string "type"
     t.bigint "user_id", null: false
+    t.bigint "post_id"
+    t.text "content"
+    t.boolean "read", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_notifications_on_post_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
@@ -100,20 +49,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_123058) do
     t.bigint "user_id", null: false
     t.text "desc"
     t.string "img"
+    t.string "title"
+    t.string "post"
+    t.integer "liked_by", default: [], array: true
+    t.integer "likes_count", default: 0
+    t.integer "commented_by", default: [], array: true
+    t.integer "comments_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "likes", default: [], array: true
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "reports", force: :cascade do |t|
-    t.string "body"
-    t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+  create_table "posts_tags", force: :cascade do |t|
+    t.bigint "post_id"
+    t.bigint "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_reports_on_content_id"
-    t.index ["user_id"], name: "index_reports_on_user_id"
+    t.index ["post_id"], name: "index_posts_tags_on_post_id", unique: true
+    t.index ["tag_id"], name: "index_posts_tags_on_tag_id", unique: true
   end
 
   create_table "tags", force: :cascade do |t|
@@ -141,18 +95,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_123058) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "categories", "contents"
-  add_foreign_key "comments", "contents"
+  add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "content_categories", "categories"
-  add_foreign_key "content_categories", "contents"
-  add_foreign_key "content_likes", "contents"
-  add_foreign_key "content_likes", "users"
-  add_foreign_key "content_tags", "contents"
-  add_foreign_key "content_views", "contents"
-  add_foreign_key "content_views", "users"
+  add_foreign_key "notifications", "posts"
   add_foreign_key "notifications", "users"
   add_foreign_key "posts", "users"
-  add_foreign_key "reports", "contents"
-  add_foreign_key "reports", "users"
 end

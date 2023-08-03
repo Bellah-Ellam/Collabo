@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   resources :posts
+
   namespace :api do
     namespace :v1 do
       # Authentication routes
+      get '/users/search', to: 'users#search'
       post '/login', to: 'auth#login'
       get '/current_user', to: 'auth#current_user'
       post '/signup', to: 'registrations#create'
@@ -16,10 +18,12 @@ Rails.application.routes.draw do
       end
 
       # Posts routes
-      resources :posts, only: [:index,:create, :update, :destroy, :show] do
+      resources :posts, only: [:index, :create, :update, :destroy, :show] do
         member do
           put :like
+          get :all_comments
         end
+        resources :comments, only: [:index, :create]
       end
       get '/posts/timeline/:user_id', to: 'posts#timeline'
       get '/posts/profile/:username', to: 'posts#profile'
@@ -40,7 +44,7 @@ Rails.application.routes.draw do
       resources :notifications, only: [:index]
 
       # Users routes
-      resources :users, only: [:index, :show, :edit, :update, :destroy] do
+      resources :users, only: [:index, :show, :update, :destroy] do
         member do
           put :follow
           put :unfollow
@@ -48,14 +52,21 @@ Rails.application.routes.draw do
         get :friends, on: :member
       end
 
-      # Comments routes
-      resources :comments, only: [:index, :show, :create, :update, :destroy]
+      # Custom routes for users
+      get "/users/me", to: "users#me"
+      match "/users/me", to: "users#update_profile", via: [:put, :patch]
+      get "/users/profile/:username", to: "users#profile"
+      match "/users/update_profile_picture", to: "users#update_profile_picture", via: [:put, :patch]
+      match "/users/update_cover_picture", to: "users#update_cover_picture", via: [:put, :patch]
+      match "/users/update_bio", to: "users#update_bio", via: [:put, :patch]
 
-      # # Devise routes for user authentication
-      # devise_for :users, controllers: {
-      #   sessions: 'users/sessions',
-      #   registrations: 'users/registrations',
-      # }
+      # Comments routes
+      resources :comments, only: [:index, :show, :create, :update, :destroy] do
+        member do
+          put :like_comment
+          delete :unlike_comment
+        end
+      end
 
       # Route for the PrivateController
       get '/private/test', to: 'private#test'
