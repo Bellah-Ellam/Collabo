@@ -76,3 +76,39 @@
     border-bottom: 1px dashed gray;
     font-size: 15px;
 }
+.postCommentForm {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.postCommentInputWrapper {
+  flex: 1; /* Take up remaining available space */
+}
+
+.postCommentInput {
+  width: 100%; /* Take up the full width of the container */
+  resize: none; /* Prevent textarea resizing */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.postCommentButton {
+  margin-left: 10px; /* Add some spacing between the textarea and the button */
+  padding: 8px 16px;
+  background-color: green;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Additional styles for aesthetics (optional) */
+.postCommentForm {
+  margin-top: 10px;
+}
+
+.postCommentInput:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}

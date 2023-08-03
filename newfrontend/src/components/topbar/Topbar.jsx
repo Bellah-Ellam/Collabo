@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Topbar(user) {
+export default function Topbar() {
   const { currentUser, logout, token } = useContext(AuthContext);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -51,30 +51,54 @@ export default function Topbar(user) {
         </div>
       </div>
       <div className="topbarRight">
-      <div className="topbarLinks">
-
-          <Link to="/" className="topbarLink text-dark">Home </Link> 
-          <Link to="/login" className="topbarLink">Login </Link>
-          <Link to="/register" className="topbarLink">Register </Link>
-          
-          
+        <div className="topbarLinks">
+          {currentUser ? (
+            <>
+              <Link to="/" className="topbarLink text-dark">
+                Home
+              </Link>
+              <Link to="/profile" className="topbarLink text-dark">
+                Profile
+              </Link>
+              <button
+                className="topbarLink text-dark"
+                onClick={handleLogoutOptionClick}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/" className="topbarLink text-dark">
+                Home
+              </Link>
+              <Link to="/login" className="topbarLink">
+                Login
+              </Link>
+              <Link to="/register" className="topbarLink">
+                Register
+              </Link>
+            </>
+          )}
         </div>
         <div className="topbarIcons">
-        <div className="topbarIconItem">
-            <Notifications />  {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
+          <div className="topbarIconItem">
+            <Notifications />{" "}
+            {notificationsCount > 0 && (
+              <span className="topbarIconBadge">{notificationsCount}</span>
+            )}
           </div>
-
           <div className="topbarIconItem" onClick={handleProfileClick}>
             <img src="/assets/person/1.jpeg" alt="" className="topbarImg" />
-            
+
             {dropdownVisible && (
               <ul className="dropdown-menu">
                 <li>
                   <button
                     className="dropdown-item text-white"
                     onClick={handleProfileOptionClick}
-                  > Profile
-                    {currentUser && currentUser.email}
+                  >
+                    Profile {currentUser && currentUser.email}
                   </button>
                 </li>
                 <li>

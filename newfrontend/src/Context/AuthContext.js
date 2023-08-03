@@ -37,7 +37,7 @@ export default function AuthProvider({ children }) {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "LoggedIn successfully!",
+            title: "Logged In successfully!",
             timer: 1500,
           });
           navigate("/");

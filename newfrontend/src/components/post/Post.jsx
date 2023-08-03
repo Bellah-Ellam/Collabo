@@ -14,10 +14,11 @@ export default function Post({ post }) {
 
   useEffect(() => {
     // Check if post.likes is an array before using includes
-    const isPostLiked = Array.isArray(post.likes) && post.likes.includes(currentUser?.id);
+    const isPostLiked =
+      Array.isArray(post.likes) && post.likes.includes(currentUser?.id);
     setIsLiked(isPostLiked);
   }, [currentUser?.id, post.likes]);
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -50,7 +51,7 @@ export default function Post({ post }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}` // If using JWT token for authentication
+          Authorization: `Bearer ${currentUser.token}`, // If using JWT token for authentication
         },
         body: JSON.stringify({ userId: currentUser?.id }),
       });
@@ -61,7 +62,11 @@ export default function Post({ post }) {
         setIsLiked(!isLiked);
       } else {
         // Handle error in liking content
-        console.error("Error liking content:", response.status, response.statusText);
+        console.error(
+          "Error liking content:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
       console.error("Error liking content:", error);
@@ -75,7 +80,7 @@ export default function Post({ post }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}` // If using JWT token for authentication
+          Authorization: `Bearer ${currentUser.token}`, // If using JWT token for authentication
         },
         body: JSON.stringify({ body: commentText }),
       });
@@ -86,7 +91,11 @@ export default function Post({ post }) {
         setComments([...comments, newComment]);
       } else {
         // Handle error in creating the comment
-        console.error("Error creating comment:", response.status, response.statusText);
+        console.error(
+          "Error creating comment:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
       console.error("Error creating comment:", error);
@@ -100,15 +109,21 @@ export default function Post({ post }) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`
+          Authorization: `Bearer ${currentUser.token}`,
         },
       });
       if (response.ok) {
         // Comment deletion was successful, remove the comment from the state
-        setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.id !== commentId)
+        );
       } else {
         // Handle error in deleting the comment
-        console.error("Error deleting comment:", response.status, response.statusText);
+        console.error(
+          "Error deleting comment:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
       console.error("Error deleting comment:", error);
@@ -165,14 +180,20 @@ export default function Post({ post }) {
           </div>
           <div className="postBottomRight">
             <span className="postCommentText">{comments.length} comments</span>
+
             <div className="postCommentForm">
-              <textarea
-                className="postCommentInput"
-                placeholder="Write a comment..."
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-              />
-              <button className="postCommentButton" onClick={createCommentHandler}>
+              <div className="postCommentInputWrapper">
+                <textarea
+                  className="postCommentInput"
+                  placeholder="Write a comment..."
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                />
+              </div>
+              <button
+                className="postCommentButton"
+                onClick={createCommentHandler}
+              >
                 Comment
               </button>
             </div>
@@ -189,14 +210,22 @@ export default function Post({ post }) {
                   src={comment.user.profilePicture}
                   alt={comment.user.username}
                 />
-                <span className="postCommentUsername">{comment.user.username}</span>
-                <span className="postCommentDate">{format(comment.createdAt)}</span>
+                <span className="postCommentUsername">
+                  {comment.user.username}
+                </span>
+                <span className="postCommentDate">
+                  {format(comment.createdAt)}
+                </span>
                 <div className="postCommentText">{comment.body}</div>
-                {isHoveredComment === comment.id && currentUser?.id === comment.user.id && (
-                  <div className="postCommentDelete" onClick={() => deleteCommentHandler(comment.id)}>
-                    Delete
-                  </div>
-                )}
+                {isHoveredComment === comment.id &&
+                  currentUser?.id === comment.user.id && (
+                    <div
+                      className="postCommentDelete"
+                      onClick={() => deleteCommentHandler(comment.id)}
+                    >
+                      Delete
+                    </div>
+                  )}
               </div>
             ))}
           </div>
