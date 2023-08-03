@@ -80,20 +80,20 @@ contents.each do |content|
 
  
 end
-#comment
-contents = Content.all
+# comments
+posts = Post.all
 users = User.all
 
-10.times do
-  content = contents.sample
-  user = users.sample
+posts.each do |post|
+  10.times do
+    user = users.sample
+    comment = post.comments.build(
+      body: Faker::Lorem.paragraph,
+      user: user
+    )
 
-  comment = content.comments.build(
-    body: Faker::Lorem.paragraph,
-    user: user
-  )
-
-  comment.save!
+    comment.save!
+  end
 end
 
 
