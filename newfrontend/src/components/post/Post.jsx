@@ -12,9 +12,9 @@ export default function Post({ post }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
-  useEffect(() => {
-    setIsLiked(post.likes.includes(currentUser?.id || null));
-  }, [currentUser?.id, post.likes]);
+  // useEffect(() => {
+  //   setIsLiked(post.likes.includes(currentUser?.id || null));
+  // }, [currentUser?.id, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
