@@ -145,9 +145,12 @@ const register = (username, email, password, password_confirmation, profile_pict
             "Content-Type": "application/json",
           },
         })
+          .then ((response) => response.json())
           .then((res) => {
-            if (res.ok) {
-              return res.json();
+            console.log("currentUser", res)
+            if (res.user) {
+              console.log("currentUser", res)
+              setCurrentUser(res.user)
             } else {
               throw new Error("Unauthorized");
             }
