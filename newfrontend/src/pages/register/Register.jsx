@@ -35,44 +35,44 @@ export default function Register() {
         </div>
         <div className="loginRight">
           <div className="loginBox">
-            <form onSubmit={handleSubmit}>
+            <form className="loginBox" onSubmit={handleSubmit}>
               <input
                 type="text"
                 placeholder="Username"
-                className="loginInput"
+                className="signupInput"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <input
                 type="email"
                 placeholder="Email"
-                className="loginInput"
+                className="signupInput"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="Password"
-                className="loginInput"
+                className="signupInput"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="Password Again"
-                className="loginInput"
+                className="signupInput"
                 value={password_confirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
               />
               <input
                 type="date"
-                className="loginInput"
+                className="signupInput"
                 value={date_of_birth}
                 onChange={(e) => setDateofBirth(e.target.value)}
               />
               <input
                 type="text"
-                className="loginInput"
+                className="signupInput"
                 placeholder="Image text"
                 onChange={(e) => setProfilePicture(e.target.value)}
               />
@@ -82,7 +82,7 @@ export default function Register() {
             </form>
             <div className="my-5">
               Already have an account?{" "}
-              <Link className="loginRegisterButton" to="/login">
+              <Link style={{ color: "#187BCD" }} to="/login">
                 Login
               </Link>
             </div>

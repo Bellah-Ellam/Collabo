@@ -29,15 +29,15 @@
 }
 .loginBox{
     height: 400px;
-    padding: 20px;
+    padding: 5px;
     background-color: white;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
-.loginInput{
-    height: 50px;
+.signupInput{
+    height: 30px;
     border-radius: 10px;
     border: 1px solid gray;
     font-size: 18px;
