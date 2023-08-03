@@ -2,6 +2,8 @@ class Api::V1::PostsController < ApplicationController
   before_action :authenticate_user, except: [:index, :show]
   before_action :set_post, only: [:show, :update, :destroy, :like, :comment, :like_comment, :unlike_comment]
   before_action :set_current_user
+ 
+
 
   # index
   def index

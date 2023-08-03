@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :posts
+  # ...
 
   namespace :api do
     namespace :v1 do
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
           put :like
           get :all_comments
         end
-        resources :comments, only: [:index, :create]
+        resources :comments, only: [:index, :create], param: :id
       end
       get '/posts/timeline/:user_id', to: 'posts#timeline'
       get '/posts/profile/:username', to: 'posts#profile'
@@ -43,22 +43,19 @@ Rails.application.routes.draw do
       # Notifications routes
       resources :notifications, only: [:index]
 
-      # Users routes
+      #users
       resources :users, only: [:index, :show, :update, :destroy] do
         member do
           put :follow
           put :unfollow
+          put :update_profile
+          get :friends
+          get :profile
+          match :update_profile_picture, via: [:put, :patch]
+          match :update_cover_picture, via: [:put, :patch]
+          match :update_bio, via: [:put, :patch]
         end
-        get :friends, on: :member
       end
-
-      # Custom routes for users
-      get "/users/me", to: "users#me"
-      match "/users/me", to: "users#update_profile", via: [:put, :patch]
-      get "/users/profile/:username", to: "users#profile"
-      match "/users/update_profile_picture", to: "users#update_profile_picture", via: [:put, :patch]
-      match "/users/update_cover_picture", to: "users#update_cover_picture", via: [:put, :patch]
-      match "/users/update_bio", to: "users#update_bio", via: [:put, :patch]
 
       # Comments routes
       resources :comments, only: [:index, :show, :create, :update, :destroy] do

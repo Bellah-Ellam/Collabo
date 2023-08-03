@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_03_120404) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_03_134943) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,10 +28,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_120404) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "followers_followings", force: :cascade do |t|
+    t.bigint "follower_id"
+    t.bigint "following_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["follower_id", "following_id"], name: "index_followers_followings_on_follower_id_and_following_id", unique: true
+    t.index ["follower_id"], name: "index_followers_followings_on_follower_id"
+    t.index ["following_id"], name: "index_followers_followings_on_following_id"
+  end
+
   create_table "jwt_denylist", force: :cascade do |t|
-    t.string "jti", null: false
+    t.string "jti", default: "", null: false
+    t.string "token"
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
+    t.index ["token"], name: "index_jwt_denylist_on_token", unique: true
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -84,9 +96,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_120404) do
     t.string "coverPicture", default: ""
     t.date "date_of_birth"
     t.integer "relationship"
+    t.string "bio", limit: 50
     t.string "desc", limit: 50
     t.string "city", limit: 50
     t.string "from", limit: 50
+    t.integer "followed_by", default: [], array: true
+    t.integer "followers_count", default: 0
+    t.integer "unfollowed_by", default: [], array: true
+    t.integer "following_count", default: 0
     t.integer "followers", default: [], array: true
     t.integer "followings", default: [], array: true
     t.boolean "editor", default: true
@@ -97,6 +114,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_120404) do
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "followers_followings", "users", column: "follower_id"
+  add_foreign_key "followers_followings", "users", column: "following_id"
   add_foreign_key "notifications", "posts"
   add_foreign_key "notifications", "users"
   add_foreign_key "posts", "users"
