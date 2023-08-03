@@ -7,9 +7,6 @@
 # Ignore bundler config.
 /.bundle
 
-/newfrontend/node_modules
-/newfrontend/package-lock.json
-
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*

@@ -1,33 +1,36 @@
 class Api::V1::CommentsController < ApplicationController
   include NotificationConcern
-  before_action :authenticate_user, except: [:index, :show]
-  before_action :set_comment, only: [:show, :update, :destroy]
-  before_action :set_post, only: [:index, :create, :like_comment, :unlike_comment]
+  before_action :set_user
+  before_action :set_comment, only: %i[show update destroy]
 
-  # GET /api/v1/posts/:post_id/comments
+  # GET /comments
   def index
-    @comments = @post.comments
+    @comments = Comment.where(user: @user)
     render json: @comments
   end
 
-  # GET /api/v1/posts/:id/comments/:id
+  # GET /comments/1
   def show
     render json: @comment
   end
 
-  # POST /api/v1/posts/:post_id/comments
+  # POST /comments
   def create
-    @comment = @post.comments.build(comment_params)
-    @comment.user = current_user
+    @comment = Comment.new(comment_params)
+    @comment.user = @user
 
-    if @comment.save
-      render json: @comment, status: :created, location: api_v1_comment_url(@comment)
+    if @user.authenticate(params[:password])
+      if @comment.save
+        render json: @comment, status: :created, location: api_v1_comment_url(@comment)
+      else
+        render json: @comment.errors, status: :unprocessable_entity
+      end
     else
-      render json: @comment.errors, status: :unprocessable_entity
+      render json: { error: 'Invalid credentials' }, status: :unauthorized
     end
   end
 
-  # PATCH/PUT /api/v1/comments/:id
+  # PATCH/PUT /comments/1
   def update
     if @comment.update(comment_params)
       render json: @comment
@@ -36,53 +39,9 @@ class Api::V1::CommentsController < ApplicationController
     end
   end
 
-  # DELETE /api/v1/comments/:id
+  # DELETE /comments/1
   def destroy
     @comment.destroy
-    render json: { message: "The comment has been deleted" }
-  end
-
-  # PUT /api/v1/posts/:post_id/comments/:comment_id/like
-  def like_comment
-    comment = @post.comments.find_by(id: params[:comment_id])
-
-    if comment
-      if comment.likes.include?(current_user.id)
-        comment.likes.delete(current_user.id)
-        action = "disliked"
-      else
-        comment.likes << current_user.id
-        action = "liked"
-      end
-
-      if comment.save
-        render json: { message: "The comment has been #{action}" }
-      else
-        render json: comment.errors, status: :unprocessable_entity
-      end
-    else
-      render json: { error: "Comment not found" }, status: :not_found
-    end
-  end
-
-  # DELETE /api/v1/posts/:post_id/comments/:comment_id/unlike
-  def unlike_comment
-    comment = @post.comments.find_by(id: params[:comment_id])
-
-    if comment
-      if comment.likes.include?(current_user.id)
-        comment.likes.delete(current_user.id)
-        if comment.save
-          render json: { message: "The comment has been unliked" }
-        else
-          render json: comment.errors, status: :unprocessable_entity
-        end
-      else
-        render json: { error: "You haven't liked this comment" }, status: :unprocessable_entity
-      end
-    else
-      render json: { error: "Comment not found" }, status: :not_found
-    end
   end
 
   private
@@ -92,8 +51,15 @@ class Api::V1::CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
   end
 
-  def set_post
-    @post = Post.find(params[:post_id])
+  def create_notification(recipient, action, content)
+    Notification.create(recipient: recipient, action: action, content: content)
+  end
+
+  def set_user
+    token = request.headers['Authorization']&.split(' ')&.last
+    @user = User.find_by(id: JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')[0]['user_id'])
+  rescue JWT::DecodeError
+    @user = nil
   end
 
   # Only allow a list of trusted parameters through.
