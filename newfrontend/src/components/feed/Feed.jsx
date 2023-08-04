@@ -1,8 +1,9 @@
 import Post from "../post/Post";
-import Share from "../share/Share";
 import "./feed.css";
+import Share from "../share/Share"
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+// import { Share } from "@material-ui/icons";
 
 export default function Feed() {
   const { currentUser } = useContext(AuthContext);
@@ -27,7 +28,7 @@ export default function Feed() {
     <div className="feed">
       {currentUser && currentUser.email ? (
         <div className="feedWrapper">
-          <Share />
+          <Share/>
           {posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}

@@ -15,15 +15,15 @@ export default function Share() {
 
   const handleShare = async () => {
     try {
-       const response = await fetch("/api/v1/shares", {
+       const response = await fetch("/api/v1/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          share_text: shareText,
-          photo_video: photoVideo,
+          desc: shareText,
+          img: photoVideo,
           tag: tag,
           location: location,
           feelings: feelings,

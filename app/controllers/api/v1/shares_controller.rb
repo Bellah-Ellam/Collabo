@@ -1,6 +1,11 @@
 class Api::V1::SharesController < ApplicationController
     # before_action :authenticate_user
 
+    def index
+      shares = Share.all
+      render json: shares
+    end
+
     def create
         @share = Share.new(share_params)
         if @share.save

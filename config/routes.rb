@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       get '/posts/profile/:username', to: 'posts#profile'
 
       #shares routes
-      resources :shares, only: [:create]
+      resources :shares, only: [:index, :create]
 
       # Index route for contents
       get '/contents', to: 'contents#index'
