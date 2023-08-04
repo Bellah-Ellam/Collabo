@@ -2,6 +2,45 @@ import "./share.css";
 import {PermMedia, Label,Room, EmojiEmotions} from "@material-ui/icons"
 
 export default function Share() {
+  const { token } = useContext(AuthContext);
+  const [shareText, setShareText] = useState("");
+  const [photoVideo, setPhotoVideo] = useState("");
+  const [tag, setTag] = useState("");
+  const [location, setLocation] = useState("");
+  const [feelings, setFeelings] = useState("");
+
+  const handleShare = async () => {
+    try {
+       const response = await fetch("/api/v1/shares", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          share_text: shareText,
+          photo_video: photoVideo,
+          tag: tag,
+          location: location,
+          feelings: feelings,
+        }),
+      });
+
+      if (response) {
+        // Share was successful
+        console.log(response)
+        console.log("Content shared successfully!");
+
+      } else {
+        // Handle error in sharing content
+        const errorData = await response.json();
+        console.error("Not able to share content:", errorData.error);
+      }
+    } catch (error) {
+      console.error("Error sharing content:", error);
+    }
+  };
+
   return (
     <div className="share">
       <div className="shareWrapper">

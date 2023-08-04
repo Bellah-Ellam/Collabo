@@ -1,7 +1,7 @@
 import "./post.css";
 import { MoreVert } from "@material-ui/icons";
-import { useState, useContext, useEffect } from "react";
 import { format } from "timeago.js";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
@@ -11,7 +11,6 @@ export default function Post({ post }) {
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
-  const [showCommentInput, setShowCommentInput] = useState(false);
 
   useEffect(() => {
     // Check if post.likes is an array before using includes
@@ -36,7 +35,7 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts/${post?._id}/comments`);
+        const response = await fetch(`/api/v1/posts${post?._id}/comments`);
         const commentsData = await response.json();
         setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
@@ -76,14 +75,8 @@ export default function Post({ post }) {
 
   // Comment post
   const createCommentHandler = async () => {
-    if (!currentUser) {
-      // User is not logged in, show an alert message
-      window.alert("Please log in to comment.");
-      return;
-    }
-
     try {
-      const response = await fetch(`/api/v1/posts/${post?._id}/comments`, {
+      const response = await fetch(`/api/v1/posts${post?._id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +89,6 @@ export default function Post({ post }) {
         setCommentText("");
         const newComment = await response.json();
         setComments([...comments, newComment]);
-        setShowCommentInput(false); // Hide the comment input after submitting the comment
       } else {
         // Handle error in creating the comment
         console.error(
@@ -113,7 +105,7 @@ export default function Post({ post }) {
   // Comment delete
   const deleteCommentHandler = async (commentId) => {
     try {
-      const response = await fetch(`/api/v1/posts/${post?._id}/comments${commentId}`, {
+      const response = await fetch(`/api/v1/posts${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -193,33 +185,22 @@ export default function Post({ post }) {
           <div className="postBottomRight">
             <span className="postCommentText">{comments.length} comments</span>
 
-            {currentUser && !showCommentInput && (
+            <div className="postCommentForm">
+              <div className="postCommentInputWrapper">
+                <textarea
+                  className="postCommentInput"
+                  placeholder="Write a comment..."
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                />
+              </div>
               <button
                 className="postCommentButton"
-                onClick={() => setShowCommentInput(true)} // Show the comment input when clicked
+                onClick={createCommentHandler}
               >
                 Comment
               </button>
-            )}
-
-            {currentUser && showCommentInput && (
-              <div className="postCommentForm">
-                <div className="postCommentInputWrapper">
-                  <textarea
-                    className="postCommentInput"
-                    placeholder="Write a comment..."
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                  />
-                </div>
-                <button
-                  className="postCommentButton"
-                  onClick={createCommentHandler}
-                >
-                  Comment
-                </button>
-              </div>
-            )}
+            </div>
 
             {comments.map((comment) => (
               <div
