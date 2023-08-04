@@ -29,7 +29,7 @@ export default function Share() {
         }),
       });
 
-      if (response.ok) {
+      if (response.success) {
         // Share was successful
         console.log("Content shared successfully!");
 
