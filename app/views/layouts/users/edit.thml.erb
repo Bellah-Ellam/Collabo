@@ -1,0 +1,32 @@
+<!-- app/views/users/edit.html.erb -->
+
+<h1>Edit Profile</h1>
+
+<%= form_with(model: @user, url: user_path(@user), method: :patch) do |form| %>
+  <div class="field">
+    <%= form.label :user_name %>
+    <%= form.text_field :user_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :photo %>
+    <%= form.text_field :photo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date_of_birth %>
+    <%= form.date_field :date_of_birth %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bio %>
+    <%= form.text_area :bio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :profile_picture %>
+    <%= form.text_field :profile_picture %>
+  </div>
+
+  <%= form.submit 'Save Changes' %>
+<% end %>
