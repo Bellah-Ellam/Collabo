@@ -29,14 +29,15 @@ export default function Share() {
         }),
       });
 
-      if (response.ok) {
+      if (response) {
         // Share was successful
+        console.log(response)
         console.log("Content shared successfully!");
 
       } else {
         // Handle error in sharing content
         const errorData = await response.json();
-        console.error("Error sharing content:", errorData.error);
+        console.error("Not able to share content:", errorData.error);
       }
     } catch (error) {
       console.error("Error sharing content:", error);

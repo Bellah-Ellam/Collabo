@@ -1,5 +1,5 @@
 class Api::V1::SharesController < ApplicationController
-    before_action :authenticate_user
+    # before_action :authenticate_user
 
     def create
         @share = Share.new(share_params)
