@@ -1,4 +1,4 @@
-import "./login.css";
+import "./Login.css";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link } from "react-router-dom";

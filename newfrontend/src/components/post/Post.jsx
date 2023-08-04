@@ -1,4 +1,4 @@
-import "./post.css";
+import "./Post.css";
 import { MoreVert } from "@material-ui/icons";
 import { format } from "timeago.js";
 import { useContext, useEffect, useState } from "react";
