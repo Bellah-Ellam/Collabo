@@ -1,4 +1,3 @@
-
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -32,12 +31,12 @@ export default function AuthProvider({ children }) {
         } else if (response.token) {
           // Token received from the server
           // Store the token in local storage or state
-          localStorage.setItem("authToken", response.token);
+          // Example: localStorage.setItem("authToken", response.token);
 
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Logged In successfully!",
+            title: "LoggedIn successfully!",
             timer: 1500,
           });
           navigate("/");
@@ -54,65 +53,33 @@ export default function AuthProvider({ children }) {
       });
   };
 
-  // // Register
-  // const register = (username, email,password, password_confirmation) => {
-  //   // Post this data to the backend
-  //   fetch("/api/v1/signup", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((response) => {
-  //       console.log(response);
-  //       if (response.error) {
-  //         Swal.fire("Error", response.error, "error");
-  //       } else if (response.success) {
-  //         navigate("/login");
-  //         Swal.fire("Success", response.success, "success");
-  //         setChange(!change);
-  //       } else {
-  //         console.log("Problem");
-  //         Swal.fire("Error", "Something went wrong", "error");
-  //       }
-  //     });
-  // };
-
   // Register
-const register = (username, email, password, password_confirmation, profile_picture, date_of_birth) => {
-  // Post this data to the backend
-  fetch("/api/v1/signup", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({
-      username,
-      email,
-      password,
-      password_confirmation,
-      profile_picture,
-      date_of_birth
-    }),
-  })
-    .then((res) => res.json())
-    .then((response) => {
-      console.log(response);
-      if (response.error) {
-        Swal.fire("Error", response.error, "error");
-      } else if (response.success) {
-        navigate("/login");
-        Swal.fire("Success", response.success, "success");
-        setChange(!change);
-      } else {
-        console.log("Problem");
-        Swal.fire("Error", "Something went wrong", "error");
-      }
-    });
-};
-
+  const register = (name, username, email, photo, doB, bio, password, password_confirmation) => {
+    // Post this data to the backend
+    fetch("api/v1/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, username, email, photo, doB, bio, password, password_confirmation }),
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        // console.log(response);
+        if (response.error) {
+          Swal.fire("Error", response.error, "error");
+        } else if (response.success) {
+          navigate("/login");
+          Swal.fire("Success", response.success, "success");
+          setChange(!change);
+        } else {
+          console.log("Problem");
+          Swal.fire("Error", "Something went wrong", "error");
+        }
+      });
+  };
 
   // Logout
   const logout = () => {
-    fetch("/api/v1/logout", {
+    fetch("api/v1/logout", {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -124,33 +91,30 @@ const register = (username, email, password, password_confirmation, profile_pict
           timer: 300,
         });
         navigate("/login");
-        // Clear authentication token from local storage
-        localStorage.removeItem("authToken");
+        // Clear authentication token here (if applicable)
+        // For example, remove the token from local storage or state
         setCurrentUser(null); // Reset the currentUser state to null
         setChange(!change);
       });
   };
-
-  // Check if the user is authenticated on page load
+  // check current user
   useEffect(() => {
     const fetchCurrentUser = () => {
-      // Retrieve the authentication token from local storage
-      const token = localStorage.getItem("authToken");
+      // Retrieve the authentication token from local storage or state
+      // Example: const token = localStorage.getItem("authToken");
+      const token = ""; // <-- Replace this with the actual code to retrieve the token
 
       if (token) {
-        fetch("/api/v1/current_user", {
+        fetch("api/v1/current_user", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         })
-          .then ((response) => response.json())
           .then((res) => {
-            console.log("currentUser", res)
-            if (res.user) {
-              console.log("currentUser", res)
-              setCurrentUser(res.user)
+            if (res.ok) {
+              return res.json();
             } else {
               throw new Error("Unauthorized");
             }
@@ -170,16 +134,18 @@ const register = (username, email, password, password_confirmation, profile_pict
     fetchCurrentUser();
   }, [change]);
 
-  const contextData = {
-    login,
-    register,
-    logout,
-    currentUser,
-  };
+    const contextData = {
+        login, 
+        register, 
+        logout,
+        currentUser
+    }
 
   return (
     <>
-      <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
+      <AuthContext.Provider value={contextData}>
+        {children}
+      </AuthContext.Provider>
     </>
   );
 }
