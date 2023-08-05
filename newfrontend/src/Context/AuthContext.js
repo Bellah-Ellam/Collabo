@@ -8,7 +8,7 @@ export const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const navigate = useNavigate();
 
-  const [currentUser, setCurrentUser] = useState(null); // Initialize to null
+  const [currentUser, setCurrentUser] = useState({token: null}); // Initialize to null
 
   const [change, setChange] = useState(true);
 
@@ -147,17 +147,17 @@ const register = (username, email, password, password_confirmation, profile_pict
         })
           .then ((response) => response.json())
           .then((res) => {
-            console.log("currentUser", res)
+            console.log("Trying", res)
             if (res.user) {
-              console.log("currentUser", res)
+              console.log("Trying2", res)
               setCurrentUser(res.user)
             } else {
               throw new Error("Unauthorized");
             }
           })
-          .then((response) => {
-            setCurrentUser(response);
-          })
+          // .then((response) => {
+          //   setCurrentUser(response);
+          // })
           .catch((error) => {
             console.error("Error fetching current user:", error);
             setCurrentUser(null);

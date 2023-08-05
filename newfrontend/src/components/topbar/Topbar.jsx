@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Topbar() {
+export default function Topbar(user) {
   const { currentUser, logout, token } = useContext(AuthContext);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -52,67 +52,46 @@ export default function Topbar() {
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          {currentUser ? (
+          <Link to="/" className="topbarLink bg-white text-dark">Home</Link>
+          {!currentUser && (
             <>
-              <Link to="/" className="topbarLink text-dark">
-                Home
-              </Link>
-              <Link to="/profile" className="topbarLink text-dark">
-                Profile
-              </Link>
-              <button
-                className="topbarLink text-dark"
-                onClick={handleLogoutOptionClick}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/" className="topbarLink text-dark">
-                Home
-              </Link>
-              <Link to="/login" className="topbarLink">
-                Login
-              </Link>
-              <Link to="/register" className="topbarLink">
-                Register
-              </Link>
+              <Link to="/login" className="topbarLink">Login</Link>
+              <Link to="/register" className="topbarLink">Register</Link>
             </>
           )}
         </div>
-        <div className="topbarIcons">
-          <div className="topbarIconItem">
-            <Notifications />{" "}
-            {notificationsCount > 0 && (
-              <span className="topbarIconBadge">{notificationsCount}</span>
-            )}
-          </div>
-          <div className="topbarIconItem" onClick={handleProfileClick}>
-            <img src="/assets/person/1.jpeg" alt="" className="topbarImg" />
+        {currentUser && (
+          <div className="topbarIcons">
+            <div className="topbarIconItem">
+              <Notifications /> {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
+            </div>
+            <div className="topbarIconItem" onClick={handleProfileClick}>
+              <img src={currentUser.profilePicture} alt="" className="topbarImg" />
 
-            {dropdownVisible && (
-              <ul className="dropdown-menu">
-                <li>
-                  <button
-                    className="dropdown-item text-white"
-                    onClick={handleProfileOptionClick}
-                  >
-                    Profile {currentUser && currentUser.email}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item text-white"
-                    onClick={handleLogoutOptionClick}
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            )}
+              {dropdownVisible && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <button
+                      className="dropdown-item text-white"
+                      onClick={handleProfileOptionClick}
+                    >
+                      Profile : {' '}
+                      {currentUser && currentUser.email}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item text-white"
+                      onClick={handleLogoutOptionClick}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

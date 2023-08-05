@@ -6,10 +6,13 @@ import Feed from "../../components/feed/Feed";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
+
+
 export default function Profile() {
   const [user, setUser] = useState({});
   const username = useParams().username;
-  const { currentUser } = useContext(AuthContext);
+  const {currentUser} = useContext(AuthContext)
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -28,6 +31,7 @@ export default function Profile() {
     };
     fetchUser();
   }, [username]);
+
   return (
     <>
       <Topbar />
@@ -48,8 +52,8 @@ export default function Profile() {
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.username}</h4>
-              <span className="profileInfoDesc">{user.desc}</span>
+              <h4 className="profileInfoName">{currentUser.username}</h4>
+              <span className="profileInfoDesc">{currentUser.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
