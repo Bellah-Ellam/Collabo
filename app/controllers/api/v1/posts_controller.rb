@@ -79,6 +79,14 @@ class Api::V1::PostsController < ApplicationController
     end
   end
 
+  #GET /api/v1/posts/id/likes
+  def likes
+    @post = Post.find(params[:id])
+    likes = User.where(id: @post.likes)
+    render json: likes
+  end
+  
+
   # PUT /api/v1/posts/:id/like
   def like
     if @post.liked_by.include?(current_user.id)
