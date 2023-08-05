@@ -61,17 +61,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_134943) do
     t.bigint "user_id", null: false
     t.text "desc"
     t.string "img"
-<<<<<<< HEAD
     t.string "title"
     t.string "post"
     t.integer "liked_by", default: [], array: true
     t.integer "likes_count", default: 0
     t.integer "commented_by", default: [], array: true
     t.integer "comments_count", default: 0
-=======
-    t.integer "liked_by", default: [], array: true
-    t.integer "likes_count", default: 0
->>>>>>> e84e0f91f8eac17db9e833697f31866fdc5f43a0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "likes", default: [], array: true
