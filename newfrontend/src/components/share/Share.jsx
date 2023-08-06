@@ -2,6 +2,7 @@ import "./share.css";
 import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 import { useState,useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import Swal from "sweetalert2"
 
 
 export default function Share() {
@@ -14,33 +15,41 @@ export default function Share() {
 
   const handleShare = async () => {
     try {
-       const response = await fetch("/api/v1/shares", {
+       const response = await fetch("/api/v1/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          share_text: shareText,
-          photo_video: photoVideo,
+          desc: shareText,
+          img: photoVideo,
           tag: tag,
           location: location,
           feelings: feelings,
         }),
       });
-
-      if (response.ok) {
+    
+      
+        if (response) {
         // Share was successful
         console.log("Content shared successfully!");
+        Swal.fire("Content shared successfully!", response.success, "success");
 
       } else {
         // Handle error in sharing content
         const errorData = await response.json();
         console.error("Error sharing content:", errorData.error);
       }
-    } catch (error) {
-      console.error("Error sharing content:", error);
+      
     }
+    catch (error) {
+      console.error("Error sharing content:", error);
+  
+    }
+    
+      
+    
   };
 
   return (
@@ -68,6 +77,7 @@ export default function Share() {
                 className="shareIcon"
                 onClick={() => setPhotoVideo("PHOTO")}
               />
+              <input type="text" />
               <span className="shareOptionText">Photo</span>
             </div>
             <div className="shareOption">
@@ -76,6 +86,7 @@ export default function Share() {
                 className="shareIcon"
                 onClick={() => setPhotoVideo("VIDEO")}
               />
+              <input type="text" />
               <span className="shareOptionText">Video</span>
             </div>
             <div className="shareOption">

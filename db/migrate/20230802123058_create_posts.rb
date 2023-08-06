@@ -4,8 +4,11 @@ class CreatePosts < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.text :desc, limit: 500
       t.string :img
-      t.string :title
-      t.string :post
+      t.string :tag
+      t.string :location
+      t.string :feelings
+
+      # This ones are passed from Post
       t.integer :liked_by,  array: true, default: []
       t.integer :likes_count,  default: 0
       t.integer :commented_by,  array: true, default: []

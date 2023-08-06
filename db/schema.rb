@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_03_134943) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "comments", force: :cascade do |t|
     t.string "body"
     t.integer "liked_by", default: [], array: true
     t.integer "likes_count", default: 0
@@ -80,6 +76,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_134943) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_posts_tags_on_post_id", unique: true
     t.index ["tag_id"], name: "index_posts_tags_on_tag_id", unique: true
+  end
+
+  create_table "shares", force: :cascade do |t|
+    t.string "share_text", null: false
+    t.string "photo_video"
+    t.string "tag"
+    t.string "location"
+    t.string "feelings"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tags", force: :cascade do |t|
