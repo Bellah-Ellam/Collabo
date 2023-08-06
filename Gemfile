@@ -7,7 +7,7 @@ gem 'devise-jwt'
 gem 'jwt'
 #gem 'jwt_denylist'
 
-
+gem 'active_storage_drag_and_drop'
 
 gem 'faker'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

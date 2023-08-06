@@ -210,7 +210,7 @@ export default function Post({ post }) {
               >
                 <img
                   className="postCommentProfileImg"
-                  src={comment.user.profilePicture}
+                  // src={comment.user.profilePicture}
                   alt={comment.user.username}
                 />
                 <span className="postCommentUsername">
