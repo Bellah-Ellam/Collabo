@@ -49,7 +49,7 @@ export default function Share() {
         <div className="shareTop">
           <img
             className="shareProfileImg"
-            src={currentUser.profilePicture}
+            src={currentUser && currentUser.profile_picture}
             alt=""
           />
           <input

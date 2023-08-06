@@ -42,23 +42,23 @@ export default function Profile() {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src={currentUser.coverPicture}
+                src={currentUser && currentUser.coverPicture}
                 alt=""
               />
               <img
                 className="profileUserImg"
-                src={currentUser.profilePicture}
+                src={currentUser && currentUser.profile_picture}
                 alt=""
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{currentUser.username}</h4>
-              <span className="profileInfoDesc">{currentUser.desc}</span>
+              <h4 className="profileInfoName">Welcome {currentUser && currentUser.username}</h4>
+              <span className="profileInfoDesc">{currentUser && currentUser.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
             <Feed username={username} />
-            {/* <Rightbar user={user} /> */}
+            {/* <Rightbar user={currentUser} /> */}
           </div>
         </div>
       </div>

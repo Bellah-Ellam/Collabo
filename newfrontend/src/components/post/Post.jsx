@@ -11,6 +11,7 @@ export default function Post({ post }) {
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [showCommentInput, setShowCommentInput] = useState(false); // State to control comment input visibility
 
   useEffect(() => {
     // Check if post.likes is an array before using includes
@@ -35,7 +36,7 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts${post?._id}/comments`);
+        const response = await fetch(`/api/v1/posts/${post.id}/comments`);
         const commentsData = await response.json();
         setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
@@ -47,11 +48,11 @@ export default function Post({ post }) {
 
   const likeHandler = async () => {
     try {
-      const response = await fetch(`/api/v1/posts${post?._id}/like`, {
+      const response = await fetch(`/api/v1/posts/${post.id}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`,
+          Authorization: `Bearer ${currentUser && currentUser.token}`,
         },
         body: JSON.stringify({ userId: currentUser?.id }),
       });
@@ -75,8 +76,9 @@ export default function Post({ post }) {
 
   // Comment post
   const createCommentHandler = async () => {
+    // const userToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE2OTEzNTgxNDgsImp0aSI6IjQ5Y2JiNjBlLWY3ZDktNDljNy1hODc3LTgyZDkyMjQ5NjM2YSJ9.JXme0hj57jlwX39GLRjIyfanhwGAji7MP3mN4sdv7KU"
     try {
-      const response = await fetch(`/api/v1/posts${post?._id}/comments`, {
+      const response = await fetch(`/api/v1/posts/${post.id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,11 +107,11 @@ export default function Post({ post }) {
   // Comment delete
   const deleteCommentHandler = async (commentId) => {
     try {
-      const response = await fetch(`/api/v1/posts${commentId}`, {
+      const response = await fetch(`/api/v1/posts/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`,
+          Authorization: `Bearer ${currentUser && currentUser.token}`,
         },
       });
       if (response.ok) {
@@ -149,12 +151,12 @@ export default function Post({ post }) {
            
               <img
                 className="postProfileImg"
-                src={currentUser.profilePicture}
+                src={currentUser && currentUser.profile_picture}
                 alt={user.username}
               />
            
 
-            <span className="postUsername">{currentUser.username}</span>
+            <span className="postUsername">{currentUser && currentUser.username}</span>
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
@@ -184,49 +186,62 @@ export default function Post({ post }) {
           <div className="postBottomRight">
             <span className="postCommentText">{comments.length} comments</span>
 
-            <div className="postCommentForm">
-              <div className="postCommentInputWrapper">
-                <textarea
-                  className="postCommentInput"
-                  placeholder="Write a comment..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                />
-              </div>
+            {currentUser && !showCommentInput && (
               <button
                 className="postCommentButton"
-                onClick={createCommentHandler}
+                onClick={() => setShowCommentInput(true)}
               >
                 Comment
               </button>
-            </div>
+            )}
 
-            {comments.map((comment) => (
+            {currentUser && showCommentInput && (
+              <div className="postCommentForm">
+                <div className="postCommentInputWrapper">
+                  <textarea
+                    className="postCommentInput"
+                    placeholder="Write a comment..."
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                  />
+                </div>
+                <button
+                  className="postCommentButton"
+                  onClick={createCommentHandler}
+                >
+                  Comment
+                </button>
+              </div>
+            )}
+
+            {comments && comments.map((comment) => (
               <div
                 key={comment.id}
                 className="postComment"
                 onMouseEnter={() => handleCommentHover(comment.id)}
                 onMouseLeave={handleCommentLeave}
               >
-                <img
+                {/* <img
                   className="postCommentProfileImg"
                   src={comment.user.profilePicture}
                   alt={comment.user.username}
-                />
+                /> */}
                 <span className="postCommentUsername">
-                  {comment.user.username}
+                  {/* {comment.user.username} */}
                 </span>
                 <span className="postCommentDate">
                   {format(comment.createdAt)}
                 </span>
                 <div className="postCommentText">{comment.body}</div>
                 {isHoveredComment === comment.id &&
-                  currentUser?.id === comment.user.id && (
-                    <div
-                      className="postCommentDelete"
-                      onClick={() => deleteCommentHandler(comment.id)}
-                    >
-                      Delete
+                  currentUser && currentUser.id === comment.user_id && (
+                    <div className="postCommentDelete">
+                       <img
+                         className="deleteIcon"
+                         src="assets/delete.png"
+                         onClick={()=> deleteCommentHandler(comment.id)}
+                           alt="delete"
+                        />
                     </div>
                   )}
               </div>
