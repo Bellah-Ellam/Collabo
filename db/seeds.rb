@@ -8,7 +8,7 @@ User.create!(
   password: "reagan12_password",
   admin: true,
   date_of_birth: "2000-10-11",
-  profilePicture: "",
+  profile_picture: "",
   coverPicture: ""
 )
 
@@ -19,26 +19,97 @@ User.create!(
     email: Faker::Internet.unique.email,
     password: "password",
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
-    editor: false, 
+    editor: true, 
     admin: false,
-    profilePicture: "https://images.pexels.com/photos/15100117/pexels-photo-15100117/free-photo-of-a-person-holding-a-cup-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+    profile_picture: "https://images.pexels.com/photos/15100117/pexels-photo-15100117/free-photo-of-a-person-holding-a-cup-of-coffee.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
     coverPicture: "https://images.pexels.com/photos/6660041/pexels-photo-6660041.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
   )
 
 
+
+# Create regular users
+user1 = User.create!(
+    username: "andy",
+    email: "andy@gmail.com",
+    password: "password",
+    date_of_birth: "4/2/1998",
+    editor: false,
+    admin: false,
+    profile_picture: "https://plus.unsplash.com/premium_photo-1682965699742-92e41c2d8630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+    coverPicture: "https://media.istockphoto.com/id/1426460860/photo/smiling-young-african-woman-sitting-with-laptop-in-cafe.webp?b=1&s=170667a&w=0&k=20&c=1Fj4bBhlOxBKN9zvuT8Ysli5MyBasNQW2KnYApO-r4c="
+  )
+  user2 = User.create!(
+    username: Faker::Internet.unique.user_name,
+    email: Faker::Internet.unique.email,
+    password: "password",
+    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
+    editor: false,
+    admin: false,
+    profile_picture: "",
+    coverPicture: ""
+  )
+  user3 = User.create!(
+    username: Faker::Internet.unique.user_name,
+    email: Faker::Internet.unique.email,
+    password: "password",
+    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
+    editor: false,
+    admin: false,
+    profile_picture: "",
+    coverPicture: ""
+  )
+  user4 = User.create!(
+    username: Faker::Internet.unique.user_name,
+    email: Faker::Internet.unique.email,
+    password: "password",
+    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
+    editor: false,
+    admin: false,
+    profile_picture: "",
+    coverPicture: ""
+  )
+  user5 = User.create!(
+    username: Faker::Internet.unique.user_name,
+    email: Faker::Internet.unique.email,
+    password: "password",
+    date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
+    editor: false,
+    admin: false,
+    profile_picture: "",
+    coverPicture: ""
+  )
 # Create some posts
-users = User.all
-9.times do |i|
-  post = users.sample.posts.create!(
-    title: Faker::Lorem.sentence,
-    desc: Faker::Lorem.paragraph,
-    img: "https://images.pexels.com/photos/2086655/pexels-photo-2086655.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  post1 = user1.posts.create!(
+    desc: "Great weekend my wonderful people",
+    img: "https://images.unsplash.com/photo-1592861956120-e524fc739696?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVvcGxlJTIwZWF0aW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
     likes: [],
     liked_by: [],
-    likes_count: 0,
-    post: "Some post content" # Replace "Some post content" with the actual content of the post
+    likes_count: 0
   )
-end
+  post2 = user2.posts.create!(
+    desc: "My travel diaries",
+    img: "https://plus.unsplash.com/premium_photo-1668061706855-26d4cf0f6248?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    liked_by: [],
+    likes_count: 0
+  )
+  post3 = user3.posts.create!(
+    desc: "Outdoor office day!",
+    img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    liked_by: [],
+    likes_count: 0
+  )
+  post4 = user4.posts.create!(
+    desc: "Debugging on the roof top",
+    img: "https://images.unsplash.com/photo-1483389127117-b6a2102724ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d29ya2luZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    liked_by: [],
+    likes_count: 5
+  )
+  post5 = user5.posts.create!(
+    desc: "There is something about sunsets...sublime!",
+    img: "https://images.unsplash.com/photo-1690788237344-857bd9618572?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    liked_by: [],
+    likes_count: 0
+  )
 
 # Create some tags
 tags_names = ['technology', 'food', 'travel', 'nature', 'fashion', 'sports', 'music', 'art', 'movies']

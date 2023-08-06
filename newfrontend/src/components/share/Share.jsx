@@ -4,7 +4,7 @@ import "./Share.css";
 import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 
 export default function Share() {
-  const { token } = useContext(AuthContext);
+  const { token, currentUser } = useContext(AuthContext);
   const [shareText, setShareText] = useState("");
   const [photoVideo, setPhotoVideo] = useState("");
   const [tag, setTag] = useState("");
@@ -34,7 +34,7 @@ export default function Share() {
       } else {
         // Handle error in sharing content
         const errorData = await response.json();
-        console.error("Not able to share content:", errorData.error);
+        console.error("Error sharing content:", errorData.error);
       }
     } catch (error) {
       console.error("Error sharing content:", error);
@@ -63,7 +63,7 @@ export default function Share() {
         <div className="shareTop">
           <img
             className="shareProfileImg"
-            src="/assets/person/1.jpeg"
+            src={currentUser.profilePicture}
             alt=""
           />
           <input

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       # Posts routes
       resources :posts, only: [:index, :create, :update, :destroy, :show] do
         member do
+          get :likes
           put :like
           get :all_comments
         end

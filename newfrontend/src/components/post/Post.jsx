@@ -6,8 +6,8 @@ import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
   const { currentUser } = useContext(AuthContext);
-  const [like, setLike] = useState(post.like);
-  const [isLiked, setIsLiked] = useState(false);
+  const [like, setLike] = useState(post.likes.length); // Set initial like count based on the number of likes
+  const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser?.id));
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
@@ -51,7 +51,7 @@ export default function Post({ post }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`, // If using JWT token for authentication
+          Authorization: `Bearer ${currentUser.token}`,
         },
         body: JSON.stringify({ userId: currentUser?.id }),
       });
@@ -71,7 +71,7 @@ export default function Post({ post }) {
     } catch (error) {
       console.error("Error liking content:", error);
     }
-  };
+  }
 
   // Comment post
   const createCommentHandler = async () => {
@@ -146,16 +146,15 @@ export default function Post({ post }) {
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img
-              className="postProfileImg"
-              src={user.profilePicture}
-              
-              alt={user.username}
-             
-            />
-        
+           
+              <img
+                className="postProfileImg"
+                src={currentUser.profilePicture}
+                alt={user.username}
+              />
+           
 
-            <span className="postUsername">Wese</span>
+            <span className="postUsername">{currentUser.username}</span>
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
