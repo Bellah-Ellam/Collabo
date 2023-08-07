@@ -7,16 +7,15 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 
-
 export default function Profile() {
   const [user, setUser] = useState({});
-  const username = useParams().username;
-  const {currentUser} = useContext(AuthContext)
+  const id = useParams().id;
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/v1/users?username=${username}`);
+        const response = await fetch(`/api/v1/users/${id}`);
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
@@ -30,8 +29,8 @@ export default function Profile() {
       }
     };
     fetchUser();
-  }, [username]);
-
+  }, [id]);
+  console.log("user", user)
   return (
     <>
       <Topbar />
@@ -57,7 +56,7 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed username={username} />
+            <Feed username={user.username} />
             {/* <Rightbar user={user} /> */}
           </div>
         </div>

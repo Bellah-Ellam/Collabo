@@ -188,7 +188,7 @@ export default function Topbar() {
         {currentUser && currentUser.email && (
           <div className="nav-item dropdown">
             <img
-              src="/assets/person/1.jpeg"
+              src={currentUser.profilePicture}
               alt=""
               className="topbarImg"
               onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown visibility on click

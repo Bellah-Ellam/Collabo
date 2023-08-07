@@ -8,7 +8,9 @@ class Api::V1::PostsController < ApplicationController
   # index
   def index
     @posts = Post.all
-    render json: @posts
+    render  json:  @posts.as_json(include: :user)
+
+
   end
 
   # GET /api/v1/posts/:id
@@ -42,19 +44,35 @@ class Api::V1::PostsController < ApplicationController
 
   # POST /api/v1/posts
   def create
-    if current_user.nil?
-      render json: { error: "You must be logged in to create a post" }, status: :unauthorized
-      return
-    end
-
-    @post = current_user.posts.new(post_params)
-
+    # if current_user.nil?
+    #   render json: { error: "You must be logged in to create a post" }, status: :unauthorized
+    #   return
+    # end
+  
+    @post = Post.new(post_params)
+    puts current_user
     if @post.save
       render json: @post, status: :created
     else
       render json: @post.errors, status: :unprocessable_entity
     end
   end
+
+  def upload
+    uploaded_file = params[:file]
+    puts "as it is"
+    desc = params[:desc]
+    user = current_user
+    # Save the file using ActiveStorage
+    post = current_user.posts.create(
+      img: uploaded_file, # Assuming you want to store the file as 'img' attribute in the 'posts' table
+      desc: desc,
+      user: user
+    )
+
+    render json: { url: post.img } # Respond with the URL of the uploaded file
+  end
+
 
   # PATCH/PUT /api/v1/posts/:id
   def update
@@ -121,6 +139,17 @@ class Api::V1::PostsController < ApplicationController
       @current_user = nil
     end
   end
+  
+    private
+  
+    def set_post
+      @post = Post.find(params[:id])
+    end
+  
+    def post_params
+      params.permit(:desc, :img, :tag, :location, :feelings)
+    end
+    
 
   private
 
