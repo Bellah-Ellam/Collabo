@@ -22,7 +22,7 @@ export default function Feed() {
 
     fetchPosts();
   }, []);
-
+  console.log(posts)
   return (
 
     <div className="feed">
@@ -31,6 +31,7 @@ export default function Feed() {
           <Share/>
           {posts.map((post) => (
             <Post key={post.id} post={post} />
+          
           ))}
         </div>
       ) : (

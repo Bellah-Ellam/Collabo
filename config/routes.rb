@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       end
 
       # Posts routes
+      post '/upload', to: 'posts#upload'
+
       resources :posts, only: [:index,:create, :update, :destroy, :show] do
         member do
           put :like

@@ -3,12 +3,14 @@ import Topbar from "../../components/topbar/Topbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
 // import Rightbar from "../../components/rightbar/Rightbar";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Profile() {
   const [user, setUser] = useState({});
   const username = useParams().username;
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,17 +41,17 @@ export default function Profile() {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src={user.coverPicture}
+                src={currentUser.coverPicture}
                 alt=""
               />
               <img
                 className="profileUserImg"
-                src={user.profilePicture}
+                src={currentUser.profilePicture}
                 alt=""
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.username}</h4>
+              <h4 className="profileInfoName">{currentUser.username}</h4>
               <span className="profileInfoDesc">{user.desc}</span>
             </div>
           </div>
