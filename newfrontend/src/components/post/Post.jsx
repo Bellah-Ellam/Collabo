@@ -36,7 +36,7 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts/${post.id}/comments`);
+        const response = await fetch(`/api/v1/posts${post.id}/comments`);
         const commentsData = await response.json();
         setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
@@ -94,7 +94,7 @@ export default function Post({ post }) {
 
   // Comment post
   const createCommentHandler = async () => {
-    // const userToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE2OTEzNTgxNDgsImp0aSI6IjQ5Y2JiNjBlLWY3ZDktNDljNy1hODc3LTgyZDkyMjQ5NjM2YSJ9.JXme0hj57jlwX39GLRjIyfanhwGAji7MP3mN4sdv7KU"
+    const userToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE2OTEzNTgxNDgsImp0aSI6IjQ5Y2JiNjBlLWY3ZDktNDljNy1hODc3LTgyZDkyMjQ5NjM2YSJ9.JXme0hj57jlwX39GLRjIyfanhwGAji7MP3mN4sdv7KU"
     try {
       const response = await fetch(`/api/v1/posts/${post.id}/comments`, {
         method: "POST",
@@ -294,13 +294,17 @@ export default function Post({ post }) {
                 <div className="postCommentText">{comment.body}</div>
                 {isHoveredComment === comment.id &&
                   currentUser && currentUser.id === comment.user_id && (
-                    <div className="postCommentDelete">
+                    <div
+                      className="postCommentDelete"
+                      
+                      onClick={() => deleteCommentHandler(comment.id)}
+                    >
                        <img
-                         className="deleteIcon"
-                         src="assets/delete.png"
-                         onClick={()=> deleteCommentHandler(comment.id)}
-                           alt="delete"
-                        />
+              className="deleteIcon"
+              src="assets/delete.png"
+              onClick={likeHandler}
+              alt="delete"
+            />
                     </div>
                   )}
               </div>
