@@ -131,7 +131,8 @@ import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from "../../Context/AuthContext";
-
+import "./Share.css";
+import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 
 const Share = () => {
   const [file, setFile] = useState("");
@@ -181,6 +182,22 @@ const Share = () => {
 
   };
 
+  const handlePhotoVideoChange = (e) => {
+    setPhotoVideo(e.target.value);
+  };
+
+  const handleTagChange = (e) => {
+    setTag(e.target.value);
+  };
+
+  const handleLocationChange = (e) => {
+    setLocation(e.target.value);
+  };
+
+  const handleFeelingsChange = (e) => {
+    setFeelings(e.target.value);
+  };
+
   return (
     <div className="share">
       <div className="shareWrapper">
@@ -225,6 +242,13 @@ const Share = () => {
                 // onClick={() => setTag("TAG")}
               />
               <span className="shareOptionText">Tag</span>
+              <input
+                type="text"
+                placeholder="Enter tag"
+                value={tag}
+                onChange={handleTagChange}
+                className="shareInput"
+              />
             </div>
             <div className="shareOption">
               <Room
@@ -233,6 +257,13 @@ const Share = () => {
                 // onClick={() => setLocation("LOCATION")}
               />
               <span className="shareOptionText">Location</span>
+              <input
+                type="text"
+                placeholder="Enter location"
+                value={location}
+                onChange={handleLocationChange}
+                className="shareInput"
+              />
             </div>
             <div className="shareOption">
               <EmojiEmotions
@@ -241,6 +272,13 @@ const Share = () => {
                 // onClick={() => setFeelings("FEELINGS")}
               />
               <span className="shareOptionText">Feelings</span>
+              <input
+                type="text"
+                placeholder="Enter feelings"
+                value={feelings}
+                onChange={handleFeelingsChange}
+                className="shareInput"
+              />
             </div>
           </div>
           <button className="shareButton" onClick={handleUpload}>

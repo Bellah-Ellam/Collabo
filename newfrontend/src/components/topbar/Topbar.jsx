@@ -139,7 +139,7 @@ export default function Topbar() {
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
-        <span className="logo">COLLABO</span>
+        <span className="logo">Collabo</span>
       </div>
       
       <div className="topbarCenter">
