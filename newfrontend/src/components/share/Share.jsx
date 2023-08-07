@@ -134,20 +134,20 @@ import { AuthContext } from "../../Context/AuthContext";
 
 
 const Share = () => {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState("");
   const [shareText, setShareText] = useState("");
   const {currentUser} = useContext(AuthContext);
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
+    const selectedFile = event.target.value;
     setFile(selectedFile);
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      alert('Please select a file to upload.');
-      return;
-    }
+    // if (!file) {
+    //   alert('Please select a file to upload.');
+    //   return;
+    // }
 
     // Perform the file upload to the backend here
     // Call an API endpoint to upload the file and get the URL
@@ -206,7 +206,7 @@ const Share = () => {
                 className="shareIcon"
                 // onClick={() => setPhotoVideo("PHOTO")}
               />
-              <input type="text" accept="image/*,video/*" onChange={handleFileChange} />
+              <input type="text" accept="image/*,video/*" onChange={(e) => setFile(e.target.value)} />
               <span className="shareOptionText">Photo</span>
             </div>
             <div className="shareOption">
@@ -215,7 +215,7 @@ const Share = () => {
                 className="shareIcon"
                 // onClick={() => setPhotoVideo("VIDEO")}
               />
-              <input type="file" accept="image/*,video/*" onChange={handleFileChange} />
+              <input type="text" accept="image/*,video/*" onChange={handleFileChange} />
               <span className="shareOptionText">Video</span>
             </div>
             <div className="shareOption">

@@ -9,13 +9,13 @@ import { AuthContext } from "../../Context/AuthContext";
 
 export default function Profile() {
   const [user, setUser] = useState({});
-  const username = useParams().username;
+  const id = useParams().id;
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/v1/users?username=${username}`);
+        const response = await fetch(`/api/v1/users/${id}`);
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
@@ -29,8 +29,8 @@ export default function Profile() {
       }
     };
     fetchUser();
-  }, [username]);
-
+  }, [id]);
+  console.log("user", user)
   return (
     <>
       <Topbar />
@@ -41,22 +41,22 @@ export default function Profile() {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src={currentUser.coverPicture}
+                src={user.coverPicture}
                 alt=""
               />
               <img
                 className="profileUserImg"
-                src={currentUser.profilePicture}
+                src={user.profilePicture}
                 alt=""
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{currentUser.username}</h4>
+              <h4 className="profileInfoName">{user.username}</h4>
               <span className="profileInfoDesc">{user.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed username={username} />
+            <Feed username={user.username} />
             {/* <Rightbar user={user} /> */}
           </div>
         </div>
