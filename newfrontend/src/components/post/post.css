@@ -1,0 +1,142 @@
+.post {
+  width: 100%;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  margin: 30px 0;
+}
+
+.postWrapper {
+  padding: 10px;
+}
+
+.postTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.postTopLeft {
+  display: flex;
+  align-items: center;
+}
+
+.postProfileImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.postUsername {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 10px;
+}
+
+.postDate{
+    font-size: 12px;
+}
+
+.postCenter{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.postText {
+  /* Add some margin below the text to create space for the image */
+  margin-bottom: 10px;
+}
+
+.postImgWrapper {
+  /* Add margin to the left to align the image to the left */
+  margin-left: 10px;
+}
+
+.postImg{
+    margin-top: 20px;
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+   
+}
+
+.postBottom{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.postBottomLeft{
+    display: flex;
+    align-items: center;   
+}
+
+.likeIcon{
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.postLikeCounter{
+    font-size: 15px;
+}
+
+.postCommentText{
+    cursor: pointer;
+    border-bottom: 1px dashed gray;
+    font-size: 15px;
+}
+.postCommentForm {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.postCommentInputWrapper {
+  flex: 1; /* Take up remaining available space */
+}
+
+.postCommentInput {
+  width: 100%; /* Take up the full width of the container */
+  resize: none; /* Prevent textarea resizing */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.postCommentButton {
+  margin-left: 25px; /* Add some spacing between the textarea and the button */
+  padding: 8px 13px;
+  margin-top: 10px;
+  background-color: green;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Additional styles for aesthetics (optional) */
+.postCommentForm {
+  margin-top: 10px;
+}
+
+.postCommentInput:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.deleteIcon{
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.deletePostButton{
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+}

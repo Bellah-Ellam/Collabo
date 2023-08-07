@@ -11,6 +11,7 @@ export default function Post({ post }) {
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [showCommentInput, setShowCommentInput] = useState(false); // State to control comment input visibility
 
   useEffect(() => {
     // Check if post.likes is an array before using includes
@@ -35,7 +36,7 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts${post?._id}/comments`);
+        const response = await fetch(`/api/v1/posts${post.id}/comments`);
         const commentsData = await response.json();
         setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
@@ -45,13 +46,31 @@ export default function Post({ post }) {
     fetchComments();
   }, [post?._id]);
 
+  useEffect(() => {
+    // Fetch post likes when the component mounts
+    fetchLikes();
+  }, []);
+
+  const fetchLikes = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${post.id}/likes`);
+      const likesData = await response.json();
+      setLike(likesData.likesCount || 0);
+      setIsLiked(likesData.isLiked || false);
+    } catch (error) {
+      console.error("Error fetching likes:", error);
+    }
+  };
+
+
   const likeHandler = async () => {
     try {
-      const response = await fetch(`/api/v1/posts${post?._id}/like`, {
-        method: "POST",
+      const response = await fetch(`/api/v1/posts/${post.id}/like`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`,
+          // Authorization: `Bearer ${currentUser && currentUser.token}`,
+          Authorization: localStorage.getItem("authToken")
         },
         body: JSON.stringify({ userId: currentUser?.id }),
       });
@@ -75,12 +94,15 @@ export default function Post({ post }) {
 
   // Comment post
   const createCommentHandler = async () => {
+    const userToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE2OTEzNTgxNDgsImp0aSI6IjQ5Y2JiNjBlLWY3ZDktNDljNy1hODc3LTgyZDkyMjQ5NjM2YSJ9.JXme0hj57jlwX39GLRjIyfanhwGAji7MP3mN4sdv7KU"
     try {
-      const response = await fetch(`/api/v1/posts${post?._id}/comments`, {
+      const response = await fetch(`/api/v1/posts/${post.id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`, // If using JWT token for authentication
+          // Authorization: `Bearer ${currentUser.token}`,
+           // If using JWT token for authentication
+           Authorization: localStorage.getItem("authToken")
         },
         body: JSON.stringify({ body: commentText }),
       });
@@ -105,11 +127,11 @@ export default function Post({ post }) {
   // Comment delete
   const deleteCommentHandler = async (commentId) => {
     try {
-      const response = await fetch(`/api/v1/posts${commentId}`, {
+      const response = await fetch(`/api/v1/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`,
+          Authorization: localStorage.getItem("authToken"),
         },
       });
       if (response.ok) {
@@ -141,22 +163,73 @@ export default function Post({ post }) {
     setIsHoveredComment(null);
   };
 
+  //handle post delete
+  const handlePostDelete = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${post.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("authToken"),
+        },
+      });
+      if (response.ok) {
+        // Post deletion was successful, navigate to home or do any other action
+        // For example, if using React Router, you can navigate to the home page
+        // using the useNavigate hook:
+        // const navigate = useNavigate();
+        // navigate("/");
+        // Or, you can reload the page to update the UI and remove the deleted post:
+        window.location.reload();
+      } else {
+        // Handle error in deleting the post
+        console.error("Error deleting post:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+  
+  //show delete btn
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const handleDeleteButtonClick = () => {
+    setShowDeleteButton(!showDeleteButton);
+  };
+  
+
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
+<<<<<<< HEAD
             <img
               className="postProfileImg"
               src={post.user.profilePicture}
               alt={post.user.username}
             />
             <span className="postUsername">{post.user.username}</span>
+=======
+           
+              <img
+                className="postProfileImg"
+                src={currentUser && currentUser.profile_picture}
+                alt={user.username}
+              />
+           
+
+            <span className="postUsername">{currentUser && currentUser.username}</span>
+>>>>>>> 72ad327c198c65e6a360d68551c92ab2808d6a3e
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
-          </div>
+             <MoreVert onClick={handleDeleteButtonClick} />
+             {showDeleteButton && (
+             <button className="deletePostButton" onClick={handlePostDelete}>
+              Delete Post
+             </button>
+              )}
+       </div>
         </div>
         <div className="postCenter">
           <span className="postText">{post.desc}</span>
@@ -181,49 +254,66 @@ export default function Post({ post }) {
           <div className="postBottomRight">
             <span className="postCommentText">{comments.length} comments</span>
 
-            <div className="postCommentForm">
-              <div className="postCommentInputWrapper">
-                <textarea
-                  className="postCommentInput"
-                  placeholder="Write a comment..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                />
-              </div>
+            {currentUser && !showCommentInput && (
               <button
                 className="postCommentButton"
-                onClick={createCommentHandler}
+                onClick={() => setShowCommentInput(true)}
               >
                 Comment
               </button>
-            </div>
+            )}
 
-            {comments.map((comment) => (
+            {currentUser && showCommentInput && (
+              <div className="postCommentForm">
+                <div className="postCommentInputWrapper">
+                  <textarea
+                    className="postCommentInput"
+                    placeholder="Write a comment..."
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                  />
+                </div>
+                <button
+                  className="postCommentButton"
+                  onClick={createCommentHandler}
+                >
+                  Comment
+                </button>
+              </div>
+            )}
+
+            {comments && comments.map((comment) => (
               <div
                 key={comment.id}
                 className="postComment"
                 onMouseEnter={() => handleCommentHover(comment.id)}
                 onMouseLeave={handleCommentLeave}
               >
-                <img
+                {/* <img
                   className="postCommentProfileImg"
                   // src={comment.user.profilePicture}
                   alt={comment.user.username}
-                />
+                /> */}
                 <span className="postCommentUsername">
-                  {comment.user.username}
+                  {/* {comment.user.username} */}
                 </span>
                 <span className="postCommentDate">
                   {format(comment.createdAt)}
                 </span>
                 <div className="postCommentText">{comment.body}</div>
                 {isHoveredComment === comment.id &&
-                  currentUser?.id === comment.user.id && (
+                  currentUser && currentUser.id === comment.user_id && (
                     <div
                       className="postCommentDelete"
+                      
                       onClick={() => deleteCommentHandler(comment.id)}
                     >
-                      Delete
+                       <img
+              className="deleteIcon"
+              src="assets/delete.png"
+              onClick={likeHandler}
+              alt="delete"
+            />
                     </div>
                   )}
               </div>

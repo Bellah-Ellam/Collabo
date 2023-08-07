@@ -68,33 +68,33 @@ user1 = User.create!(
   post1 = user1.posts.create!(
     desc: "Great weekend my wonderful people",
     img: "https://images.unsplash.com/photo-1592861956120-e524fc739696?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVvcGxlJTIwZWF0aW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
-    likes: [],
+    likes: [user1.id,user2.id, user3.id, user4.id],
     liked_by: [],
-    likes_count: 0
+    likes_count: 4
   )
   post2 = user2.posts.create!(
     desc: "My travel diaries",
-    img: "https://plus.unsplash.com/premium_photo-1668061706855-26d4cf0f6248?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    img: "https://plus.unsplash.com/premium_photo-1668061706855-26d4cf0f6248?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",   likes: [user1.id,user2.id, user3.id, user4.id],
     liked_by: [],
-    likes_count: 0
+    likes_count: 4
   )
   post3 = user3.posts.create!(
     desc: "Outdoor office day!",
-    img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",   likes: [user1.id,user2.id, user3.id, user4.id],
     liked_by: [],
-    likes_count: 0
+    likes_count: 4
   )
   post4 = user4.posts.create!(
     desc: "Debugging on the roof top",
-    img: "https://images.unsplash.com/photo-1483389127117-b6a2102724ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d29ya2luZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    img: "https://images.unsplash.com/photo-1483389127117-b6a2102724ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d29ya2luZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",   likes: [user2.id, user3.id, user4.id],
     liked_by: [],
-    likes_count: 5
+    likes_count: 3
   )
   post5 = user5.posts.create!(
     desc: "There is something about sunsets...sublime!",
-    img: "https://images.unsplash.com/photo-1690788237344-857bd9618572?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",    likes: [],
+    img: "https://images.unsplash.com/photo-1690788237344-857bd9618572?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",    likes: [user1.id,user2.id, user3.id, user4.id],
     liked_by: [],
-    likes_count: 0
+    likes_count: 4
   )
 
 
@@ -141,7 +141,7 @@ users = User.all
 comments_count = 0
 
 posts.each do |post|
-  5.times do
+  1.times do
     user = users.sample
     comment = Comment.create!(
       body: Faker::Lorem.paragraph,

@@ -2,7 +2,7 @@ import "./profile.css";
 import Topbar from "../../components/topbar/Topbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
-// import Rightbar from "../../components/rightbar/Rightbar";
+import Rightbar from "../../components/rightbar/Rightbar";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
@@ -41,23 +41,28 @@ export default function Profile() {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src={currentUser.coverPicture}
+                src={currentUser && currentUser.coverPicture}
                 alt=""
               />
               <img
                 className="profileUserImg"
-                src={currentUser.profilePicture}
+                src={currentUser && currentUser.profile_picture}
                 alt=""
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{currentUser.username}</h4>
-              <span className="profileInfoDesc">{currentUser.desc}</span>
+              <h4 className="profileInfoName">Welcome {currentUser && currentUser.username}</h4>
+              <span className="profileInfoDesc">{currentUser && currentUser.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
+<<<<<<< HEAD
             <Feed username={user.username} />
             {/* <Rightbar user={user} /> */}
+=======
+            <Feed username={username} />
+            <Rightbar user={currentUser} />
+>>>>>>> 72ad327c198c65e6a360d68551c92ab2808d6a3e
           </div>
         </div>
       </div>

@@ -37,6 +37,9 @@ Rails.application.routes.draw do
       # Index route for contents
       get '/contents', to: 'contents#index'
 
+      # Posts routes
+      post '/upload', to: 'posts#upload'
+
       mount ActionCable.server => '/cable'
 
       # Categories routes

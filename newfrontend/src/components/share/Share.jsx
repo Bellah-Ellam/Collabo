@@ -131,71 +131,56 @@ import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from "../../Context/AuthContext";
-import "./Share.css";
-import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
+import Swal from 'sweetalert2';
 
 const Share = () => {
   const [file, setFile] = useState("");
   const [shareText, setShareText] = useState("");
   const {currentUser} = useContext(AuthContext);
-
   const handleFileChange = (event) => {
     const selectedFile = event.target.value;
     setFile(selectedFile);
   };
 
+  //upload file
   const handleUpload = async () => {
-    // if (!file) {
-    //   alert('Please select a file to upload.');
-    //   return;
-    // }
-
-    // Perform the file upload to the backend here
-    // Call an API endpoint to upload the file and get the URL
-
-    // Reset the file state after successful upload
-
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
+  
     const formData = new FormData();
     formData.append('file', file);
     formData.append('desc', shareText);
-
     try {
-    const response = await axios.post('api/v1/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: localStorage.getItem("authToken")
-      },
-    });
-    console.log("authToken", localStorage.getItem("authToken"))
-    const imageUrl = response.data.url;
-    console.log('Uploaded file URL:', imageUrl);
-
-    // Reset the file state after successful upload
-    setFile(null);
-  } catch (error) {
-    console.error('Error uploading file:', error);
-  }
-    // try {
-    //   await axios.post("/api/v1/posts", formData);
-    //   window.location.reload();
-    // } catch (err) {}
-
-  };
-
-  const handlePhotoVideoChange = (e) => {
-    setPhotoVideo(e.target.value);
-  };
-
-  const handleTagChange = (e) => {
-    setTag(e.target.value);
-  };
-
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-  };
-
-  const handleFeelingsChange = (e) => {
-    setFeelings(e.target.value);
+      const response = await axios.post('/api/v1/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: localStorage.getItem('authToken'),
+        },
+      });
+      console.log('authToken', localStorage.getItem('authToken'));
+      const imageUrl = response.data.url;
+      console.log('Uploaded file URL:', imageUrl);
+  
+      // Show SweetAlert success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Post Shared!',
+        text: 'Your post has been shared successfully.',
+      });
+  
+      // Reset the file state after successful upload
+      setFile(null);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      // Show SweetAlert error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while sharing the post.',
+      });
+    }
   };
 
   return (
@@ -226,7 +211,7 @@ const Share = () => {
               <input type="text" accept="image/*,video/*" onChange={(e) => setFile(e.target.value)} />
               <span className="shareOptionText">Photo</span>
             </div>
-            <div className="shareOption">
+            {/* <div className="shareOption">
               <PermMedia
                 htmlColor="tomato"
                 className="shareIcon"
@@ -234,7 +219,7 @@ const Share = () => {
               />
               <input type="text" accept="image/*,video/*" onChange={handleFileChange} />
               <span className="shareOptionText">Video</span>
-            </div>
+            </div> */}
             <div className="shareOption">
               <Label
                 htmlColor="blue"
@@ -289,6 +274,4 @@ const Share = () => {
     </div>
   );
 };
-
 export default Share;
-

@@ -1,7 +1,7 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authenticate_user, except: [:index, :show]
   before_action :set_post, only: [:show, :update, :destroy, :like, :comment, :like_comment, :unlike_comment]
-  before_action :set_current_user
+  # before_action :set_current_user
  
 
 
@@ -85,6 +85,20 @@ class Api::V1::PostsController < ApplicationController
     else
       render json: { error: "You can update only your post" }, status: :forbidden
     end
+  end
+
+  def upload
+    uploaded_file = params[:file]
+    puts "as it is"
+    desc = params[:desc]
+    user = current_user
+    # Save the file using ActiveStorage
+    post = current_user.posts.create(
+      img: uploaded_file, # Assuming you want to store the file as 'img' attribute in the 'posts' table
+      desc: desc,
+      user: user
+    )
+    render json: { url: post.img } # Respond with the URL of the uploaded file
   end
 
   # DELETE /api/v1/posts/:id
