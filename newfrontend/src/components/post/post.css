@@ -109,6 +109,7 @@
 .postCommentButton {
   margin-left: 25px; /* Add some spacing between the textarea and the button */
   padding: 8px 13px;
+  margin-top: 10px;
   background-color: green;
   color: #fff;
   border: none;
@@ -131,4 +132,11 @@
   height: 24px;
   margin-right: 5px;
   cursor: pointer;
+}
+
+.deletePostButton{
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
 }

@@ -46,13 +46,31 @@ export default function Post({ post }) {
     fetchComments();
   }, [post?._id]);
 
+  useEffect(() => {
+    // Fetch post likes when the component mounts
+    fetchLikes();
+  }, []);
+
+  const fetchLikes = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${post.id}/likes`);
+      const likesData = await response.json();
+      setLike(likesData.likesCount || 0);
+      setIsLiked(likesData.isLiked || false);
+    } catch (error) {
+      console.error("Error fetching likes:", error);
+    }
+  };
+
+
   const likeHandler = async () => {
     try {
       const response = await fetch(`/api/v1/posts/${post.id}/like`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser && currentUser.token}`,
+          // Authorization: `Bearer ${currentUser && currentUser.token}`,
+          Authorization: localStorage.getItem("authToken")
         },
         body: JSON.stringify({ userId: currentUser?.id }),
       });
@@ -82,7 +100,9 @@ export default function Post({ post }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`, // If using JWT token for authentication
+          // Authorization: `Bearer ${currentUser.token}`,
+           // If using JWT token for authentication
+           Authorization: localStorage.getItem("authToken")
         },
         body: JSON.stringify({ body: commentText }),
       });
@@ -107,11 +127,11 @@ export default function Post({ post }) {
   // Comment delete
   const deleteCommentHandler = async (commentId) => {
     try {
-      const response = await fetch(`/api/v1/posts/comments/${commentId}`, {
+      const response = await fetch(`/api/v1/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser && currentUser.token}`,
+          Authorization: localStorage.getItem("authToken"),
         },
       });
       if (response.ok) {
@@ -143,6 +163,40 @@ export default function Post({ post }) {
     setIsHoveredComment(null);
   };
 
+  //handle post delete
+  const handlePostDelete = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${post.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("authToken"),
+        },
+      });
+      if (response.ok) {
+        // Post deletion was successful, navigate to home or do any other action
+        // For example, if using React Router, you can navigate to the home page
+        // using the useNavigate hook:
+        // const navigate = useNavigate();
+        // navigate("/");
+        // Or, you can reload the page to update the UI and remove the deleted post:
+        window.location.reload();
+      } else {
+        // Handle error in deleting the post
+        console.error("Error deleting post:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+  
+  //show delete btn
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const handleDeleteButtonClick = () => {
+    setShowDeleteButton(!showDeleteButton);
+  };
+  
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -160,8 +214,13 @@ export default function Post({ post }) {
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
-          </div>
+             <MoreVert onClick={handleDeleteButtonClick} />
+             {showDeleteButton && (
+             <button className="deletePostButton" onClick={handlePostDelete}>
+              Delete Post
+             </button>
+              )}
+       </div>
         </div>
         <div className="postCenter">
           <span className="postText">{post.desc}</span>

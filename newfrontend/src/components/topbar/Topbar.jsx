@@ -8,6 +8,8 @@ export default function Topbar(user) {
   const { currentUser, logout, token } = useContext(AuthContext);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchResults, setSearchResults] =useState("");
   const navigate = useNavigate();
 
   // Fetch notifications on component mount
@@ -36,19 +38,38 @@ export default function Topbar(user) {
     logout();
   };
 
+  // //handle search
+  // const handleSearchSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch(`/api/v1/search?query=${searchQuery}`);
+  //     if (!response.ok) {
+  //       throw new Error("Search request failed");
+  //     }
+  //     const searchData = await response.json();
+  //     console.log(searchData); // This will be the search results from the backend
+  //    setSearchResults(searchData);
+  //     // where setSearchResults is a state setter to update the state with search results.
+  //   } catch (error) {
+  //     console.error("Error fetching search results:", error);
+  //   }
+  // };
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
         <span className="logo">COLLABO</span>
       </div>
       <div className="topbarCenter">
-        <div className="searchbar">
+        <form className="searchbar" >
           <Search className="searchIcon" />
           <input
             placeholder="Search for friend, post or video"
             className="searchInput"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-        </div>
+        </form>
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">

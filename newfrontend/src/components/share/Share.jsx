@@ -1,45 +1,57 @@
 import "./share.css";
 import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
-import { useState,useContext } from "react";
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
 import { AuthContext } from "../../Context/AuthContext";
+import Swal from 'sweetalert2';
 
-
-export default function Share() {
-  const { token, currentUser } = useContext(AuthContext);
+const Share = () => {
+  const [file, setFile] = useState("");
   const [shareText, setShareText] = useState("");
-  const [photoVideo, setPhotoVideo] = useState("");
-  const [tag, setTag] = useState("");
-  const [location, setLocation] = useState("");
-  const [feelings, setFeelings] = useState("");
+  const {currentUser} = useContext(AuthContext);
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.value;
+    setFile(selectedFile);
+  };
 
-  const handleShare = async () => {
+  //upload file
+  const handleUpload = async () => {
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('desc', shareText);
     try {
-       const response = await fetch("/api/v1/shares", {
-        method: "POST",
+      const response = await axios.post('/api/v1/upload', formData, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+          Authorization: localStorage.getItem('authToken'),
         },
-        body: JSON.stringify({
-          share_text: shareText,
-          photo_video: photoVideo,
-          tag: tag,
-          location: location,
-          feelings: feelings,
-        }),
       });
-
-      if (response.ok) {
-        // Share was successful
-        console.log("Content shared successfully!");
-
-      } else {
-        // Handle error in sharing content
-        const errorData = await response.json();
-        console.error("Error sharing content:", errorData.error);
-      }
+      console.log('authToken', localStorage.getItem('authToken'));
+      const imageUrl = response.data.url;
+      console.log('Uploaded file URL:', imageUrl);
+  
+      // Show SweetAlert success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Post Shared!',
+        text: 'Your post has been shared successfully.',
+      });
+  
+      // Reset the file state after successful upload
+      setFile(null);
     } catch (error) {
-      console.error("Error sharing content:", error);
+      console.error('Error uploading file:', error);
+      // Show SweetAlert error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while sharing the post.',
+      });
     }
   };
 
@@ -49,11 +61,11 @@ export default function Share() {
         <div className="shareTop">
           <img
             className="shareProfileImg"
-            src={currentUser && currentUser.profile_picture}
+            src={currentUser.profilePicture}
             alt=""
           />
           <input
-            placeholder="What's in your mind Safak?"
+            placeholder= {`What's on your mind ${currentUser.username} ?`}
             className="shareInput"
             value={shareText}
             onChange={(e) => setShareText(e.target.value)}
@@ -66,23 +78,25 @@ export default function Share() {
               <PermMedia
                 htmlColor="tomato"
                 className="shareIcon"
-                onClick={() => setPhotoVideo("PHOTO")}
+                // onClick={() => setPhotoVideo("PHOTO")}
               />
+              <input type="text" accept="image/*,video/*" onChange={(e) => setFile(e.target.value)} />
               <span className="shareOptionText">Photo</span>
             </div>
-            <div className="shareOption">
+            {/* <div className="shareOption">
               <PermMedia
                 htmlColor="tomato"
                 className="shareIcon"
-                onClick={() => setPhotoVideo("VIDEO")}
+                // onClick={() => setPhotoVideo("VIDEO")}
               />
+              <input type="text" accept="image/*,video/*" onChange={handleFileChange} />
               <span className="shareOptionText">Video</span>
-            </div>
+            </div> */}
             <div className="shareOption">
               <Label
                 htmlColor="blue"
                 className="shareIcon"
-                onClick={() => setTag("TAG")}
+                // onClick={() => setTag("TAG")}
               />
               <span className="shareOptionText">Tag</span>
             </div>
@@ -90,7 +104,7 @@ export default function Share() {
               <Room
                 htmlColor="green"
                 className="shareIcon"
-                onClick={() => setLocation("LOCATION")}
+                // onClick={() => setLocation("LOCATION")}
               />
               <span className="shareOptionText">Location</span>
             </div>
@@ -98,16 +112,17 @@ export default function Share() {
               <EmojiEmotions
                 htmlColor="goldenrod"
                 className="shareIcon"
-                onClick={() => setFeelings("FEELINGS")}
+                // onClick={() => setFeelings("FEELINGS")}
               />
               <span className="shareOptionText">Feelings</span>
             </div>
           </div>
-          <button className="shareButton" onClick={handleShare}>
+          <button className="shareButton" onClick={handleUpload}>
             Share
           </button>
         </div>
       </div>
     </div>
   );
-}
+};
+export default Share;
