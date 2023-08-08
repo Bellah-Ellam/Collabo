@@ -16,7 +16,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/v1/users?username=${username}`);
+        const response = await fetch(`/api/v1/users/${user.id}`);
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);

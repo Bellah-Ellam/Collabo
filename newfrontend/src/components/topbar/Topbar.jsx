@@ -3,6 +3,7 @@ import { Search, Person, Chat, Notifications } from "@material-ui/icons";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import Notification from "../Notification";
 
 export default function Topbar(user) {
   const { currentUser, logout, token } = useContext(AuthContext);
@@ -12,15 +13,15 @@ export default function Topbar(user) {
   const [searchResults, setSearchResults] =useState("");
   const navigate = useNavigate();
 
-  // Fetch notifications on component mount
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
+  // // Fetch notifications on component mount
+  // useEffect(() => {
+  //   fetchNotifications();
+  // }, []);
 
-  // Fetch notifications for the current user
-  const fetchNotifications = async () => {
-    // ...
-  };
+  // // Fetch notifications for the current user
+  // const fetchNotifications = async () => {
+  //   // ...
+  // };
 
   // Handle click on the profile image
   const handleProfileClick = () => {
@@ -84,7 +85,7 @@ export default function Topbar(user) {
         {currentUser && (
           <div className="topbarIcons">
             <div className="topbarIconItem">
-              <Notifications /> {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
+              <Notification /> {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
             </div>
             <div className="topbarIconItem" onClick={handleProfileClick}>
               <img src={currentUser.profilePicture} alt="" className="topbarImg" />

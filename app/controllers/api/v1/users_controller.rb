@@ -14,7 +14,7 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /api/v1/users/me
   def me
-    render json: current_user, only: [:id, :username, :profilePicture, :coverPicture, :bio, :followers, :following]
+    render json: current_user, only: [:id, :username, :profile_picture, :coverPicture, :bio, :followers, :following]
   end
 
   # PUT /api/v1/users/me
@@ -41,6 +41,12 @@ class Api::V1::UsersController < ApplicationController
   def show
     render json: @user
   end
+
+  # def show
+  #   @user = User.find(params[:id])
+  #   render json: @user
+  # # (:id, :username, :profile_picture) # Include the profile_picture attribute
+  # end
 
   # PUT /api/v1/users/:id
   def update
@@ -210,6 +216,6 @@ end
     params.require(:user).permit(:username, :photo, :date_of_birth, :profile_picture, :cover_picture, :bio)
   end
   def profile_params
-    params.require(:user).permit(:profilePicture, :coverPicture, :bio)
+    params.require(:user).permit(:profile_picture, :coverPicture, :bio)
   end
 end

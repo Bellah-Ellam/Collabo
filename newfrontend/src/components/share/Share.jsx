@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from "../../Context/AuthContext";
 import Swal from 'sweetalert2';
 
-const Share = () => {
+const Share = ({ newPost, setNewPost }) => {
   const [file, setFile] = useState("");
   const [shareText, setShareText] = useState("");
   const {currentUser} = useContext(AuthContext);
@@ -13,6 +13,7 @@ const Share = () => {
     const selectedFile = event.target.value;
     setFile(selectedFile);
   };
+  const [posts, setPosts] = useState([]);
 
   //upload file
   const handleUpload = async () => {
@@ -24,6 +25,7 @@ const Share = () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('desc', shareText);
+  
     try {
       const response = await axios.post('/api/v1/upload', formData, {
         headers: {
@@ -31,9 +33,20 @@ const Share = () => {
           Authorization: localStorage.getItem('authToken'),
         },
       });
-      console.log('authToken', localStorage.getItem('authToken'));
+  
       const imageUrl = response.data.url;
       console.log('Uploaded file URL:', imageUrl);
+  
+      // Assuming the newPost object structure is similar to your existing posts
+      const newPost = {
+        id: response.data.id, // Assign a unique ID to the new post
+        image: imageUrl,
+        description: shareText,
+        // ... Other properties as needed
+      };
+  
+      // Update the list of posts in the state to include the new post
+      setPosts([newPost, ...posts]);
   
       // Show SweetAlert success message
       Swal.fire({
@@ -44,6 +57,15 @@ const Share = () => {
   
       // Reset the file state after successful upload
       setFile(null);
+      
+      // Update the new post state with the newly created post
+    setNewPost({
+      id: response.data.postId, // Use the actual property name
+      desc: shareText,
+      img: imageUrl,
+      // ... Other properties
+    });
+      setShareText("");
     } catch (error) {
       console.error('Error uploading file:', error);
       // Show SweetAlert error message
@@ -54,6 +76,7 @@ const Share = () => {
       });
     }
   };
+  
 
   return (
     <div className="share">
@@ -61,11 +84,11 @@ const Share = () => {
         <div className="shareTop">
           <img
             className="shareProfileImg"
-            src={currentUser.profilePicture}
+            src={currentUser && currentUser.profile_picture}
             alt=""
           />
           <input
-            placeholder= {`What's on your mind ${currentUser.username} ?`}
+            placeholder= {`What's on your mind ${currentUser && currentUser.username} ?`}
             className="shareInput"
             value={shareText}
             onChange={(e) => setShareText(e.target.value)}

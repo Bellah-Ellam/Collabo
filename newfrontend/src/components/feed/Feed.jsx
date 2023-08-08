@@ -7,6 +7,7 @@ import { AuthContext } from "../../Context/AuthContext";
 export default function Feed() {
   const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -21,14 +22,16 @@ export default function Feed() {
 
     fetchPosts();
   }, []);
+  const reversedPosts = posts.slice().reverse();
 
   return (
     <div className="feed">
       <div className="feedWrapper">
-        <Share />
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
+      <Share newPost={newPost} setNewPost={setNewPost} />
+      {newPost && <Post key={newPost.id} post={newPost} />}
+      {reversedPosts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
       </div>
     </div>
   );

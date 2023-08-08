@@ -8,7 +8,7 @@ class Api::V1::PostsController < ApplicationController
   # index
   def index
     @posts = Post.all
-    render json: @posts
+    render json: @posts.as_json(include: :user)
   end
 
   # GET /api/v1/posts/:id

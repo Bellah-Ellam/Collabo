@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 
       # Notifications routes
       resources :notifications, only: [:index]
+      patch 'notifications/mark_as_read/:id', to: 'notifications#mark_as_read', as: :mark_notification_as_read
 
       #users
       resources :users, only: [:index, :show, :update, :destroy] do

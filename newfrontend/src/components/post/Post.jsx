@@ -6,8 +6,8 @@ import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
   const { currentUser } = useContext(AuthContext);
-  const [like, setLike] = useState(post.likes.length); // Set initial like count based on the number of likes
-  const [isLiked, setIsLiked] = useState(post.likes.includes(currentUser?.id));
+  const [like, setLike] = useState(post.likes ? post.likes.length : 0); // Set initial like count based on the number of likes
+  const [isLiked, setIsLiked] = useState(post.likes && currentUser ? post.likes.includes(currentUser.id) : false);
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
@@ -69,7 +69,7 @@ export default function Post({ post }) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${currentUser && currentUser.token}`,
+          // Authorization: `Bearer ${post.user.token}`,
           Authorization: localStorage.getItem("authToken")
         },
         body: JSON.stringify({ userId: currentUser?.id }),
@@ -94,7 +94,7 @@ export default function Post({ post }) {
 
   // Comment post
   const createCommentHandler = async () => {
-    const userToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE2OTEzNTgxNDgsImp0aSI6IjQ5Y2JiNjBlLWY3ZDktNDljNy1hODc3LTgyZDkyMjQ5NjM2YSJ9.JXme0hj57jlwX39GLRjIyfanhwGAji7MP3mN4sdv7KU"
+   
     try {
       const response = await fetch(`/api/v1/posts/${post.id}/comments`, {
         method: "POST",
@@ -205,12 +205,12 @@ export default function Post({ post }) {
            
               <img
                 className="postProfileImg"
-                src={currentUser && currentUser.profile_picture}
-                alt={user.username}
+                src={currentUser.profile_picture}
+                alt={currentUser.username}
               />
            
 
-            <span className="postUsername">{currentUser && currentUser.username}</span>
+            <span className="postUsername">{currentUser.username}</span>
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
@@ -293,7 +293,7 @@ export default function Post({ post }) {
                 </span>
                 <div className="postCommentText">{comment.body}</div>
                 {isHoveredComment === comment.id &&
-                  currentUser && currentUser.id === comment.user_id && (
+                  post.user.id === comment.user_id && (
                     <div
                       className="postCommentDelete"
                       

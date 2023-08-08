@@ -8,8 +8,8 @@ User.create!(
   password: "reagan12_password",
   admin: true,
   date_of_birth: "2000-10-11",
-  profile_picture: "",
-  coverPicture: ""
+  profile_picture: "https://images.unsplash.com/photo-1554844453-7ea2a562a6c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHBob3RvZ3JhcGh5fGVufDB8fDB8fHww&w=1000&q=80",
+  coverPicture: "https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
 )
 
 # Create regular users
@@ -45,7 +45,7 @@ user1 = User.create!(
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
     editor: false,
     admin: false,
-    profile_picture: "",
+    profile_picture: "https://images.pexels.com/photos/1308881/pexels-photo-1308881.jpeg?auto=compress&cs=tinysrgb&w=800",
     coverPicture: ""
   )
   user3 = User.create!(
@@ -55,7 +55,7 @@ user1 = User.create!(
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
     editor: false,
     admin: false,
-    profile_picture: "",
+    profile_picture: "https://images.pexels.com/photos/1659438/pexels-photo-1659438.jpeg?auto=compress&cs=tinysrgb&w=800",
     coverPicture: ""
   )
   user4 = User.create!(
@@ -65,7 +65,7 @@ user1 = User.create!(
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
     editor: false,
     admin: false,
-    profile_picture: "",
+    profile_picture: "https://images.pexels.com/photos/326212/pexels-photo-326212.jpeg?auto=compress&cs=tinysrgb&w=800",
     coverPicture: ""
   )
   user5 = User.create!(
@@ -75,7 +75,7 @@ user1 = User.create!(
     date_of_birth: Faker::Date.between(from: '1980-01-01', to: '2002-12-31'),
     editor: false,
     admin: false,
-    profile_picture: "",
+    profile_picture: "https://images.pexels.com/photos/1580271/pexels-photo-1580271.jpeg?auto=compress&cs=tinysrgb&w=800",
     coverPicture: ""
   )
 # Create some posts
@@ -126,7 +126,7 @@ users = User.all
 comments_count = 0
 
 posts.each do |post|
-  1.times do
+  2.times do
     user = users.sample
     comment = Comment.create!(
       body: Faker::Lorem.paragraph,
