@@ -49,3 +49,11 @@
     display: flex;
 }
 
+.updatePhotoButton{
+    margin-top: 10px;
+    align-items: center;
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}

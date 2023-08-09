@@ -81,6 +81,15 @@ export default function Profile() {
    const handleUpdatePhotoClick = (inputRef) => {
     inputRef.current.click();
   };
+   
+  let link = currentUser.profile_picture
+    ? currentUser.profile_picture
+    : ("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png");
+
+    let link2 = currentUser.coverPicture
+    ? currentUser.coverPicture
+    : ("https://trusteid.mioa.gov.mk/wp-content/plugins/uix-page-builder/uixpb_templates/images/UixPageBuilderTmpl/default-cover-2.jpg");
+
 
   return (
     <>
@@ -94,7 +103,7 @@ export default function Profile() {
                 <label htmlFor="coverPicture">
                   <img
                     className="profileCoverImg"
-                    src={currentUser && currentUser.coverPicture}
+                    src={link2}
                     alt=""
                     onMouseEnter={() => handleUpdatePhotoClick(coverPictureInputRef)}
                   />
@@ -106,16 +115,14 @@ export default function Profile() {
                   onChange={handleCoverPictureChange}
                   hidden
                 />
-                <button onClick={updateProfile} className="updatePhotoButton">
-                  Update Cover Photo
-                </button>
+               
               </div>
 
               <div className="imageContainer">
                 <label htmlFor="profilePicture">
                   <img
                     className="profileUserImg"
-                    src={currentUser && currentUser.profilePicture}
+                    src={link}
                     alt=""
                     onMouseEnter={() => handleUpdatePhotoClick(profilePictureInputRef)}
                   />
@@ -127,13 +134,17 @@ export default function Profile() {
                   onChange={handleProfilePictureChange}
                   hidden
                 />
-                <button onClick={updateProfile} className="updatePhotoButton">
-                  Update Profile Picture
-                </button>
+               
               </div>
             </div>
             <div className="profileInfo">
               <h4 className="profileInfoName">Welcome {currentUser && currentUser.username}</h4>
+              <button onClick={updateProfile} className="updatePhotoButton">
+                  Update Profile Picture
+                </button>
+              <button onClick={updateProfile} className="updatePhotoButton">
+                  Update Cover Photo
+                </button>
               <span className="profileInfoDesc">{currentUser && currentUser.desc}</span>
             </div>
           </div>
