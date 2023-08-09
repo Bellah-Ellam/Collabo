@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   # ...
-
   namespace :api do
     namespace :v1 do
       # Authentication routes
@@ -9,14 +8,12 @@ Rails.application.routes.draw do
       get '/current_user', to: 'auth#current_user'
       post '/signup', to: 'registrations#create'
       delete '/logout', to: 'auth#logout'
-
       # Custom routes for contents
       resources :contents, only: [:new, :create, :show, :update, :destroy] do
         post :like, on: :member
         post :view, on: :member
         post :create_comment, on: :member
       end
-
       # Posts routes
       resources :posts, only: [:index, :create, :update, :destroy, :show] do
         member do
@@ -28,26 +25,21 @@ Rails.application.routes.draw do
       end
       get '/posts/timeline/:user_id', to: 'posts#timeline'
       get '/posts/profile/:username', to: 'posts#profile'
-
-      # Index route for contents
-      get '/contents', to: 'contents#index'
-
       # Posts routes
       post '/upload', to: 'posts#upload'
-
       mount ActionCable.server => '/cable'
-
-      # Categories routes
-      resources :categories, only: [:index, :show, :create]
-      get '/categories/new', to: 'categories#new'
-
       # Tags routes
       resources :tags, only: [:index, :new, :create, :show]
-
       # Notifications routes
-      resources :notifications, only: [:index]
-      patch 'notifications/mark_as_read/:id', to: 'notifications#mark_as_read', as: :mark_notification_as_read
-
+      resources :notifications, only: [:index, :show, :update] do
+        member do
+          patch :mark_as_read
+        end
+        collection do
+          patch :mark_multiple_as_read
+          post :create_notification  # Add this line to include the new action
+        end
+      end
       #users
       resources :users, only: [:index, :show, :update, :destroy] do
         member do
@@ -61,7 +53,6 @@ Rails.application.routes.draw do
           match :update_bio, via: [:put, :patch]
         end
       end
-
       # Comments routes
       resources :comments, only: [:index, :show, :create, :update, :destroy] do
         member do
@@ -69,11 +60,9 @@ Rails.application.routes.draw do
           delete :unlike_comment
         end
       end
-
       # Route for the PrivateController
       get '/private/test', to: 'private#test'
       get '/private/auth_params', to: 'private#auth_params'
-
       # Fallback route for handling client-side routing (e.g., React, Vue, etc.)
       get '*path', to: 'fallback#index', constraints: ->(req) { !req.xhr? && req.format.html? }
     end

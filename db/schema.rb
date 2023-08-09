@@ -100,6 +100,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_134943) do
     t.string "desc", limit: 50
     t.string "city", limit: 50
     t.string "from", limit: 50
+    t.integer "notifications_count", default: 0
     t.integer "followed_by", default: [], array: true
     t.integer "followers_count", default: 0
     t.integer "unfollowed_by", default: [], array: true

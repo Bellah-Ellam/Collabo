@@ -33,6 +33,15 @@ class User < ApplicationRecord
     role == 'admin'
   end
 
+  
+  def increment_notifications_count!
+    increment!(:notifications_count)
+  end
+
+  def decrement_notifications_count!
+    decrement!(:notifications_count)
+  end
+
   private
 
   def validate_age

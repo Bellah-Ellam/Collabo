@@ -12,6 +12,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :desc, limit: 50
       t.string :city, limit: 50
       t.string :from, limit: 50
+      t.integer :notifications_count, default: 0
       t.integer :followed_by, array: true, default: []
       t.integer :followers_count, default: 0
       t.integer :unfollowed_by, array: true, default: []
