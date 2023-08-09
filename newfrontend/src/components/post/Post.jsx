@@ -208,12 +208,7 @@ export default function Post({ post }) {
         },
       });
       if (response.ok) {
-        // Post deletion was successful, navigate to home or do any other action
-        // For example, if using React Router, you can navigate to the home page
-        // using the useNavigate hook:
-        // const navigate = useNavigate();
-        // navigate("/");
-        // Or, you can reload the page to update the UI and remove the deleted post:
+  
         window.location.reload();
       } else {
         // Handle error in deleting the post

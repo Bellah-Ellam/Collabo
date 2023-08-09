@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Topbar from './topbar/Topbar';
-// import { Notifications } from '@material-ui/icons';
+ import { Notifications } from '@material-ui/icons';
 import './notification.css';
 
 const Notification = () => {
@@ -47,7 +47,7 @@ const Notification = () => {
         return;
       }
 
-      const response = await fetch(`/api/v1/notifications/${id}mark_as_read`, {
+      const response = await fetch(`/api/v1/notifications/${id}/mark_as_read`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -74,8 +74,8 @@ const Notification = () => {
       <Topbar/>
       <div className='notifications'>
         <h2>
-          {/* <Notifications />  */}
-          Notifications {notificationsCount > 0 && `(${notificationsCount})`}
+          <Notifications /> 
+          Notifications 
         </h2>
         <ul className='list'>
           {notifications.map((notification) => (

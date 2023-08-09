@@ -15,6 +15,7 @@ export default function Topbar(user) {
   useEffect(() => {
     fetchNotifications();
   }, []);
+
   // Fetch notifications for the current user
 const fetchNotifications = async () => {
   try {
@@ -25,7 +26,7 @@ const fetchNotifications = async () => {
     });
     if (response.ok) {
       const notificationsData = await response.json();
-      setNotificationsCount(notificationsData.length); // Update the count
+      setNotificationsCount(notificationsData.notifications.length); // Update the count
     } else {
       console.error('Error fetching notifications:', response.status, response.statusText);
     }
