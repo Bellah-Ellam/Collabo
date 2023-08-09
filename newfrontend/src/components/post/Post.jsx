@@ -62,7 +62,33 @@ export default function Post({ post }) {
     }
   };
 
+  //create notification
+  const createNotification = async (action_type, target_user_id, content, read) => {
+    try {
+      const response = await fetch('/api/v1/notifications/create_notification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('authToken'),
+        },
+        body: JSON.stringify({
+          action_type, // 'like' or 'comment'
+          target_user_id,
+          content,
+          read
 
+          // You might need additional data like sender, receiver, etc.
+        }),
+      });
+      if (response.ok) {
+        console.log('Notification created successfully.');
+      } else {
+        console.error('Error creating notification:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error creating notification:', error);
+    }
+  };
   const likeHandler = async () => {
     try {
       const response = await fetch(`/api/v1/posts/${post.id}/like`, {
@@ -79,6 +105,10 @@ export default function Post({ post }) {
         const updatedLikeCount = isLiked ? like - 1 : like + 1;
         setLike(updatedLikeCount);
         setIsLiked(!isLiked);
+
+        // Call the createNotification function for like
+      await createNotification('like', post.user.id, `${currentUser.username} liked your post.`, false);
+
       } else {
         // Handle error in liking content
         console.error(
@@ -111,6 +141,10 @@ export default function Post({ post }) {
         setCommentText("");
         const newComment = await response.json();
         setComments([...comments, newComment]);
+
+         // Call the createNotification function for comment
+      await createNotification('comment', post.user.id, `${currentUser.username} commented on your post.`, false);
+
       } else {
         // Handle error in creating the comment
         console.error(
@@ -206,7 +240,7 @@ export default function Post({ post }) {
               <img
                 className="postProfileImg"
                 src={post.user && post.user.profile_picture}
-                alt={currentUser.username}
+                alt={post.user && post.user.username}
               />
            
 

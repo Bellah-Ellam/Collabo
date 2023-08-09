@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Notifications } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import Topbar from './topbar/Topbar';
+// import { Notifications } from '@material-ui/icons';
+import './notification.css';
 
 const Notification = () => {
- const [notifications, setNotifications] = useState([]);
- const [notificationsCount, setNotificationsCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationsCount, setNotificationsCount] = useState(0);
 
- useEffect(() => {
-   // Check if the user is authenticated (JWT token is present)
-   const authToken = localStorage.getItem('authToken');
-   if (!authToken) {
-     // Handle the case when the user is not authenticated
-     // You might want to redirect to the login page or show an error message
-     console.error('User not authenticated. Please log in.');
-     return;
-   }
-
-   fetchNotifications(authToken);
- }, []);
-
- const fetchNotifications = async () => {
-  try {
-    const response = await fetch('/api/v1/notifications', {
-      headers: {
-        Authorization: localStorage.getItem("authToken")
-      },
-    });
-    if (response.ok) {
-      const notificationsData = await response.json();
-      setNotificationsCount(notificationsData.length); // Update the count
-    } else {
-      console.error('Error fetching notifications:', response.status, response.statusText);
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      console.error('User not authenticated. Please log in.');
+      return;
     }
-  } catch (error) {
-    console.error('Error fetching notifications:', error);
-  }
-};
 
- const markNotificationAsRead = async (id) => {
+    fetchNotifications(authToken);
+  }, []);
+
+  const fetchNotifications = async (authToken) => {
+    try {
+      const response = await fetch('/api/v1/notifications', {
+        headers: {
+          Authorization: authToken,
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        const notificationsData = data.notifications; // Extract notifications array
+        setNotifications(notificationsData); // Update the notifications data
+        setNotificationsCount(notificationsData.length); // Update the count
+      } else {
+        console.error('Error fetching notifications:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
+
+  const markNotificationAsRead = async (id) => {
     try {
       const authToken = localStorage.getItem('authToken');
       if (!authToken) {
@@ -45,14 +47,14 @@ const Notification = () => {
         return;
       }
 
-      const response = await fetch(`/api/v1/notifications/mark_as_read/${id}`, {
+      const response = await fetch(`/api/v1/notifications/${id}mark_as_read`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('authToken'),
+          Authorization: authToken,
         },
       });
-  
+
       if (response.ok) {
         setNotifications((prevNotifications) =>
           prevNotifications.map((notification) =>
@@ -67,23 +69,32 @@ const Notification = () => {
     }
   };
 
- return (
-  <div>
-  <h2>Notifications</h2>
-  <ul>
-    {notifications.map((notification) => (
-      <li
-        key={notification.id}
-        style={{ fontWeight: notification.read_status ? 'normal' : 'bold' }}
-        onClick={() => markNotificationAsRead(notification.id)}
-      >
-        {notification.message}
-      </li>
-    ))}
-  </ul>
-</div>
-
- );
+  return (
+    <div> 
+      <Topbar/>
+      <div className='notifications'>
+        <h2>
+          {/* <Notifications />  */}
+          Notifications {notificationsCount > 0 && `(${notificationsCount})`}
+        </h2>
+        <ul className='list'>
+          {notifications.map((notification) => (
+            <li
+              key={notification.id}
+              style={{ color: notification.read_status ? 'black' : 'red' }}
+              onClick={() => markNotificationAsRead(notification.id)}
+            >
+              <p>{notification.action_type}</p>
+              <p>{notification.timestamp}</p>
+              <p>{notification.content}</p>
+              {/* <Link to={`/post/${notification.postId}`}>View Post</Link> */}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 };
 
 export default Notification;
+

@@ -1,23 +1,20 @@
 import "./topbar.css";
-import { Search, Person, Chat, Notifications } from "@material-ui/icons";
+import { Search, Notifications } from "@material-ui/icons";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Notification from "../Notification";
 
 export default function Topbar(user) {
   const { currentUser, logout, token } = useContext(AuthContext);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] =useState("");
   const navigate = useNavigate();
-
   // Fetch notifications on component mount
   useEffect(() => {
     fetchNotifications();
   }, []);
-
   // Fetch notifications for the current user
 const fetchNotifications = async () => {
   try {
@@ -36,23 +33,19 @@ const fetchNotifications = async () => {
     console.error('Error fetching notifications:', error);
   }
 };
-
   // Handle click on the profile image
   const handleProfileClick = () => {
     setDropdownVisible(!dropdownVisible);
   };
-
   // Handle click on the "Profile" option in the dropdown
   const handleProfileOptionClick = () => {
     navigate("/profile");
     setDropdownVisible(false);
   };
-
   // Handle click on the "Logout" option in the dropdown
   const handleLogoutOptionClick = () => {
     logout();
   };
-
   // //handle search
   // const handleSearchSubmit = async (e) => {
   //   e.preventDefault();
@@ -69,7 +62,6 @@ const fetchNotifications = async () => {
   //     console.error("Error fetching search results:", error);
   //   }
   // };
-
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -98,15 +90,12 @@ const fetchNotifications = async () => {
         </div>
         {currentUser && (
           <div className="topbarIcons">
-
             <div className="topbarIconItem">
-              <Notifications  onClick={() => navigate("/notifications")} /> 
+              <Notifications  onClick={() => navigate("/notifications")} />
               {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
             </div>
-
             <div className="topbarIconItem" onClick={handleProfileClick}>
               <img src={currentUser.profilePicture} alt="" className="topbarImg" />
-
               {dropdownVisible && (
                 <ul className="dropdown-menu">
                   <li>
