@@ -8,6 +8,7 @@ import Register from "./pages/register/Register";
 // import Rightbar from "./components/rightbar/Rightbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext";
+import Notification from "./components/Notification";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notification />} />
         </Routes>
       </AuthProvider>
 

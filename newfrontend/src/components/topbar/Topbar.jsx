@@ -13,15 +13,29 @@ export default function Topbar(user) {
   const [searchResults, setSearchResults] =useState("");
   const navigate = useNavigate();
 
-  // // Fetch notifications on component mount
-  // useEffect(() => {
-  //   fetchNotifications();
-  // }, []);
+  // Fetch notifications on component mount
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
-  // // Fetch notifications for the current user
-  // const fetchNotifications = async () => {
-  //   // ...
-  // };
+  // Fetch notifications for the current user
+const fetchNotifications = async () => {
+  try {
+    const response = await fetch('/api/v1/notifications', {
+      headers: {
+        Authorization: localStorage.getItem("authToken")
+      },
+    });
+    if (response.ok) {
+      const notificationsData = await response.json();
+      setNotificationsCount(notificationsData.length); // Update the count
+    } else {
+      console.error('Error fetching notifications:', response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+  }
+};
 
   // Handle click on the profile image
   const handleProfileClick = () => {
@@ -84,9 +98,12 @@ export default function Topbar(user) {
         </div>
         {currentUser && (
           <div className="topbarIcons">
+
             <div className="topbarIconItem">
-              <Notification /> {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
+              <Notifications  onClick={() => navigate("/notifications")} /> 
+              {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
             </div>
+
             <div className="topbarIconItem" onClick={handleProfileClick}>
               <img src={currentUser.profilePicture} alt="" className="topbarImg" />
 

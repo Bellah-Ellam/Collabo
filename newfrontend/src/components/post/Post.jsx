@@ -205,12 +205,12 @@ export default function Post({ post }) {
            
               <img
                 className="postProfileImg"
-                src={currentUser.profile_picture}
+                src={post.user && post.user.profile_picture}
                 alt={currentUser.username}
               />
            
 
-            <span className="postUsername">{currentUser.username}</span>
+            <span className="postUsername">{post.user && post.user.username}</span>
             <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">

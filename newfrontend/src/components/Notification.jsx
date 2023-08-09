@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Notifications } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 const Notification = () => {
  const [notifications, setNotifications] = useState([]);
+ const [notificationsCount, setNotificationsCount] = useState(0);
 
  useEffect(() => {
    // Check if the user is authenticated (JWT token is present)
@@ -16,23 +19,23 @@ const Notification = () => {
    fetchNotifications(authToken);
  }, []);
 
- const fetchNotifications = async (token) => {
-    try {
-      const response = await fetch('/api/v1/notifications', {
-        headers: {
-          Authorization: localStorage.getItem('authToken'),
-        },
-      });
-      if (response.ok) {
-        const notificationsData = await response.json();
-        setNotifications(notificationsData);
-      } else {
-        console.error('Error fetching notifications:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
+ const fetchNotifications = async () => {
+  try {
+    const response = await fetch('/api/v1/notifications', {
+      headers: {
+        Authorization: localStorage.getItem("authToken")
+      },
+    });
+    if (response.ok) {
+      const notificationsData = await response.json();
+      setNotificationsCount(notificationsData.length); // Update the count
+    } else {
+      console.error('Error fetching notifications:', response.status, response.statusText);
     }
-  };
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+  }
+};
 
  const markNotificationAsRead = async (id) => {
     try {
@@ -65,20 +68,21 @@ const Notification = () => {
   };
 
  return (
-   <div>
-     <h2>Notifications</h2>
-     <ul>
-       {notifications.map((notification) => (
-         <li
-           key={notification.id}
-           style={{ fontWeight: notification.read_status ? 'normal' : 'bold' }}
-           onClick={() => markNotificationAsRead(notification.id)}
-         >
-           {notification.message}
-         </li>
-       ))}
-     </ul>
-   </div>
+  <div>
+  <h2>Notifications</h2>
+  <ul>
+    {notifications.map((notification) => (
+      <li
+        key={notification.id}
+        style={{ fontWeight: notification.read_status ? 'normal' : 'bold' }}
+        onClick={() => markNotificationAsRead(notification.id)}
+      >
+        {notification.message}
+      </li>
+    ))}
+  </ul>
+</div>
+
  );
 };
 
