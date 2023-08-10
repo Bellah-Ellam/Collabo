@@ -6,8 +6,10 @@ import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
   const { currentUser } = useContext(AuthContext);
-  const [like, setLike] = useState(post.likes ? post.likes.length : 0); // Set initial like count based on the number of likes
-  const [isLiked, setIsLiked] = useState(post.likes && currentUser ? post.likes.includes(currentUser.id) : false);
+  const [like, setLike] = useState([]);
+  const [isLiked, setIsLiked] = useState(
+    post.likes && currentUser ? post.likes.includes(currentUser.id) : false
+  );
   const [user, setUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
@@ -23,44 +25,72 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/v1/users/${post?.userId}`);
-        const userData = await response.json();
-        setUser(userData || {});
+        const response = await fetch(`/api/v1/users`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData || {});
+        } else {
+          console.error("Error fetching user data:", response.statusText);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
     fetchUser();
   }, [post?.userId]);
+  
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts${post.id}/comments`);
-        const commentsData = await response.json();
-        setComments(commentsData?.length ? commentsData : []);
+        const response = await fetch(`/api/v1/posts/${post.id}/comments`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
+        if (response.ok) {
+          const commentsData = await response.json();
+          setComments(commentsData?.length ? commentsData : []);
+        } else {
+          console.error("Error fetching comments:", response.statusText);
+        }
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
     };
     fetchComments();
-  }, [post?._id]);
+  }, [post?.id]);
+  
 
   useEffect(() => {
     // Fetch post likes when the component mounts
     fetchLikes();
   }, []);
-
+  
   const fetchLikes = async () => {
     try {
-      const response = await fetch(`/api/v1/posts/${post.id}/likes`);
-      const likesData = await response.json();
-      setLike(likesData.likesCount || 0);
-      setIsLiked(likesData.isLiked || false);
+      const response = await fetch(`/api/v1/posts/${post.id}/likes`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+      if (response.ok) {
+        const likesData = await response.json();
+        setLike(likesData.likesCount || 0);
+        setIsLiked(likesData.isLiked || false);
+      } else {
+        console.error("Error fetching likes:", response.statusText);
+      }
     } catch (error) {
       console.error("Error fetching likes:", error);
     }
   };
+  
+  
 
   //create notification
   const createNotification = async (action_type, target_user_id, content, read) => {
@@ -95,22 +125,27 @@ export default function Post({ post }) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${post.user.token}`,
-          Authorization: localStorage.getItem("authToken")
+          Authorization: localStorage.getItem("authToken"),
         },
         body: JSON.stringify({ userId: currentUser?.id }),
       });
       if (response.ok) {
-        // Like was successful, handle accordingly
+        // Call the createNotification function for like
+        await createNotification(
+          "like",
+          post.user.id,
+          `${currentUser.username} liked your post.`,
+          false
+        );
+
+        // Update the likes count and status
         const updatedLikeCount = isLiked ? like - 1 : like + 1;
         setLike(updatedLikeCount);
-        setIsLiked(!isLiked);
+        setIsLiked(!isLiked); // Toggle the liked status
 
-        // Call the createNotification function for like
-      await createNotification('like', post.user.id, `${currentUser.username} liked your post.`, false);
-
+        // Fetch updated likes count and status from the API (optional)
+        // fetchLikes();
       } else {
-        // Handle error in liking content
         console.error(
           "Error liking content:",
           response.status,
@@ -120,8 +155,8 @@ export default function Post({ post }) {
     } catch (error) {
       console.error("Error liking content:", error);
     }
-  }
-
+  };
+  
   // Comment post
   const createCommentHandler = async () => {
    
@@ -143,7 +178,7 @@ export default function Post({ post }) {
         setComments([...comments, newComment]);
 
          // Call the createNotification function for comment
-      await createNotification('comment', post.user.id, `${currentUser.username} commented on your post.`, false);
+      await createNotification('comment', post.user.id, `${currentUser && currentUser.username} commented on your post.`, false);
 
       } else {
         // Handle error in creating the comment
@@ -225,6 +260,9 @@ export default function Post({ post }) {
     setShowDeleteButton(!showDeleteButton);
   };
   
+  let link = currentUser && currentUser.profile_picture
+  ? currentUser && currentUser.profile_picture
+  : ("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png");
 
   return (
     <div className="post">
@@ -234,7 +272,7 @@ export default function Post({ post }) {
            
               <img
                 className="postProfileImg"
-                src={post.user && post.user.profile_picture}
+                src={link}
                 alt={post.user && post.user.username}
               />
            

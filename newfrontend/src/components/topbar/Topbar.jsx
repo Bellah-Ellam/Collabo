@@ -63,8 +63,8 @@ const fetchNotifications = async () => {
   //     console.error("Error fetching search results:", error);
   //   }
   // };
-  let link = currentUser.profile_picture
-  ? currentUser.profile_picture
+  let link = currentUser && currentUser.profile_picture
+  ? currentUser && currentUser.profile_picture
   : ("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png");
 
   return (

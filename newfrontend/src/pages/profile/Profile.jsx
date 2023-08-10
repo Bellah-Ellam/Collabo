@@ -82,15 +82,15 @@ export default function Profile() {
     inputRef.current.click();
   };
    
-  let link = currentUser.profile_picture
-    ? currentUser.profile_picture
+  let link =  currentUser &&  currentUser.profile_picture
+    ?currentUser &&   currentUser.profile_picture
     : ("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png");
 
-    let link2 = currentUser.coverPicture
-    ? currentUser.coverPicture
-    : ("https://trusteid.mioa.gov.mk/wp-content/plugins/uix-page-builder/uixpb_templates/images/UixPageBuilderTmpl/default-cover-2.jpg");
-
-
+    let link1 = currentUser &&   currentUser.coverPicture
+    ? currentUser &&   currentUser.coverPicture
+    : ("https://images.pexels.com/photos/804171/pexels-photo-804171.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+    
+    
   return (
     <>
        <Topbar />
@@ -103,18 +103,18 @@ export default function Profile() {
                 <label htmlFor="coverPicture">
                   <img
                     className="profileCoverImg"
-                    src={link2}
+                    src={link1}
                     alt=""
-                    onMouseEnter={() => handleUpdatePhotoClick(coverPictureInputRef)}
+                    // onMouseEnter={() => handleUpdatePhotoClick(coverPictureInputRef)}
                   />
                 </label>
-                <input
+                {/* <input
                   type="file"
                   id="coverPicture"
                   ref={coverPictureInputRef}
                   onChange={handleCoverPictureChange}
                   hidden
-                />
+                /> */}
                
               </div>
 
@@ -124,28 +124,28 @@ export default function Profile() {
                     className="profileUserImg"
                     src={link}
                     alt=""
-                    onMouseEnter={() => handleUpdatePhotoClick(profilePictureInputRef)}
+                    // onMouseEnter={() => handleUpdatePhotoClick(profilePictureInputRef)}
                   />
                 </label>
-                <input
+                {/* <input
                   type="file"
                   id="profilePicture"
                   ref={profilePictureInputRef}
                   onChange={handleProfilePictureChange}
                   hidden
-                />
-               
+                /> */}
+                
               </div>
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">Welcome {currentUser && currentUser.username}</h4>
-              <button onClick={updateProfile} className="updatePhotoButton">
-                  Update Profile Picture
-                </button>
-              <button onClick={updateProfile} className="updatePhotoButton">
+              <h4 className="profileInfoName">Welcome { currentUser.username}</h4>
+              {/* <button onClick={updateProfile} className="updatePhotoButton">
                   Update Cover Photo
+                </button> */}
+              <span className="profileInfoDesc">{ currentUser.desc}</span>
+              <button onClick={updateProfile} className="updateprofile">
+                  Update Bio
                 </button>
-              <span className="profileInfoDesc">{currentUser && currentUser.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
