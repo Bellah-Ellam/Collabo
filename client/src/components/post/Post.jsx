@@ -1,7 +1,7 @@
 import "./post.css";
 import { MoreVert } from "@material-ui/icons";
 import { format } from "timeago.js";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function Post({ post }) {
@@ -66,29 +66,42 @@ export default function Post({ post }) {
   }, [post?.id]);
   
 
-  useEffect(() => {
-    // Fetch post likes when the component mounts
-    fetchLikes();
-  }, []);
+  // useEffect(() => {
+  //   // Fetch post likes when the component mounts
+  //   fetchLikes();
+  // }, []);
   
-  const fetchLikes = async () => {
+  // const fetchLikes = async () => {
+  //   try {
+  //     const response = await fetch(`/api/v1/posts/${post.id}/likes`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const likesData = await response.json();
+  //       setLike(likesData.likesCount || 0);
+  //       setIsLiked(likesData.isLiked || false);
+  //     } else {
+  //       console.error("Error fetching likes:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching likes:", error);
+  //   }
+  // };
+
+  const fetchLikes = useCallback(async () => {
     try {
-      const response = await fetch(`/api/v1/posts/${post.id}/likes`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
-      if (response.ok) {
-        const likesData = await response.json();
-        setLike(likesData.likesCount || 0);
-        setIsLiked(likesData.isLiked || false);
-      } else {
-        console.error("Error fetching likes:", response.statusText);
-      }
+      // ... (existing code for fetching likes)
     } catch (error) {
       console.error("Error fetching likes:", error);
     }
-  };
+  }, []);
+  
+  useEffect(() => {
+    // Fetch post likes when the component mounts
+    fetchLikes();
+  }, [fetchLikes]);
   
   
 

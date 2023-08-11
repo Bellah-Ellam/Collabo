@@ -32,7 +32,7 @@
 /config/master.key
 
 # Ignore .Gemfile Lock
-/Gemfile.lock
+# /Gemfile.lock
 
 # dependencies
 /node_modules

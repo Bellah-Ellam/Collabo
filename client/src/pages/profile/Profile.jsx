@@ -18,22 +18,38 @@ export default function Profile() {
   const profilePictureInputRef = useRef(null);
 
 
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await fetch(`/api/v1/users/${user.id}`);
+  //       if (response.ok) {
+  //         const userData = await response.json();
+  //         setUser(userData);
+  //       } else {
+  //         console.error("Error fetching user:", response.status, response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user:", error);
+  //     }
+  //   };
+  //   fetchUser();
+  // }, [username]);
+
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`/api/v1/users/${user.id}`);
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          console.error("Error fetching user:", response.status, response.statusText);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
+    const fetchUserData = async () => {
+      const response = await fetch(`/api/v1/users/${user.id}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        console.error("Error fetching user:", response.status, response.statusText);
       }
     };
-    fetchUser();
-  }, [username]);
+  
+    if (user.id) {
+      fetchUserData();
+    }
+  }, [user.id]);
 
   // Handler for selecting profile picture
   const handleProfilePictureChange = (event) => {
