@@ -14,7 +14,7 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /api/v1/users/me
   def me
-    render json: current_user, only: [:id, :username, :profile_picture, :coverPicture, :bio, :followers, :following]
+    render json: current_user, only: [:id, :username, :profilePicture, :coverPicture, :bio, :followers, :following]
   end
 
   # PUT /api/v1/users/me
@@ -45,7 +45,7 @@ class Api::V1::UsersController < ApplicationController
   # def show
   #   @user = User.find(params[:id])
   #   render json: @user
-  # # (:id, :username, :profile_picture) # Include the profile_picture attribute
+  # # (:id, :username, :profilePicture) # Include the profilePicture attribute
   # end
 
   # PUT /api/v1/users/:id
@@ -152,23 +152,23 @@ end
     end
   end
 
-  # PATCH /api/v1/users/:id/update_profile_picture
-  def update_profile_picture
+  # PATCH /api/v1/users/:id/update_profilePicture
+  def update_profilePicture
     user = User.find(params[:id])
 
-    if user.update(profile_picture: params[:profile_picture])
+    if user.update(profilePicture: params[:profilePicture])
       render json: { message: "Profile picture updated successfully" }
     else
       render json: { error: "Error updating profile picture" }, status: :unprocessable_entity
     end
   end
 
-  # PATCH /api/v1/users/1/update_cover_picture
-  def update_cover_picture
+  # PATCH /api/v1/users/1/update_coverPicture
+  def update_coverPicture
     user = User.find(params[:id]) # Find the user by ID
 
     if user == current_user || current_user.admin?
-      if user.update(cover_picture: params[:cover_picture])
+      if user.update(coverPicture: params[:coverPicture])
         render json: { message: "Cover picture updated successfully" }
       else
         render json: { error: "Error updating cover picture" }, status: :unprocessable_entity
@@ -213,9 +213,9 @@ end
   
   def user_params
     # Permit the required attributes here
-    params.require(:user).permit(:username, :photo, :date_of_birth, :profile_picture, :cover_picture, :bio)
+    params.require(:user).permit(:username, :photo, :date_of_birth, :profilePicture, :coverPicture, :bio)
   end
   def profile_params
-    params.require(:user).permit(:profile_picture, :coverPicture, :bio)
+    params.require(:user).permit(:profilePicture, :coverPicture, :bio)
   end
 end
