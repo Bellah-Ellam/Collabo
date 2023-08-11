@@ -36,7 +36,7 @@ export default function Feed() {
       ) : (
         <div>
           <p>Please log in to view the feed.</p>
-          {/* You can also add a link to the login page here if you want */}
+         <img src="https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Landing image"/>
         </div>
       )}
     </div>

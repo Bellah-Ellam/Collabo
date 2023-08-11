@@ -5,3 +5,8 @@
 .feedWrapper{
     padding: 20px;
 }
+img{
+    display: flex;
+    height: 700px;
+    width: 1200px;
+}
