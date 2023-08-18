@@ -47,16 +47,16 @@ class Api::V1::RegistrationsController < ApplicationController
   private
 
   # def user_params
-  #   user_params = params.require(:registration).permit(:username, :email, :password, :password_confirmation, :profile_picture, :date_of_birth)
+  #   user_params = params.require(:registration).permit(:username, :email, :password, :password_confirmation, :profilePicture, :date_of_birth)
   # end
 
   def user_params
-    params.require(:registration).permit(:username, :email, :password, :password_confirmation, :profile_picture, :date_of_birth)
+    params.require(:registration).permit(:username, :email, :password, :password_confirmation, :profilePicture, :date_of_birth)
   end
   
   
 
   # def user_params
-  #   user_params = params.permit(:username, :email, :password, :password_confirmation, :profile_picture, :date_of_birth)
+  #   user_params = params.permit(:username, :email, :password, :password_confirmation, :profilePicture, :date_of_birth)
   # end
 end

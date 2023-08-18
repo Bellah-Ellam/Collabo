@@ -7,7 +7,6 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 
-
 export default function Profile() {
   const [user, setUser] = useState({});
   const [selectedProfilePicture, setSelectedProfilePicture] = useState(null);
@@ -17,6 +16,11 @@ export default function Profile() {
   const coverPictureInputRef = useRef(null);
   const profilePictureInputRef = useRef(null);
 
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [coverPhotoUrl, setCoverPhotoUrl] = useState("");
+
+  const [showProfilePictureInput, setShowProfilePictureInput] = useState(false);
+  const [showCoverPhotoInput, setShowCoverPhotoInput] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -26,7 +30,11 @@ export default function Profile() {
           const userData = await response.json();
           setUser(userData);
         } else {
-          console.error("Error fetching user:", response.status, response.statusText);
+          console.error(
+            "Error fetching user:",
+            response.status,
+            response.statusText
+          );
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -35,32 +43,52 @@ export default function Profile() {
     fetchUser();
   }, [username]);
 
-  // Handler for selecting profile picture
-  const handleProfilePictureChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedProfilePicture(file);
-  };
+  console.log("test",user)
 
-  // Handler for selecting cover picture
-  const handleCoverPictureChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedCoverPicture(file);
+  // // Handler for selecting profile picture
+  // const handleProfilePictureChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setSelectedProfilePicture(file);
+  // };
+
+  // // Handler for selecting cover picture
+  // const handleCoverPictureChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setSelectedCoverPicture(file);
+  // };
+
+
+   // Function to update the profile picture and cover photo URLs
+   const updatePhotoUrls = () => {
+    if (profilePictureUrl) {
+      link = profilePictureUrl;
+      setProfilePictureUrl("");
+    }
+    if (coverPhotoUrl) {
+      link2 = coverPhotoUrl;
+      setCoverPhotoUrl("");
+    }
+
   };
 
   // Function to update profile picture and cover photo
   const updateProfile = async () => {
     const formData = new FormData();
-    if (selectedProfilePicture) {
-      formData.append("profilePicture", selectedProfilePicture);
+
+    if (selectedProfilePicture || profilePictureUrl) {
+      formData.append(
+        "profilePicture",
+        selectedProfilePicture || profilePictureUrl
+      );
     }
-    if (selectedCoverPicture) {
-      formData.append("coverPicture", selectedCoverPicture);
+    if (selectedCoverPicture || coverPhotoUrl) {
+      formData.append("coverPicture", selectedCoverPicture || coverPhotoUrl);
     }
 
     try {
-      const response = await fetch("/api/v1/update-profile", {
-        method: "PUT",
-        body: formData,
+      const response = await fetch(`/api/v1/users/${user.id}/update_profilePicture`, {
+        method: "PATCH",
+        body: "https://images.pexels.com/photos/775417/pexels-photo-775417.jpeg?auto=compress&cs=tinysrgb&w=1600",
         headers: {
           Authorization: localStorage.getItem("authToken"),
         },
@@ -70,30 +98,43 @@ export default function Profile() {
         // Handle success, maybe update the UI or show a success message
         console.log("Profile updated successfully");
       } else {
-        console.error("Error updating profile:", response.status, response.statusText);
+        console.error(
+          "Error updating profile:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
+   
 
-   // Function to open the file input when clicking "Update Photo" button
-   const handleUpdatePhotoClick = (inputRef) => {
+   const handleProfilePictureUrlChange = (event) => {
+    setProfilePictureUrl(event.target.value);
+  };
+
+  const handleCoverPhotoUrlChange = (event) => {
+    setCoverPhotoUrl(event.target.value);
+  };
+  // Function to open the file input when clicking "Update Photo" button
+  const handleUpdatePhotoClick = (inputRef) => {
     inputRef.current.click();
   };
-   
-  let link = currentUser.profile_picture
-    ? currentUser.profile_picture
-    : ("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png");
 
-    let link2 = currentUser.coverPicture
-    ? currentUser.coverPicture
-    : ("https://trusteid.mioa.gov.mk/wp-content/plugins/uix-page-builder/uixpb_templates/images/UixPageBuilderTmpl/default-cover-2.jpg");
+  let link =
+    currentUser && currentUser.profilePicture
+      ? currentUser && currentUser.profilePicture
+      : "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png";
 
+  let link2 =
+    currentUser && currentUser.coverPicture
+      ? currentUser && currentUser.coverPicture
+      : "https://trusteid.mioa.gov.mk/wp-content/plugins/uix-page-builder/uixpb_templates/images/UixPageBuilderTmpl/default-cover-2.jpg";
 
   return (
     <>
-       <Topbar />
+      <Topbar />
       <div className="profile">
         <Sidebar />
         <div className="profileRight">
@@ -101,58 +142,90 @@ export default function Profile() {
             <div className="profileCover">
               <div className="imageContainer">
                 <label htmlFor="coverPicture">
-                  <img
-                    className="profileCoverImg"
-                    src={link2}
-                    alt=""
-                    onMouseEnter={() => handleUpdatePhotoClick(coverPictureInputRef)}
-                  />
+                <img className="profileCoverImg" src={coverPhotoUrl || link2} alt="" />
                 </label>
-                <input
-                  type="file"
-                  id="coverPicture"
-                  ref={coverPictureInputRef}
-                  onChange={handleCoverPictureChange}
-                  hidden
-                />
-               
               </div>
 
               <div className="imageContainer">
                 <label htmlFor="profilePicture">
-                  <img
-                    className="profileUserImg"
-                    src={link}
-                    alt=""
-                    onMouseEnter={() => handleUpdatePhotoClick(profilePictureInputRef)}
-                  />
+                <img className="profileUserImg" src={profilePictureUrl || link} alt="" />
                 </label>
-                <input
-                  type="file"
-                  id="profilePicture"
-                  ref={profilePictureInputRef}
-                  onChange={handleProfilePictureChange}
-                  hidden
-                />
-               
               </div>
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">Welcome {currentUser && currentUser.username}</h4>
-              <button onClick={updateProfile} className="updatePhotoButton">
-                  Update Profile Picture
-                </button>
-              <button onClick={updateProfile} className="updatePhotoButton">
-                  Update Cover Photo
-                </button>
-              <span className="profileInfoDesc">{currentUser && currentUser.desc}</span>
+              <h4 className="profileInfoName">
+                Welcome {currentUser && currentUser.username}
+              </h4>
+
+              <button
+                onClick={() =>
+                  setShowProfilePictureInput(!showProfilePictureInput)
+                }
+                className="updatePhotoButton"
+              >
+                Update Profile Picture
+              </button>
+
+              {showProfilePictureInput && (
+                <div className="editButtons">
+                  <input
+                    type="text"
+                    placeholder="Enter profile picture URL"
+                    value={profilePictureUrl}
+                    onChange={handleProfilePictureUrlChange}
+                  />
+                   <button
+                className="editBtn"
+                onClick={() => {
+                  updatePhotoUrls();
+                  updateProfile();
+                  setShowProfilePictureInput(false);
+                }}
+              >
+                    Upload
+                  </button>
+                </div>
+              )}
+
+              <button
+                onClick={() => setShowCoverPhotoInput(!showCoverPhotoInput)}
+                className="updatePhotoButton"
+              >
+                Update Cover Photo
+              </button>
+
+              {showCoverPhotoInput && (
+                <div className="editButtons">
+                  <input
+                    type="text"
+                    placeholder="Enter cover photo URL"
+                    value={coverPhotoUrl}
+                    onChange={handleCoverPhotoUrlChange}
+                  />
+                   <button
+                className="editBtn"
+                onClick={() => {
+                  updatePhotoUrls();
+                  updateProfile();
+                  setShowCoverPhotoInput(false);
+                }}
+              >
+                    Upload
+                  </button>
+                </div>
+              )}
+
+              <span className="profileInfoDesc">
+                {currentUser && currentUser.desc}
+              </span>
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed username={username} />
-            <Rightbar user={currentUser} />
-          </div>
+          <Feed username={username} />
+          <Rightbar user={currentUser} />
         </div>
+        </div>
+        
       </div>
     </>
   );

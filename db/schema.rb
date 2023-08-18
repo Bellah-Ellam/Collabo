@@ -92,7 +92,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_134943) do
     t.string "username", limit: 20, null: false
     t.string "email", limit: 50, null: false
     t.string "password_digest", null: false
-    t.string "profile_picture", default: ""
+    t.string "profilePicture", default: ""
     t.string "coverPicture", default: ""
     t.date "date_of_birth"
     t.integer "relationship"

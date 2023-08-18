@@ -63,8 +63,8 @@ const fetchNotifications = async () => {
   //     console.error("Error fetching search results:", error);
   //   }
   // };
-  let link = currentUser.profile_picture
-  ? currentUser.profile_picture
+  let link = currentUser && currentUser.profilePicture
+  ? currentUser && currentUser.profilePicture
   : ("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png");
 
   return (
@@ -100,7 +100,9 @@ const fetchNotifications = async () => {
               {notificationsCount > 0 && <span className="topbarIconBadge">{notificationsCount}</span>}
             </div>
             <div className="topbarIconItem" onClick={handleProfileClick}>
+             
               <img src={link} alt="" className="topbarImg" />
+
               {dropdownVisible && (
                 <ul className="dropdown-menu">
                   <li>

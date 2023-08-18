@@ -57,3 +57,20 @@
     font-weight: bold;
     border-radius: 5px;
 }
+
+.editButtons{
+    margin-top: 5px;
+}
+
+.editBtn{
+   border-radius: 5px;
+   margin-left: 5px;
+}
+
+.editBtn:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    border-color: green;
+    
+
+}

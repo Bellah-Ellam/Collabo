@@ -14,7 +14,7 @@ class Api::V1::PostsController < ApplicationController
   # GET /api/v1/posts/:id
   def show
     @post = Post.find(params[:id])
-    render json: @post
+    render json: @post.as_json(include: :user)
   end
 
   # GET /api/v1/posts/profile/:username

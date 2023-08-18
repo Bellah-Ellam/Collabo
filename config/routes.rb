@@ -48,7 +48,7 @@ Rails.application.routes.draw do
           put :update_profile
           get :friends
           get :profile
-          match :update_profile_picture, via: [:put, :patch]
+          match :update_profilePicture, via: [:put, :patch]
           match :update_cover_picture, via: [:put, :patch]
           match :update_bio, via: [:put, :patch]
         end

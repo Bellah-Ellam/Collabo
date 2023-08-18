@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :username, null: false, limit: 20, unique: true
       t.string :email, null: false, limit: 50, unique: true
       t.string :password_digest, null: false
-      t.string :profile_picture, default: ""
+      t.string :profilePicture, default: ""
       t.string :coverPicture, default: ""
       t.date :date_of_birth
       t.integer :relationship

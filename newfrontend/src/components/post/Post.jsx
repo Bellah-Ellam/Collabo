@@ -13,6 +13,8 @@ export default function Post({ post }) {
   const [comments, setComments] = useState([]);
   const [showCommentInput, setShowCommentInput] = useState(false); // State to control comment input visibility
 
+console.log("before", post)
+
   useEffect(() => {
     // Check if post.likes is an array before using includes
     const isPostLiked =
@@ -36,7 +38,7 @@ export default function Post({ post }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/v1/posts${post.id}/comments`);
+        const response = await fetch(`/api/v1/posts/${post.id}/comments`);
         const commentsData = await response.json();
         setComments(commentsData?.length ? commentsData : []);
       } catch (error) {
@@ -234,7 +236,7 @@ export default function Post({ post }) {
            
               <img
                 className="postProfileImg"
-                src={post.user && post.user.profile_picture}
+                src={post.user && post.user.profilePicture}
                 alt={post.user && post.user.username}
               />
            
