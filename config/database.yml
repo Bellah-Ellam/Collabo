@@ -22,8 +22,9 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: smurfs_api_development
+  # <<: *default
+  # database: smurfs_api_development
+  url: postgresql://collabodb_user:flBBq4LcLHRfUcLGASi8s5a85w5Czouf@dpg-cjfljv8cfp5c73cdq8jg-a/collabodb
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
